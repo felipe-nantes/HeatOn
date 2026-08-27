@@ -39,10 +39,19 @@ export const sections = [
 ] as const;
 
 export const hero = {
-  eyebrow: 'HEATON / [ 000-00 / INTRO ]',
+  eyebrowLeft: '[ SOFTWARE / DADOS / IA / SAÚDE ]',
+  eyebrowRight: '[ 000-00 / INTRO ]',
   display: 'Scientific Intelligence in Motion',
-  /** Linhas do display monumental; a última palavra é o elemento ativo (laranja). */
-  displayLines: ['Scientific', 'Intelligence', 'In Motion'],
+  /**
+   * Declaração monumental do hero — a frase-núcleo da marca
+   * (Território: "Sinal em evidência. Evidência em decisão."),
+   * cada linha anotada com o verbo do método.
+   */
+  statement: [
+    { text: 'Sinal,', note: '01 / MEDIR', style: 'fill', indent: 0 },
+    { text: 'Evidência,', note: '02 / COMPUTAR', style: 'outline', indent: 1 },
+    { text: 'Decisão.', note: '03 / INTERPRETAR', style: 'accent', indent: 2 },
+  ],
   /** Leitura de dados de exemplo do brandbook (p.22/25) — linguagem da marca, não métricas. */
   dataReadout: [
     ['MODEL_ID', 'HTO-042'],

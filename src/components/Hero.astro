@@ -2,7 +2,6 @@
 import { hero, capabilities } from '../content/site';
 
 const marqueeItems = capabilities.items.map((c) => c.toUpperCase());
-const lines = hero.displayLines;
 ---
 
 <section id="hero" class="hero surface-deep" aria-labelledby="hero-title">
@@ -41,35 +40,49 @@ const lines = hero.displayLines;
     />
   </div>
 
+  <p class="data hero-rail" aria-hidden="true">{hero.display.toUpperCase()} ///</p>
+
   <div class="container hero-content section-content">
-    <p class="data hero-eyebrow">{hero.eyebrow}</p>
+    <div class="hero-eyebrows data">
+      <span>{hero.eyebrowLeft}</span>
+      <span class="eyebrow-right">{hero.eyebrowRight}</span>
+    </div>
 
     <div class="hero-stage" id="hero-stage">
+      <h1 id="hero-title" class="hero-statement">
+        {
+          hero.statement.map((line, i) => (
+            <span class:list={['line', `line--${line.style}`, `indent-${line.indent}`]}>
+              <span class="line-mask">
+                <span class="line-inner" style={`animation-delay: ${180 + i * 180}ms`}>
+                  {line.text}
+                  <span class="line-note data" aria-hidden="true">
+                    {line.note}
+                  </span>
+                </span>
+              </span>
+            </span>
+          ))
+        }
+      </h1>
       <span class="hero-mark hero-mark--tl data" aria-hidden="true">+</span>
       <span class="hero-mark hero-mark--br data" aria-hidden="true">+</span>
-
-      <h1 id="hero-title" class="hero-headline">
-        <span class="line"><span class="line-inner">{lines[0]}</span></span>
-        <span class="line line--outline"><span class="line-inner">{lines[1]}</span></span>
-        <span class="line">
-          <span class="line-inner">
-            In <span class="line-accent">Motion</span>
-          </span>
-        </span>
-      </h1>
     </div>
 
     <div class="hero-sub">
-      <p class="hero-support body-copy">{hero.support}</p>
-      <div class="hero-ctas">
-        <a class="pill pill--solid" href={hero.ctaPrimary.href}>
-          {hero.ctaPrimary.label}
-          <span class="pill-plus" aria-hidden="true">+</span>
-        </a>
-        <a class="pill" href={hero.ctaSecondary.href}>
-          {hero.ctaSecondary.label}
-          <span class="pill-plus" aria-hidden="true">+</span>
-        </a>
+      <div class="hero-lede">
+        <p class="data hero-tagline"><span class="tagline-dash" aria-hidden="true"></span>{hero.display.toUpperCase()}</p>
+        <p class="hero-support body-copy">{hero.support}</p>
+        <div class="hero-ctas">
+          <a class="pill pill--solid" href={hero.ctaPrimary.href}>
+            {hero.ctaPrimary.label}
+            <span class="pill-plus" aria-hidden="true">+</span>
+          </a>
+          <a class="pill" href={hero.ctaSecondary.href}>
+            {hero.ctaSecondary.label}
+            <span class="pill-plus" aria-hidden="true">+</span>
+          </a>
+        </div>
       </div>
 
       <dl class="hero-data data" aria-label="Leitura de sistema (ilustrativa)">
@@ -118,7 +131,7 @@ const lines = hero.displayLines;
     overflow: hidden;
   }
 
-  /* ---------- Mídia em camadas ---------- */
+  /* ---------- Mídia ---------- */
   .hero-media {
     position: absolute;
     inset: 0;
@@ -132,11 +145,6 @@ const lines = hero.displayLines;
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-
-  /* Zoom lento "respirando" — pausa fora da viewport e em reduced motion */
-  .hero-poster,
-  .hero-video {
     animation: hero-breathe 26s var(--ease-editorial) infinite alternate;
   }
 
@@ -159,14 +167,16 @@ const lines = hero.displayLines;
     opacity: 1;
   }
 
+  /* Vídeo protagonista: escurece só as bordas de leitura */
   .hero-scrim {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       180deg,
-      rgba(14, 14, 16, 0.58) 0%,
-      rgba(14, 14, 16, 0.22) 42%,
-      rgba(14, 14, 16, 0.82) 100%
+      rgba(14, 14, 16, 0.55) 0%,
+      rgba(14, 14, 16, 0.12) 38%,
+      rgba(14, 14, 16, 0.3) 68%,
+      rgba(14, 14, 16, 0.85) 100%
     );
   }
 
@@ -176,7 +186,21 @@ const lines = hero.displayLines;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.14;
+    opacity: 0.12;
+  }
+
+  /* ---------- Trilho vertical (tagline como arquitetura) ---------- */
+  .hero-rail {
+    display: none;
+    position: absolute;
+    top: 50%;
+    right: calc(var(--page-pad) * 0.35);
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    z-index: var(--z-content);
+    opacity: 0;
+    font-size: 0.6875rem;
+    animation: hero-fade 600ms var(--ease-editorial) 1100ms forwards;
   }
 
   /* ---------- Conteúdo ---------- */
@@ -184,67 +208,65 @@ const lines = hero.displayLines;
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    padding-top: clamp(5.5rem, 14vh, 8rem);
-    padding-bottom: clamp(1.5rem, 4vh, 3rem);
+    justify-content: flex-end;
+    gap: clamp(1.75rem, 4vh, 3rem);
+    padding-top: clamp(5.5rem, 13vh, 8rem);
+    padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
   }
 
-  .hero-eyebrow {
+  .hero-eyebrows {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
     opacity: 0;
-    margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
-    animation: hero-fade 500ms var(--ease-editorial) 150ms forwards;
+    animation: hero-fade 500ms var(--ease-editorial) 120ms forwards;
   }
 
+  .eyebrow-right {
+    color: var(--color-measurement);
+  }
+
+  /* ---------- Declaração monumental ---------- */
   .hero-stage {
     position: relative;
-    width: fit-content;
     will-change: transform;
   }
 
-  /* Crosshairs de medição nos cantos do bloco tipográfico */
-  .hero-mark {
-    position: absolute;
-    font-size: 1.1rem;
-    letter-spacing: 0;
-    opacity: 0;
-    animation: hero-fade 500ms var(--ease-editorial) 1150ms forwards;
-  }
-
-  .hero-mark--tl { top: -0.9em; left: -0.15em; }
-  .hero-mark--br { bottom: -0.9em; right: -0.15em; color: var(--color-measurement); }
-
-  /* ---------- Display monumental ---------- */
-  .hero-headline {
+  .hero-statement {
+    margin: 0;
     font-family: var(--font-display);
     font-weight: 250;
-    font-size: clamp(2.9rem, 10.4vw, 9.75rem);
-    line-height: 0.97;
+    font-size: clamp(3.1rem, 13.2vw, 12.5rem);
+    line-height: 0.94;
     letter-spacing: var(--tracking-display);
     text-transform: uppercase;
-    margin: 0;
   }
 
   .line {
     display: block;
+  }
+
+  .indent-1 { margin-left: clamp(0px, 7vw, 9rem); }
+  .indent-2 { margin-left: clamp(0px, 15vw, 19rem); }
+
+  .line-mask {
+    display: inline-block;
     overflow: hidden;
-    padding-block: 0.02em;
+    vertical-align: top;
+    padding-block: 0.03em;
   }
 
   .line-inner {
-    display: inline-block;
+    display: inline-flex;
+    align-items: baseline;
     transform: translateY(112%);
-    animation: line-rise 780ms var(--ease-editorial) forwards;
+    animation: line-rise 820ms var(--ease-editorial) forwards;
   }
-
-  .line:nth-child(1) .line-inner { animation-delay: 160ms; }
-  .line:nth-child(2) .line-inner { animation-delay: 320ms; }
-  .line:nth-child(3) .line-inner { animation-delay: 480ms; }
 
   @keyframes line-rise {
     to { transform: translateY(0); }
   }
 
-  /* Linha em contorno: espessura fina, sem preenchimento */
   .line--outline .line-inner {
     color: transparent;
     -webkit-text-stroke: 1.5px var(--color-information);
@@ -257,23 +279,69 @@ const lines = hero.displayLines;
     }
   }
 
-  /* O único elemento ativo do hero */
-  .line-accent {
+  /* O resultado é o que está "ligado" */
+  .line--accent .line-inner {
     color: var(--color-activity);
+    -webkit-text-stroke: 0;
   }
 
-  /* ---------- Suporte, CTAs e leitura de dados ---------- */
+  /* Anotações do método coladas às linhas */
+  .line-note {
+    margin-left: 1.2em;
+    font-size: clamp(0.5625rem, 0.9vw, 0.8125rem);
+    letter-spacing: var(--tracking-data);
+    color: var(--color-information);
+    -webkit-text-stroke: 0;
+    opacity: 0;
+    animation: hero-fade 450ms var(--ease-editorial) 950ms forwards;
+    white-space: nowrap;
+  }
+
+  .line--accent .line-note {
+    color: var(--color-information);
+  }
+
+  .hero-mark {
+    position: absolute;
+    font-size: 1.1rem;
+    opacity: 0;
+    animation: hero-fade 450ms var(--ease-editorial) 1050ms forwards;
+  }
+
+  .hero-mark--tl { top: -1.1em; left: 0; }
+  .hero-mark--br { bottom: -1.1em; right: 6%; color: var(--color-measurement); }
+
+  /* ---------- Lede, CTAs e dados ---------- */
   .hero-sub {
     display: grid;
     gap: clamp(1.5rem, 3vh, 2.25rem);
-    margin-top: clamp(2rem, 5vh, 3.5rem);
     align-items: end;
+  }
+
+  .hero-lede {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+  }
+
+  .hero-tagline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9em;
+    opacity: 0;
+    animation: hero-fade 500ms var(--ease-editorial) 880ms forwards;
+  }
+
+  .tagline-dash {
+    width: 3.5em;
+    height: 2px;
+    background: var(--gradient-thermal);
   }
 
   .hero-support {
     max-width: 40ch;
     opacity: 0;
-    animation: hero-fade 550ms var(--ease-editorial) 900ms forwards;
+    animation: hero-fade 550ms var(--ease-editorial) 960ms forwards;
   }
 
   .hero-ctas {
@@ -281,7 +349,7 @@ const lines = hero.displayLines;
     flex-wrap: wrap;
     gap: 1rem;
     opacity: 0;
-    animation: hero-fade 550ms var(--ease-editorial) 1020ms forwards;
+    animation: hero-fade 550ms var(--ease-editorial) 1060ms forwards;
   }
 
   .hero-data {
@@ -361,12 +429,11 @@ const lines = hero.displayLines;
     60%, 100% { transform: translateY(2.6em); }
   }
 
-  /* Traço fino com o gradiente térmico — energia atravessando a base */
   .hero-signal {
     height: 2px;
     background: var(--gradient-thermal);
     transform-origin: left center;
-    animation: signal-run 900ms var(--ease-editorial) 700ms both;
+    animation: signal-run 900ms var(--ease-editorial) 720ms both;
   }
 
   @keyframes signal-run {
@@ -374,7 +441,6 @@ const lines = hero.displayLines;
     to { transform: scaleX(1); }
   }
 
-  /* Marquee técnico de capacidades */
   .hero-marquee {
     overflow: hidden;
     border-top: 1px solid rgba(255, 244, 230, 0.1);
@@ -419,41 +485,46 @@ const lines = hero.displayLines;
     to { opacity: 1; transform: none; }
   }
 
-  .hero-eyebrow,
-  .hero-bottom {
-    animation-name: hero-fade;
+  /* ---------- Responsivo ---------- */
+  @media (max-width: 767px) {
+    .line-note {
+      display: none;
+    }
+
+    .indent-1 { margin-left: 6vw; }
+    .indent-2 { margin-left: 12vw; }
   }
 
-  /* ---------- Desktop ---------- */
   @media (min-width: 1200px) {
+    .hero-rail {
+      display: block;
+    }
+
+    .hero-tagline {
+      display: none;
+    }
+
     .hero-sub {
       grid-template-columns: minmax(0, 1fr) auto;
     }
 
-    .hero-support {
-      grid-column: 1;
-    }
-
-    .hero-ctas {
-      grid-column: 1;
-    }
-
     .hero-data {
       display: block;
-      grid-column: 2;
-      grid-row: 1 / 3;
       min-width: 21rem;
-      align-self: end;
+      margin-right: clamp(2rem, 5vw, 5rem);
     }
   }
 
-  /* ---------- Reduced motion: tudo visível, nada se move ---------- */
+  /* ---------- Reduced motion ---------- */
   @media (prefers-reduced-motion: reduce) {
     .hero-poster,
     .hero-video,
     .line-inner,
-    .hero-eyebrow,
+    .line-note,
+    .hero-eyebrows,
+    .hero-rail,
     .hero-mark,
+    .hero-tagline,
     .hero-support,
     .hero-ctas,
     .hero-data,
@@ -468,8 +539,11 @@ const lines = hero.displayLines;
       transform: none;
     }
 
-    .hero-eyebrow,
+    .hero-eyebrows,
+    .hero-rail,
     .hero-mark,
+    .line-note,
+    .hero-tagline,
     .hero-support,
     .hero-ctas,
     .hero-data,
