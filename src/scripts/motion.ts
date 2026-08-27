@@ -254,8 +254,17 @@ function setupHeroVideo(): void {
     if (fallbackSrc) playSingleLoop(a, fallbackSrc);
   };
 
-  /* Corte seco: troca única em voo, validando o alvo ao concluir. */
+  /* Corte seco: uma troca em voo por vez, com destrava vinculada à tentativa. */
   let swapping = false;
+  let swapGuard = 0;
+
+  const releaseSwap = (): void => {
+    if (swapGuard) {
+      clearTimeout(swapGuard);
+      swapGuard = 0;
+    }
+    swapping = false;
+  };
 
   const swap = (): void => {
     if (swapping) return;
@@ -266,7 +275,7 @@ function setupHeroVideo(): void {
     target.currentTime = clip.start;
     tryPlay(target, 2, () => {
       if (target !== standby) {
-        swapping = false;
+        releaseSwap();
         return;
       }
       active.classList.remove('is-playing');
@@ -275,30 +284,67 @@ function setupHeroVideo(): void {
       active = standby;
       standby = t;
       preload(standby, nextClip());
-      swapping = false;
+      releaseSwap();
     });
-    // Destrava caso todas as tentativas falhem (o ativo segue em mini-loop).
-    window.setTimeout(() => {
-      swapping = false;
-    }, 2400);
+    // Destrava só esta tentativa, caso todas as retentativas falhem.
+    swapGuard = window.setTimeout(releaseSwap, 2400);
   };
 
-  const onTime = (video: HTMLVideoElement): void => {
-    if (failed || video !== active) return;
-    const clip = clipOf.get(video);
-    if (!clip) return;
-    if (video.currentTime >= clip.end) {
-      if (!swapping && standby.readyState >= 3) {
+  /* Corte no frame certo via rAF; `timeupdate` (~4x/s) é a rede de segurança
+     para quando o rAF está suspenso (aba em segundo plano, economia de energia). */
+  let rafId = 0;
+  let heroVisible = true;
+
+  const checkCut = (): void => {
+    if (failed || !heroVisible) return;
+    const clip = clipOf.get(active);
+    // Com uma troca em voo, aguarda o corte em vez de rebobinar o plano atual.
+    if (clip && !swapping && !active.paused && active.currentTime >= clip.end) {
+      if (standby.readyState >= 3) {
         swap();
       } else {
-        // Próximo ainda não pronto: reinicia o trim atual sem cortar para preto.
-        video.currentTime = clip.start;
+        // Próximo ainda não pronto: repete o trim sem cortar para preto.
+        active.currentTime = clip.start;
       }
     }
   };
 
+  const tick = (): void => {
+    rafId = 0;
+    if (failed || !heroVisible) return;
+    checkCut();
+    rafId = requestAnimationFrame(tick);
+  };
+
+  const startTicker = (): void => {
+    if (!rafId) rafId = requestAnimationFrame(tick);
+  };
+
+  const stopTicker = (): void => {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+    }
+  };
+
+  /* Fora da viewport, a sequência para (regra de motion do handoff). */
+  const heroSection = document.getElementById('hero');
+  if (heroSection) {
+    new IntersectionObserver(([entry]) => {
+      heroVisible = Boolean(entry?.isIntersecting);
+      if (heroVisible) {
+        startTicker();
+        if (active.currentSrc) void active.play().catch(() => {});
+      } else {
+        stopTicker();
+        active.pause();
+      }
+    }).observe(heroSection);
+  }
+
   [a, b].forEach((video) => {
-    video.addEventListener('timeupdate', () => onTime(video));
+    video.addEventListener('playing', startTicker);
+    video.addEventListener('timeupdate', checkCut);
     video.addEventListener('ended', () => {
       if (video !== active || failed) return;
       if (!swapping && standby.readyState >= 3) {

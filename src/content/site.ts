@@ -53,13 +53,15 @@ export const hero = {
      * do acervo real, embaralhados a cada visita e cortados a seco nos trims
      * aprovados. Fallback: montagem concatenada de 6s.
      */
+    /* Trims curtos (0,65–0,75 s) dentro das janelas seguras da spec 07:
+       mais cortes por minuto = sequência mais dinâmica. */
     clips: [
-      { src: '/assets/media/hero/sequence/clips/01-oren-lab-review.mp4', start: 0.4, end: 1.3 },
-      { src: '/assets/media/hero/sequence/clips/02-oren-anatomy-interface.mp4', start: 0.25, end: 1.15 },
-      { src: '/assets/media/hero/sequence/clips/03-femur-dashboard-overview.mp4', start: 0.35, end: 1.1 },
-      { src: '/assets/media/hero/sequence/clips/04-femur-hotspots.mp4', start: 0.35, end: 1.1 },
-      { src: '/assets/media/hero/sequence/clips/05-efast-validation.mp4', start: 0.35, end: 1.25 },
-      { src: '/assets/media/hero/sequence/clips/06-efast-simulation.mp4', start: 0.3, end: 1.3 },
+      { src: '/assets/media/hero/sequence/clips/01-oren-lab-review.mp4', start: 0.45, end: 1.15 },
+      { src: '/assets/media/hero/sequence/clips/02-oren-anatomy-interface.mp4', start: 0.3, end: 1.0 },
+      { src: '/assets/media/hero/sequence/clips/03-femur-dashboard-overview.mp4', start: 0.38, end: 1.03 },
+      { src: '/assets/media/hero/sequence/clips/04-femur-hotspots.mp4', start: 0.38, end: 1.03 },
+      { src: '/assets/media/hero/sequence/clips/05-efast-validation.mp4', start: 0.4, end: 1.15 },
+      { src: '/assets/media/hero/sequence/clips/06-efast-simulation.mp4', start: 0.35, end: 1.05 },
     ],
     fallback: '/assets/media/hero/sequence/hero-rapid-sequence-preview.mp4',
     mobile: '/assets/media/hero/sequence/hero-rapid-sequence-preview-mobile.mp4',

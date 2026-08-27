@@ -46,19 +46,19 @@ const clipsJson = JSON.stringify(hero.video.clips);
     <div class="hero-scrim"></div>
   </div>
 
-  <!-- Microcopy única, centralizada, com traço técnico -->
+  <!-- Microcopy única, centralizada, com régua de medição ao lado -->
   <div class="hero-center">
     <h1 id="hero-title" class="hero-microcopy">
       <span class="visually-hidden">Heat On — {hero.display}. </span>
       <span class="microcopy-text">{hero.support}</span>
-      <span class="microcopy-dash" aria-hidden="true"></span>
+      <span class="microcopy-ticks" aria-hidden="true"></span>
     </h1>
   </div>
 
-  <!-- Wordmark gigante ancorado na base, escuro translúcido sobre o vídeo -->
+  <!-- Wordmark gigante na base: branco + difference = vídeo invertido nas letras -->
   <div class="hero-wordmark" aria-hidden="true">
     <img
-      src="/assets/brand/wordmark-deep.svg"
+      src="/assets/brand/wordmark-white.svg"
       alt=""
       width="699"
       height="151"
@@ -108,18 +108,18 @@ const clipsJson = JSON.stringify(hero.video.clips);
     opacity: 1;
   }
 
-  /* Escurecimento uniforme; base mais clara para o wordmark deep assentar */
+  /* Escurecimento profundo e uniforme sobre o vídeo */
   .hero-scrim {
     position: absolute;
     inset: 0;
     background:
       linear-gradient(
         180deg,
-        rgba(14, 14, 16, 0.5) 0%,
-        rgba(14, 14, 16, 0.16) 45%,
-        rgba(14, 14, 16, 0.28) 100%
+        rgba(14, 14, 16, 0.66) 0%,
+        rgba(14, 14, 16, 0.38) 45%,
+        rgba(14, 14, 16, 0.6) 100%
       ),
-      rgba(14, 14, 16, 0.22);
+      rgba(14, 14, 16, 0.34);
   }
 
   /* ---------- Microcopy central ---------- */
@@ -131,25 +131,35 @@ const clipsJson = JSON.stringify(hero.video.clips);
     padding: clamp(5rem, 12vh, 7rem) var(--page-pad) clamp(1.5rem, 4vh, 3rem);
   }
 
+  /* Grotesca geométrica leve, como a microcopy editorial da referência */
   .hero-microcopy {
     display: inline-flex;
     align-items: center;
-    gap: clamp(1rem, 2.5vw, 2rem);
+    gap: clamp(1rem, 2.5vw, 2.25rem);
     margin: 0;
-    font-family: var(--font-body);
-    font-size: clamp(0.9375rem, 0.85rem + 0.35vw, 1.125rem);
-    font-weight: 400;
-    line-height: 1.55;
-    letter-spacing: 0.01em;
+    font-family: var(--font-display);
+    font-size: clamp(0.9375rem, 0.86rem + 0.4vw, 1.1875rem);
+    font-weight: 300;
+    line-height: 1.5;
+    letter-spacing: -0.005em;
     text-align: center;
-    max-width: 60ch;
+    max-width: 62ch;
     animation: hero-fade 600ms var(--ease-editorial) 250ms both;
   }
 
-  .microcopy-dash {
+  /* Régua de medição: traços verticais densos que se dissolvem */
+  .microcopy-ticks {
     flex: none;
-    width: clamp(70px, 9vw, 150px);
-    border-top: 1px dashed rgba(255, 244, 230, 0.55);
+    width: clamp(90px, 13vw, 240px);
+    height: 11px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-information) 0 1px,
+      transparent 1px 4px
+    );
+    opacity: 0.55;
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 45%, transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 45%, transparent 100%);
   }
 
   /* ---------- Wordmark na base, full-bleed ---------- */
@@ -163,7 +173,8 @@ const clipsJson = JSON.stringify(hero.video.clips);
   .hero-wordmark img {
     width: 100%;
     height: auto;
-    opacity: 0.82;
+    /* Branco puro + difference: as letras invertem o vídeo por trás */
+    mix-blend-mode: difference;
     animation: wordmark-rise 700ms var(--ease-editorial) 380ms both;
   }
 
@@ -184,13 +195,13 @@ const clipsJson = JSON.stringify(hero.video.clips);
       transform: translateY(6%);
     }
     to {
-      opacity: 0.82;
+      opacity: 1;
       transform: none;
     }
   }
 
   @media (max-width: 767px) {
-    .microcopy-dash {
+    .microcopy-ticks {
       display: none;
     }
 
@@ -206,7 +217,7 @@ const clipsJson = JSON.stringify(hero.video.clips);
     }
 
     .hero-wordmark img {
-      opacity: 0.82;
+      opacity: 1;
     }
   }
 </style>
