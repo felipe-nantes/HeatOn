@@ -1,7 +1,5 @@
 ---
-import { hero, capabilities } from '../content/site';
-
-const marqueeItems = capabilities.items.map((c) => c.toUpperCase());
+import { hero } from '../content/site';
 ---
 
 <section id="hero" class="hero surface-deep" aria-labelledby="hero-title">
@@ -29,95 +27,34 @@ const marqueeItems = capabilities.items.map((c) => c.toUpperCase());
       tabindex="-1"
     ></video>
     <div class="hero-scrim"></div>
+  </div>
+
+  <div class="container hero-content section-content">
+    <p class="data hero-eyebrow">{hero.eyebrow}</p>
+    <h1 id="hero-title" class="display hero-title">{hero.display}</h1>
+    <div class="hero-signal" aria-hidden="true"></div>
+    <p class="hero-support body-copy">{hero.support}</p>
+    <div class="hero-ctas">
+      <a class="pill pill--solid" href={hero.ctaPrimary.href}>
+        {hero.ctaPrimary.label}
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+      <a class="pill" href={hero.ctaSecondary.href}>
+        {hero.ctaSecondary.label}
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-wordmark" aria-hidden="true">
     <img
-      class="hero-grid"
-      src="/assets/graphics/scientific-grid.svg"
+      src="/assets/brand/wordmark-color.svg"
       alt=""
-      width="2400"
-      height="1600"
+      width="699"
+      height="151"
       loading="lazy"
       decoding="async"
     />
-  </div>
-
-  <p class="data hero-rail" aria-hidden="true">{hero.display.toUpperCase()} ///</p>
-
-  <div class="container hero-content section-content">
-    <div class="hero-eyebrows data">
-      <span>{hero.eyebrowLeft}</span>
-      <span class="eyebrow-right">{hero.eyebrowRight}</span>
-    </div>
-
-    <div class="hero-stage" id="hero-stage">
-      <h1 id="hero-title" class="hero-statement">
-        {
-          hero.statement.map((line, i) => (
-            <span class:list={['line', `line--${line.style}`, `indent-${line.indent}`]}>
-              <span class="line-mask">
-                <span class="line-inner" style={`animation-delay: ${180 + i * 180}ms`}>
-                  {line.text}
-                  <span class="line-note data" aria-hidden="true">
-                    {line.note}
-                  </span>
-                </span>
-              </span>
-            </span>
-          ))
-        }
-      </h1>
-      <span class="hero-mark hero-mark--tl data" aria-hidden="true">+</span>
-      <span class="hero-mark hero-mark--br data" aria-hidden="true">+</span>
-    </div>
-
-    <div class="hero-sub">
-      <div class="hero-lede">
-        <p class="data hero-tagline"><span class="tagline-dash" aria-hidden="true"></span>{hero.display.toUpperCase()}</p>
-        <p class="hero-support body-copy">{hero.support}</p>
-        <div class="hero-ctas">
-          <a class="pill pill--solid" href={hero.ctaPrimary.href}>
-            {hero.ctaPrimary.label}
-            <span class="pill-plus" aria-hidden="true">+</span>
-          </a>
-          <a class="pill" href={hero.ctaSecondary.href}>
-            {hero.ctaSecondary.label}
-            <span class="pill-plus" aria-hidden="true">+</span>
-          </a>
-        </div>
-      </div>
-
-      <dl class="hero-data data" aria-label="Leitura de sistema (ilustrativa)">
-        {
-          hero.dataReadout.map(([key, value]) => (
-            <div class="data-row">
-              <dt>{key}</dt>
-              <dd>{value}</dd>
-            </div>
-          ))
-        }
-        <span class="data-ref" aria-hidden="true">[ REF ]</span>
-      </dl>
-    </div>
-  </div>
-
-  <div class="hero-bottom">
-    <div class="container hero-bottom-inner">
-      <p class="data hero-scroll">
-        SCROLL
-        <span class="scroll-track" aria-hidden="true"><span class="scroll-dot"></span></span>
-      </p>
-    </div>
-    <div class="hero-signal" aria-hidden="true"></div>
-    <div class="hero-marquee" aria-hidden="true">
-      <div class="marquee-track data">
-        {[0, 1].map(() => (
-          <span class="marquee-seq">
-            {marqueeItems.map((item) => (
-              <span class="marquee-item">{item}<span class="marquee-sep">/</span></span>
-            ))}
-          </span>
-        ))}
-      </div>
-    </div>
   </div>
 </section>
 
@@ -128,10 +65,10 @@ const marqueeItems = capabilities.items.map((c) => c.toUpperCase());
     min-height: 100svh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     overflow: hidden;
   }
 
-  /* ---------- Mídia ---------- */
   .hero-media {
     position: absolute;
     inset: 0;
@@ -145,17 +82,6 @@ const marqueeItems = capabilities.items.map((c) => c.toUpperCase());
     width: 100%;
     height: 100%;
     object-fit: cover;
-    animation: hero-breathe 26s var(--ease-editorial) infinite alternate;
-  }
-
-  .hero.is-offscreen .hero-poster,
-  .hero.is-offscreen .hero-video {
-    animation-play-state: paused;
-  }
-
-  @keyframes hero-breathe {
-    from { transform: scale(1); }
-    to { transform: scale(1.035); }
   }
 
   .hero-video {
@@ -167,392 +93,115 @@ const marqueeItems = capabilities.items.map((c) => c.toUpperCase());
     opacity: 1;
   }
 
-  /* Vídeo protagonista: escurece só as bordas de leitura */
+  /* Overlay Deep Carbon leve para legibilidade */
   .hero-scrim {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       180deg,
-      rgba(14, 14, 16, 0.55) 0%,
-      rgba(14, 14, 16, 0.12) 38%,
-      rgba(14, 14, 16, 0.3) 68%,
-      rgba(14, 14, 16, 0.85) 100%
+      rgba(14, 14, 16, 0.62) 0%,
+      rgba(14, 14, 16, 0.34) 45%,
+      rgba(14, 14, 16, 0.78) 100%
     );
   }
 
-  .hero-grid {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    opacity: 0.12;
-  }
-
-  /* ---------- Trilho vertical (tagline como arquitetura) ---------- */
-  .hero-rail {
-    display: none;
-    position: absolute;
-    top: 50%;
-    right: calc(var(--page-pad) * 0.35);
-    transform: translateY(-50%);
-    writing-mode: vertical-rl;
-    z-index: var(--z-content);
-    opacity: 0;
-    font-size: 0.6875rem;
-    animation: hero-fade 600ms var(--ease-editorial) 1100ms forwards;
-  }
-
-  /* ---------- Conteúdo ---------- */
   .hero-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    gap: clamp(1.75rem, 4vh, 3rem);
-    padding-top: clamp(5.5rem, 13vh, 8rem);
-    padding-bottom: clamp(1.25rem, 3vh, 2.5rem);
+    padding-block: clamp(7rem, 18vh, 10rem) clamp(4rem, 10vh, 6rem);
   }
 
-  .hero-eyebrows {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    opacity: 0;
-    animation: hero-fade 500ms var(--ease-editorial) 120ms forwards;
+  .hero-eyebrow {
+    opacity: 0.72;
+    margin-bottom: 1.5rem;
   }
 
-  .eyebrow-right {
-    color: var(--color-measurement);
+  .hero-title {
+    max-width: 14ch;
   }
 
-  /* ---------- Declaração monumental ---------- */
-  .hero-stage {
-    position: relative;
-    will-change: transform;
-  }
-
-  .hero-statement {
-    margin: 0;
-    font-family: var(--font-display);
-    font-weight: 250;
-    font-size: clamp(3.1rem, 13.2vw, 12.5rem);
-    line-height: 0.94;
-    letter-spacing: var(--tracking-display);
-    text-transform: uppercase;
-  }
-
-  .line {
-    display: block;
-  }
-
-  .indent-1 { margin-left: clamp(0px, 7vw, 9rem); }
-  .indent-2 { margin-left: clamp(0px, 15vw, 19rem); }
-
-  .line-mask {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-    padding-block: 0.03em;
-  }
-
-  .line-inner {
-    display: inline-flex;
-    align-items: baseline;
-    transform: translateY(112%);
-    animation: line-rise 820ms var(--ease-editorial) forwards;
-  }
-
-  @keyframes line-rise {
-    to { transform: translateY(0); }
-  }
-
-  .line--outline .line-inner {
-    color: transparent;
-    -webkit-text-stroke: 1.5px var(--color-information);
-  }
-
-  @supports not (-webkit-text-stroke: 1px #fff) {
-    .line--outline .line-inner {
-      color: var(--color-information);
-      opacity: 0.55;
-    }
-  }
-
-  /* O resultado é o que está "ligado" */
-  .line--accent .line-inner {
-    color: var(--color-activity);
-    -webkit-text-stroke: 0;
-  }
-
-  /* Anotações do método coladas às linhas */
-  .line-note {
-    margin-left: 1.2em;
-    font-size: clamp(0.5625rem, 0.9vw, 0.8125rem);
-    letter-spacing: var(--tracking-data);
-    color: var(--color-information);
-    -webkit-text-stroke: 0;
-    opacity: 0;
-    animation: hero-fade 450ms var(--ease-editorial) 950ms forwards;
-    white-space: nowrap;
-  }
-
-  .line--accent .line-note {
-    color: var(--color-information);
-  }
-
-  .hero-mark {
-    position: absolute;
-    font-size: 1.1rem;
-    opacity: 0;
-    animation: hero-fade 450ms var(--ease-editorial) 1050ms forwards;
-  }
-
-  .hero-mark--tl { top: -1.1em; left: 0; }
-  .hero-mark--br { bottom: -1.1em; right: 6%; color: var(--color-measurement); }
-
-  /* ---------- Lede, CTAs e dados ---------- */
-  .hero-sub {
-    display: grid;
-    gap: clamp(1.5rem, 3vh, 2.25rem);
-    align-items: end;
-  }
-
-  .hero-lede {
-    display: grid;
-    gap: 1.1rem;
-    justify-items: start;
-  }
-
-  .hero-tagline {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.9em;
-    opacity: 0;
-    animation: hero-fade 500ms var(--ease-editorial) 880ms forwards;
-  }
-
-  .tagline-dash {
-    width: 3.5em;
+  /* Linha de sinal: traço fino com o gradiente térmico, percorre 1x */
+  .hero-signal {
     height: 2px;
+    width: min(360px, 42vw);
+    margin-block: clamp(1.5rem, 3.5vh, 2.5rem);
     background: var(--gradient-thermal);
+    transform-origin: left center;
   }
 
   .hero-support {
-    max-width: 40ch;
-    opacity: 0;
-    animation: hero-fade 550ms var(--ease-editorial) 960ms forwards;
+    max-width: 44ch;
+    opacity: 0.86;
   }
 
   .hero-ctas {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    opacity: 0;
-    animation: hero-fade 550ms var(--ease-editorial) 1060ms forwards;
+    margin-top: clamp(2rem, 4.5vh, 3rem);
   }
 
-  .hero-data {
-    display: none;
-    opacity: 0;
-    animation: hero-fade 550ms var(--ease-editorial) 1150ms forwards;
-  }
-
-  .data-row {
-    display: grid;
-    grid-template-columns: 8.5em 1fr;
-    gap: 1.25em;
-    padding-block: 0.35em;
-    border-top: 1px solid rgba(255, 244, 230, 0.14);
-  }
-
-  .data-row dt {
-    opacity: 0.55;
-  }
-
-  .data-row dd {
-    margin: 0;
-  }
-
-  .data-ref {
-    display: block;
-    margin-top: 0.6em;
-    color: var(--color-measurement);
-    opacity: 0.75;
-  }
-
-  /* ---------- Faixa inferior ---------- */
-  .hero-bottom {
+  .hero-wordmark {
     position: relative;
-    z-index: var(--z-content);
-    opacity: 0;
-    animation: hero-fade 600ms var(--ease-editorial) 1250ms forwards;
+    z-index: 1;
+    padding: 0 var(--page-pad) clamp(1.25rem, 3.5vh, 2.5rem);
+    max-width: var(--layout-max);
+    margin-inline: auto;
+    width: 100%;
   }
 
-  .hero-bottom-inner {
-    display: flex;
-    justify-content: flex-start;
-    padding-bottom: 0.9rem;
+  .hero-wordmark img {
+    width: 100%;
+    height: auto;
+    opacity: 0.94;
   }
 
-  .hero-scroll {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.9em;
-    opacity: 0.7;
-  }
-
-  .scroll-track {
-    position: relative;
-    width: 1px;
-    height: 2.4em;
-    background: rgba(255, 244, 230, 0.25);
-    overflow: hidden;
-  }
-
-  .scroll-dot {
-    position: absolute;
-    left: -1px;
-    top: 0;
-    width: 3px;
-    height: 0.7em;
-    background: var(--color-information);
-    animation: scroll-hint 2.2s var(--ease-editorial) infinite;
-  }
-
-  .hero.is-offscreen .scroll-dot {
-    animation-play-state: paused;
-  }
-
-  @keyframes scroll-hint {
-    0% { transform: translateY(-100%); }
-    60%, 100% { transform: translateY(2.6em); }
-  }
-
-  .hero-signal {
-    height: 2px;
-    background: var(--gradient-thermal);
-    transform-origin: left center;
-    animation: signal-run 900ms var(--ease-editorial) 720ms both;
+  /* --- Sequência de abertura (~900–1300 ms percebidos) --- */
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   @keyframes signal-run {
-    from { transform: scaleX(0); }
-    to { transform: scaleX(1); }
-  }
-
-  .hero-marquee {
-    overflow: hidden;
-    border-top: 1px solid rgba(255, 244, 230, 0.1);
-    background: rgba(14, 14, 16, 0.55);
-  }
-
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    padding-block: 0.85rem;
-    animation: marquee 64s linear infinite;
-    opacity: 0.6;
-  }
-
-  .hero.is-offscreen .marquee-track {
-    animation-play-state: paused;
-  }
-
-  .marquee-seq {
-    display: flex;
-    white-space: nowrap;
-  }
-
-  .marquee-item {
-    display: inline-flex;
-    align-items: baseline;
-  }
-
-  .marquee-sep {
-    margin-inline: 1.4em;
-    color: var(--color-activity);
-    opacity: 0.8;
-  }
-
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  @keyframes hero-fade {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: none; }
-  }
-
-  /* ---------- Responsivo ---------- */
-  @media (max-width: 767px) {
-    .line-note {
-      display: none;
+    from {
+      transform: scaleX(0);
     }
-
-    .indent-1 { margin-left: 6vw; }
-    .indent-2 { margin-left: 12vw; }
-  }
-
-  @media (min-width: 1200px) {
-    .hero-rail {
-      display: block;
-    }
-
-    .hero-tagline {
-      display: none;
-    }
-
-    .hero-sub {
-      grid-template-columns: minmax(0, 1fr) auto;
-    }
-
-    .hero-data {
-      display: block;
-      min-width: 21rem;
-      margin-right: clamp(2rem, 5vw, 5rem);
+    to {
+      transform: scaleX(1);
     }
   }
 
-  /* ---------- Reduced motion ---------- */
+  .hero-eyebrow,
+  .hero-title,
+  .hero-support,
+  .hero-ctas,
+  .hero-wordmark {
+    animation: hero-in var(--motion-base) var(--ease-editorial) both;
+  }
+
+  .hero-eyebrow { animation-delay: 80ms; }
+  .hero-title { animation-delay: 160ms; }
+  .hero-wordmark { animation-delay: 240ms; }
+
+  .hero-signal {
+    animation: signal-run 480ms var(--ease-editorial) 360ms both;
+  }
+
+  .hero-support { animation-delay: 620ms; }
+  .hero-ctas { animation-delay: 720ms; }
+
   @media (prefers-reduced-motion: reduce) {
-    .hero-poster,
-    .hero-video,
-    .line-inner,
-    .line-note,
-    .hero-eyebrows,
-    .hero-rail,
-    .hero-mark,
-    .hero-tagline,
+    .hero-eyebrow,
+    .hero-title,
     .hero-support,
     .hero-ctas,
-    .hero-data,
-    .hero-bottom,
-    .hero-signal,
-    .scroll-dot,
-    .marquee-track {
-      animation: none;
-    }
-
-    .line-inner {
-      transform: none;
-    }
-
-    .hero-eyebrows,
-    .hero-rail,
-    .hero-mark,
-    .line-note,
-    .hero-tagline,
-    .hero-support,
-    .hero-ctas,
-    .hero-data,
-    .hero-bottom {
-      opacity: 1;
-    }
-
+    .hero-wordmark,
     .hero-signal {
-      transform: none;
+      animation: none;
     }
   }
 </style>

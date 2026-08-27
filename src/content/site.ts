@@ -39,25 +39,8 @@ export const sections = [
 ] as const;
 
 export const hero = {
-  eyebrowLeft: '[ SOFTWARE / DADOS / IA / SAÚDE ]',
-  eyebrowRight: '[ 000-00 / INTRO ]',
+  eyebrow: 'HEATON / SCIENTIFIC INTELLIGENCE IN MOTION',
   display: 'Scientific Intelligence in Motion',
-  /**
-   * Declaração monumental do hero — a frase-núcleo da marca
-   * (Território: "Sinal em evidência. Evidência em decisão."),
-   * cada linha anotada com o verbo do método.
-   */
-  statement: [
-    { text: 'Sinal,', note: '01 / MEDIR', style: 'fill', indent: 0 },
-    { text: 'Evidência,', note: '02 / COMPUTAR', style: 'outline', indent: 1 },
-    { text: 'Decisão.', note: '03 / INTERPRETAR', style: 'accent', indent: 2 },
-  ],
-  /** Leitura de dados de exemplo do brandbook (p.22/25) — linguagem da marca, não métricas. */
-  dataReadout: [
-    ['MODEL_ID', 'HTO-042'],
-    ['CONFIDENCE', '0.942'],
-    ['STATUS', 'ACTIVE'],
-  ],
   support:
     'Software, dados e sistemas inteligentes para saúde, ciência e operações complexas.',
   ctaPrimary: { label: 'Explorar projetos', href: '#projetos' },
