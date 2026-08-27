@@ -47,6 +47,24 @@ const clipsJson = JSON.stringify(hero.video.clips);
     <div class="hero-grain"></div>
   </div>
 
+  <!-- Marcas de registro: crosshairs, quadrados e anéis nas margens -->
+  <div class="hero-marks" aria-hidden="true">
+    <span class="mk mk-square" style="left: 2%; top: 19%"></span>
+    <span class="mk mk-cross" style="left: 2%; top: 35%"></span>
+    <span class="mk mk-cross mk-dim" style="left: 2%; top: 53%"></span>
+    <span class="mk mk-cross" style="left: 2%; top: 71%"></span>
+    <span class="mk mk-cross mk-hide-sm" style="right: 2%; top: 25%"></span>
+    <span class="mk mk-dot mk-hide-sm" style="right: 2%; top: 33%"></span>
+    <span class="mk mk-rings mk-hide-sm" style="right: 2%; top: 60%">
+      <span class="ring"></span>
+      <span class="ring"></span>
+      <span class="ring"></span>
+      <span class="ring ring-on"></span>
+    </span>
+    <span class="mk mk-cross mk-dim mk-hide-sm" style="left: 33%; top: 15%"></span>
+    <span class="mk mk-dot mk-dim mk-hide-sm" style="left: 62%; top: 78%"></span>
+  </div>
+
   <!-- Microcopy única, centralizada, com régua de medição ao lado -->
   <div class="hero-center">
     <h1 id="hero-title" class="hero-microcopy">
@@ -134,7 +152,17 @@ const clipsJson = JSON.stringify(hero.video.clips);
     mix-blend-mode: overlay;
     background-repeat: repeat;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
-    animation: grain-shift 800ms steps(1, end) infinite;
+    animation:
+      grain-shift 800ms steps(1, end) infinite,
+      grain-flicker 2.7s ease-in-out infinite;
+  }
+
+  /* Oscilação de densidade, como a exposição irregular do filme */
+  @keyframes grain-flicker {
+    0%, 100% { opacity: 0.26; }
+    30% { opacity: 0.19; }
+    55% { opacity: 0.31; }
+    78% { opacity: 0.23; }
   }
 
   .hero.is-offscreen .hero-grain {
@@ -151,6 +179,88 @@ const clipsJson = JSON.stringify(hero.video.clips);
     75%  { transform: translate(3%, 6%); }
     87%  { transform: translate(-5%, 2%); }
     100% { transform: translate(0, 0); }
+  }
+
+  /* ---------- Marcas de registro (crosshair, quadrado, ponto, anéis) ---------- */
+  .hero-marks {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-content);
+    pointer-events: none;
+    color: var(--color-information);
+    animation: hero-fade 700ms var(--ease-editorial) 620ms both;
+  }
+
+  .mk {
+    position: absolute;
+    display: block;
+    opacity: 0.6;
+  }
+
+  .mk-dim {
+    opacity: 0.34;
+  }
+
+  .mk-square {
+    width: 6px;
+    height: 6px;
+    background: currentColor;
+  }
+
+  .mk-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .mk-cross {
+    width: 11px;
+    height: 11px;
+  }
+
+  .mk-cross::before,
+  .mk-cross::after {
+    content: '';
+    position: absolute;
+    background: currentColor;
+  }
+
+  .mk-cross::before {
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    transform: translateY(-50%);
+  }
+
+  .mk-cross::after {
+    top: 0;
+    left: 50%;
+    width: 1px;
+    height: 100%;
+    transform: translateX(-50%);
+  }
+
+  .mk-rings {
+    display: grid;
+    gap: 9px;
+  }
+
+  .ring {
+    display: block;
+    width: 9px;
+    height: 9px;
+    border: 1px solid currentColor;
+    border-radius: 50%;
+    opacity: 0.75;
+  }
+
+  /* Um único elemento ativo, como manda o sistema da marca */
+  .ring-on {
+    background: var(--color-activity);
+    border-color: var(--color-activity);
+    opacity: 1;
   }
 
   /* ---------- Microcopy central ---------- */
@@ -209,16 +319,23 @@ const clipsJson = JSON.stringify(hero.video.clips);
   .hero-wordmark {
     position: relative;
     width: 100%;
-    padding-inline: clamp(10px, 1.2vw, 28px);
+    padding-inline: var(--page-pad);
     line-height: 0;
   }
 
   .hero-wordmark img {
     width: 100%;
+    max-width: 1180px;
     height: auto;
     /* Branco puro + difference: as letras invertem o vídeo por trás */
     mix-blend-mode: difference;
     animation: wordmark-rise 700ms var(--ease-editorial) 380ms both;
+  }
+
+  @media (min-width: 768px) {
+    .hero-wordmark img {
+      width: 64%;
+    }
   }
 
   @keyframes hero-fade {
@@ -251,11 +368,17 @@ const clipsJson = JSON.stringify(hero.video.clips);
     .hero-microcopy {
       max-width: 34ch;
     }
+
+    /* Menos marcas na tela pequena para não competir com a copy */
+    .mk-hide-sm {
+      display: none;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero-microcopy,
     .hero-wordmark img,
+    .hero-marks,
     .hero-grain {
       animation: none;
     }
