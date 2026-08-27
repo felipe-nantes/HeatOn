@@ -253,7 +253,22 @@ def circle_fit(points):
     return cx, cy, r, spread
 
 
-def smooth_path(d: str, eps: float = 2.5) -> str:
+def moving_average_closed(points, window: int = 2):
+    """Média móvel no contorno fechado: dissolve a ondulação do autotraçado
+    antes da simplificação, deixando as curvas finais mais macias."""
+    n = len(points)
+    out = []
+    for i in range(n):
+        sx = sy = 0.0
+        for k in range(-window, window + 1):
+            p = points[(i + k) % n]
+            sx += p[0]
+            sy += p[1]
+        out.append((sx / (2 * window + 1), sy / (2 * window + 1)))
+    return out
+
+
+def smooth_path(d: str, eps: float = 5.0) -> str:
     pts = parse_polygon(d)
     if not pts:
         return d
@@ -265,7 +280,7 @@ def smooth_path(d: str, eps: float = 2.5) -> str:
             f"A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx + r)},{fmt(cy)} "
             f"A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx - r)},{fmt(cy)} Z"
         )
-    return catmull_rom_closed(rdp(pts, eps))
+    return catmull_rom_closed(rdp(moving_average_closed(pts, 2), eps))
 
 
 SYMBOL_DS = [smooth_path(d) for d in RAW_SYMBOL_DS]
@@ -297,6 +312,16 @@ write(
         SB_H + 2 * PAD,
         symbol_group("#FFFFFF", 1.0, PAD, PAD),
         "HeatOn symbol white",
+    ),
+)
+# Símbolo em Heat Orange, para a composição translúcida do hero (screen).
+write(
+    "symbol-orange.svg",
+    svg_doc(
+        SB_W + 2 * PAD,
+        SB_H + 2 * PAD,
+        symbol_group(ORANGE, 1.0, PAD, PAD),
+        "HeatOn symbol orange",
     ),
 )
 

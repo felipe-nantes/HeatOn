@@ -88,7 +88,7 @@ const clipsJson = JSON.stringify(hero.video.clips);
   <!-- Símbolo da marca: branco + difference = vídeo invertido dentro da onda -->
   <div class="hero-symbol" aria-hidden="true">
     <img
-      src="/assets/brand/symbol-white.svg"
+      src="/assets/brand/symbol-orange.svg"
       alt=""
       width="667"
       height="363"
@@ -99,6 +99,9 @@ const clipsJson = JSON.stringify(hero.video.clips);
 
 <style>
   .hero {
+    /* Compartilhados com o símbolo para alinhar sua altura à da microcopy */
+    --hero-pt: clamp(5rem, 12vh, 7rem);
+    --hero-pb: clamp(1.5rem, 4vh, 3rem);
     position: relative;
     min-height: 100vh;
     min-height: 100svh;
@@ -280,10 +283,10 @@ const clipsJson = JSON.stringify(hero.video.clips);
     opacity: 0.75;
   }
 
-  /* Um único elemento ativo, como manda o sistema da marca */
+  /* O laranja do hero é o símbolo; o anel corrente marca posição em cream,
+     preservando a regra de um único elemento ativo por vez. */
   .ring-on {
-    background: var(--color-activity);
-    border-color: var(--color-activity);
+    background: currentColor;
     opacity: 1;
   }
 
@@ -294,7 +297,7 @@ const clipsJson = JSON.stringify(hero.video.clips);
     display: grid;
     align-items: center;
     justify-items: center;
-    padding: clamp(5rem, 12vh, 7rem) var(--page-pad) clamp(1.5rem, 4vh, 3rem);
+    padding: var(--hero-pt) var(--page-pad) var(--hero-pb);
   }
 
   /* Bloco deslocado para a direita a partir do tablet */
@@ -348,7 +351,9 @@ const clipsJson = JSON.stringify(hero.video.clips);
     --sym-w: clamp(190px, 31vw, 600px);
     position: absolute;
     left: 27%;
-    top: 41%;
+    /* Mesma linha de centro da microcopy: o topo do bloco de conteúdo é
+       deslocado pelo padding assimétrico do hero. */
+    top: calc(50% + (var(--hero-pt) - var(--hero-pb)) / 2);
     width: var(--sym-w);
     margin-left: calc(var(--sym-w) / -2);
     margin-top: calc(var(--sym-w) * -0.2721); /* metade da altura (363/667) */
@@ -359,8 +364,9 @@ const clipsJson = JSON.stringify(hero.video.clips);
   .hero-symbol img {
     width: 100%;
     height: auto;
-    /* Branco puro + difference: a onda inverte o vídeo por trás */
-    mix-blend-mode: difference;
+    /* Heat Orange + screen: a onda acende sobre o vídeo escuro e deixa a
+       textura atravessar, mantendo a translucidez sem virar branco chapado. */
+    mix-blend-mode: screen;
     animation: symbol-in 800ms var(--ease-editorial) 380ms both;
   }
 
