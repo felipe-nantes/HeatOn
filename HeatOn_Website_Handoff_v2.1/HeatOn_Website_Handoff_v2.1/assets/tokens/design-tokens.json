@@ -1,0 +1,61 @@
+{
+  "color": {
+    "deepCarbon": "#0E0E10",
+    "cream": "#FFF4E6",
+    "heatOrange": "#FF6A1A",
+    "amber": "#FFB347",
+    "coral": "#FF5C7A",
+    "scientificCyan": "#61D4E8",
+    "grayInactive": "#6E7074",
+    "grayGrid": "#8A8F98",
+    "white": "#FFFFFF"
+  },
+  "semantic": {
+    "structure": "{color.deepCarbon}",
+    "information": "{color.cream}",
+    "activity": "{color.heatOrange}",
+    "transition": "{color.amber}",
+    "edge": "{color.coral}",
+    "measurement": "{color.scientificCyan}",
+    "inactive": "{color.grayInactive}"
+  },
+  "gradient": {
+    "thermal": [
+      { "color": "#FF5C3A", "position": 0 },
+      { "color": "#FF6A1A", "position": 28 },
+      { "color": "#FFB347", "position": 58 },
+      { "color": "#FFF0C8", "position": 84 },
+      { "color": "#FFF4E6", "position": 100 }
+    ]
+  },
+  "typography": {
+    "display": { "family": "Manrope", "tracking": "-0.03em" },
+    "heading": { "family": "Manrope", "tracking": "-0.02em" },
+    "body": { "family": "Inter", "size": "clamp(1rem, 0.96rem + 0.2vw, 1.125rem)", "lineHeight": 1.6 },
+    "data": { "family": "IBM Plex Mono", "tracking": "0.18em", "transform": "uppercase" }
+  },
+  "layout": {
+    "maxWidth": "1600px",
+    "columnsDesktop": 12,
+    "columnsTablet": 8,
+    "columnsMobile": 4,
+    "gutter": "clamp(16px, 2vw, 32px)",
+    "pagePadding": "clamp(20px, 3.5vw, 64px)",
+    "sectionBlock": "clamp(96px, 14vw, 220px)"
+  },
+  "motion": {
+    "fastMs": 150,
+    "baseMs": 420,
+    "slowMs": 850,
+    "editorialEasing": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "feedbackEasing": "cubic-bezier(0.2, 0, 0, 1)",
+    "maxImageScale": 1.035,
+    "maxParallaxPercent": 4
+  },
+  "breakpoints": {
+    "mobileMax": "767px",
+    "tabletMin": "768px",
+    "desktopMin": "1200px"
+  }
+}
+

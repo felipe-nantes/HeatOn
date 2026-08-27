@@ -1,9 +1,19 @@
 ---
 import { hero } from '../content/site';
+
+const clipsJson = JSON.stringify(hero.video.clips);
 ---
 
 <section id="hero" class="hero surface-deep" aria-labelledby="hero-title">
-  <div class="hero-media" aria-hidden="true">
+  <div
+    class="hero-media"
+    id="hero-media"
+    aria-hidden="true"
+    data-clips={clipsJson}
+    data-fallback={hero.video.fallback}
+    data-mobile={hero.video.mobile}
+    data-poster-mobile={hero.video.posterMobile}
+  >
     <picture>
       <source media="(max-width: 767px)" srcset={hero.video.posterMobile} />
       <img
@@ -21,15 +31,30 @@ import { hero } from '../content/site';
       class="hero-video"
       muted
       playsinline
-      loop
       preload="metadata"
       poster={hero.video.posterDesktop}
-      data-src-desktop={hero.video.desktop}
-      data-src-mobile={hero.video.mobile}
-      data-poster-mobile={hero.video.posterMobile}
+      tabindex="-1"
+    ></video>
+    <video
+      id="hero-video-b"
+      class="hero-video"
+      muted
+      playsinline
+      preload="none"
       tabindex="-1"
     ></video>
     <div class="hero-scrim"></div>
+  </div>
+
+  <!-- Wordmark no topo: branco puro + difference = vídeo invertido nas letras -->
+  <div class="hero-wordmark" aria-hidden="true">
+    <img
+      src="/assets/brand/wordmark-white.svg"
+      alt=""
+      width="699"
+      height="151"
+      decoding="async"
+    />
   </div>
 
   <div class="container hero-content section-content">
@@ -48,17 +73,6 @@ import { hero } from '../content/site';
       </a>
     </div>
   </div>
-
-  <div class="hero-wordmark" aria-hidden="true">
-    <img
-      src="/assets/brand/wordmark-color.svg"
-      alt=""
-      width="699"
-      height="151"
-      loading="lazy"
-      decoding="async"
-    />
-  </div>
 </section>
 
 <style>
@@ -68,8 +82,9 @@ import { hero } from '../content/site';
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     overflow: hidden;
+    /* Contém o blend do wordmark dentro do hero */
+    isolation: isolate;
   }
 
   .hero-media {
@@ -89,28 +104,56 @@ import { hero } from '../content/site';
 
   .hero-video {
     opacity: 0;
-    /* Crossfade de 250–400 ms quando o vídeo real está pronto */
+    /* Crossfade único de 250–400 ms na entrada */
     transition: opacity 350ms var(--ease-editorial);
+  }
+
+  /* Depois da entrada, as trocas de clipe são cortes secos */
+  .hero-video.no-fade {
+    transition: none;
   }
 
   .hero-video.is-playing {
     opacity: 1;
   }
 
-  /* Overlay Deep Carbon leve para legibilidade */
+  /* Filtro mais escuro sobre o vídeo */
   .hero-scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      180deg,
-      rgba(14, 14, 16, 0.62) 0%,
-      rgba(14, 14, 16, 0.34) 45%,
-      rgba(14, 14, 16, 0.78) 100%
-    );
+    background:
+      linear-gradient(
+        180deg,
+        rgba(14, 14, 16, 0.55) 0%,
+        rgba(14, 14, 16, 0.18) 42%,
+        rgba(14, 14, 16, 0.72) 100%
+      ),
+      rgba(14, 14, 16, 0.24);
+  }
+
+  /* ---------- Wordmark no topo, letras invertendo o vídeo ---------- */
+  .hero-wordmark {
+    position: relative;
+    width: 100%;
+    max-width: var(--layout-max);
+    margin-inline: auto;
+    padding: clamp(4.25rem, 10vh, 6rem) var(--page-pad) 0;
+  }
+
+  .hero-wordmark img {
+    width: 100%;
+    height: auto;
+    mix-blend-mode: difference;
+    animation: hero-in var(--motion-base) var(--ease-editorial) 160ms both;
   }
 
   .hero-content {
-    padding-block: clamp(7rem, 18vh, 10rem) clamp(4rem, 10vh, 6rem);
+    position: relative;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-block: clamp(2.5rem, 6vh, 4rem) clamp(3.5rem, 9vh, 5.5rem);
   }
 
   .hero-eyebrow {
@@ -143,21 +186,6 @@ import { hero } from '../content/site';
     margin-top: clamp(2rem, 4.5vh, 3rem);
   }
 
-  .hero-wordmark {
-    position: relative;
-    z-index: 1;
-    padding: 0 var(--page-pad) clamp(1.25rem, 3.5vh, 2.5rem);
-    max-width: var(--layout-max);
-    margin-inline: auto;
-    width: 100%;
-  }
-
-  .hero-wordmark img {
-    width: 100%;
-    height: auto;
-    opacity: 0.94;
-  }
-
   /* --- Sequência de abertura (~900–1300 ms percebidos) --- */
   @keyframes hero-in {
     from {
@@ -182,17 +210,15 @@ import { hero } from '../content/site';
   .hero-eyebrow,
   .hero-title,
   .hero-support,
-  .hero-ctas,
-  .hero-wordmark {
+  .hero-ctas {
     animation: hero-in var(--motion-base) var(--ease-editorial) both;
   }
 
   .hero-eyebrow { animation-delay: 80ms; }
-  .hero-title { animation-delay: 160ms; }
-  .hero-wordmark { animation-delay: 240ms; }
+  .hero-title { animation-delay: 240ms; }
 
   .hero-signal {
-    animation: signal-run 480ms var(--ease-editorial) 360ms both;
+    animation: signal-run 480ms var(--ease-editorial) 380ms both;
   }
 
   .hero-support { animation-delay: 620ms; }
@@ -203,7 +229,7 @@ import { hero } from '../content/site';
     .hero-title,
     .hero-support,
     .hero-ctas,
-    .hero-wordmark,
+    .hero-wordmark img,
     .hero-signal {
       animation: none;
     }

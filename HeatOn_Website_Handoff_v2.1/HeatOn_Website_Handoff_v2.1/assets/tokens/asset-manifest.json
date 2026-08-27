@@ -1,0 +1,163 @@
+{
+  "version": "2.1.0",
+  "mediaStrategy": "real-first",
+  "placementMap": "02_ASSET_PLACEMENT_MAP.md",
+  "mediaInventory": "06_REAL_MEDIA_INVENTORY.md",
+  "generationPrompts": "assets/tokens/generation-prompts.json",
+  "brand": {
+    "headerDark": "assets/brand/logo-horizontal-cream.svg",
+    "headerLight": "assets/brand/logo-horizontal-deep.svg",
+    "heroSignature": "assets/brand/logo-scientific-signature.svg",
+    "stacked": "assets/brand/logo-stacked-color.svg",
+    "microDark": "assets/brand/symbol-cream.svg",
+    "microLight": "assets/brand/symbol-deep.svg",
+    "favicon": "assets/brand/favicon.ico",
+    "appleTouchIcon": "assets/brand/apple-touch-icon.png"
+  },
+  "hero": {
+    "videoDesktop": "assets/media/hero/hero-real-loop-h264.mp4",
+    "videoMobile": "assets/media/hero/hero-real-loop-mobile-h264.mp4",
+    "sourceMaster": "assets/media/hero/hero-real-source-hevc.mp4",
+    "posterDesktop": "assets/media/hero/hero-real-poster.webp",
+    "posterMobile": "assets/media/hero/hero-real-poster-mobile.webp",
+    "metadata": "assets/media/hero/hero-real-video-source.json",
+    "contactSheet": "assets/media/hero/hero-video-contact-sheet.jpg",
+    "documentary": false,
+    "derivedFromRealPhoto": true,
+    "rapidSequence": {
+      "preferredDesktop": "assets/media/hero/sequence/hero-rapid-sequence-preview.mp4",
+      "preferredMobile": "assets/media/hero/sequence/hero-rapid-sequence-preview-mobile.mp4",
+      "posterDesktop": "assets/media/hero/sequence/hero-rapid-sequence-preview-poster.jpg",
+      "posterMobile": "assets/media/hero/sequence/hero-rapid-sequence-preview-mobile-poster.jpg",
+      "durationSeconds": 6.041667,
+      "codec": "h264",
+      "audio": false,
+      "clips": [
+        "assets/media/hero/sequence/clips/01-oren-lab-review.mp4",
+        "assets/media/hero/sequence/clips/02-oren-anatomy-interface.mp4",
+        "assets/media/hero/sequence/clips/03-femur-dashboard-overview.mp4",
+        "assets/media/hero/sequence/clips/04-femur-hotspots.mp4",
+        "assets/media/hero/sequence/clips/05-efast-validation.mp4",
+        "assets/media/hero/sequence/clips/06-efast-simulation.mp4"
+      ],
+      "metadata": "assets/media/hero/sequence/sequence-metadata.json",
+      "implementationSpec": "07_HERO_RAPID_SEQUENCE_SPEC.md"
+    }
+  },
+  "home": {
+    "mosaicDesktop": "assets/home/home-project-mosaic-ai-assisted.webp",
+    "mosaicMobile": "assets/home/home-project-mosaic-ai-assisted-mobile.webp",
+    "mosaicMaster": "assets/home/home-project-mosaic-ai-assisted.png",
+    "aiAssistedEditorial": true,
+    "evidence": false
+  },
+  "graphics": {
+    "contour": "assets/graphics/contour-field.svg",
+    "grid": "assets/graphics/scientific-grid.svg",
+    "nodes": "assets/graphics/nodes-data-points.svg",
+    "signal": "assets/graphics/waveform-signal.svg",
+    "measurement": "assets/graphics/measurement-crosshair.svg",
+    "icons": "assets/graphics/iconography-set.svg"
+  },
+  "cases": [
+    {
+      "id": "oren",
+      "mediaStatus": "real",
+      "cover": {
+        "desktop": "assets/cases/real/oren/desktop/oren-cover-real.webp",
+        "mobile": "assets/cases/real/oren/mobile/oren-cover-real-mobile.webp"
+      },
+      "sequenceDesktop": [
+        "assets/cases/real/oren/desktop/oren-lab-review.webp",
+        "assets/cases/real/oren/desktop/oren-interface-realistic.webp",
+        "assets/cases/real/oren/desktop/oren-interface-internal.webp",
+        "assets/cases/real/oren/desktop/oren-interface-segments.webp",
+        "assets/cases/real/oren/desktop/oren-interface-triage.webp",
+        "assets/cases/real/oren/desktop/oren-mri-panel-1.webp",
+        "assets/cases/real/oren/desktop/oren-mri-panel-2.webp"
+      ],
+      "sequenceMobile": [
+        "assets/cases/real/oren/mobile/oren-validation-vr-mobile.webp",
+        "assets/cases/real/oren/mobile/oren-interface-realistic-mobile.webp"
+      ],
+      "sourceDirectory": "assets/cases/real/oren/source"
+    },
+    {
+      "id": "femur-fractures",
+      "mediaStatus": "real",
+      "cover": {
+        "desktop": "assets/cases/real/femur/desktop/femur-cover-dashboard.webp",
+        "mobile": "assets/cases/real/femur/mobile/femur-cover-dashboard-mobile.webp"
+      },
+      "sequenceDesktop": [
+        "assets/cases/real/femur/desktop/femur-dashboard-overview.webp",
+        "assets/cases/real/femur/desktop/femur-dashboard-hotspots.webp",
+        "assets/cases/real/femur/desktop/femur-dashboard-trends.webp",
+        "assets/cases/real/femur/desktop/femur-dashboard-map.webp",
+        "assets/cases/real/femur/desktop/femur-dashboard-flow.webp"
+      ],
+      "sequenceMobile": [
+        "assets/cases/real/femur/mobile/femur-hotspots-mobile.webp",
+        "assets/cases/real/femur/mobile/femur-map-detail-mobile.webp"
+      ],
+      "sourceDirectory": "assets/cases/real/femur/source"
+    },
+    {
+      "id": "samu-marialva",
+      "mediaStatus": "text-only",
+      "allowedGraphics": [
+        "assets/graphics/scientific-grid.svg",
+        "assets/graphics/nodes-data-points.svg",
+        "assets/graphics/waveform-signal.svg"
+      ]
+    },
+    {
+      "id": "efast-vr",
+      "mediaStatus": "real",
+      "cover": {
+        "desktop": "assets/cases/real/efast/desktop/efast-cover-real.webp",
+        "mobile": "assets/cases/real/efast/mobile/efast-cover-real-mobile.webp"
+      },
+      "sequenceDesktop": [
+        "assets/cases/real/efast/desktop/efast-validation-session.webp",
+        "assets/cases/real/efast/desktop/efast-simulation-live.webp",
+        "assets/cases/real/efast/desktop/efast-unreal-scene.webp",
+        "assets/cases/real/efast/desktop/efast-unreal-development.webp",
+        "assets/cases/real/efast/desktop/efast-demo-room.webp",
+        "assets/cases/real/efast/desktop/efast-headset-demo.webp"
+      ],
+      "sequenceMobile": [
+        "assets/cases/real/efast/mobile/efast-validation-mobile.webp",
+        "assets/cases/real/efast/mobile/efast-simulation-mobile.webp"
+      ],
+      "sourceDirectory": "assets/cases/real/efast/source"
+    },
+    {
+      "id": "gsus-audit-automation",
+      "mediaStatus": "text-only",
+      "allowedGraphics": [
+        "assets/graphics/scientific-grid.svg",
+        "assets/graphics/nodes-data-points.svg"
+      ]
+    },
+    {
+      "id": "data-engineering",
+      "mediaStatus": "text-only",
+      "allowedGraphics": [
+        "assets/graphics/scientific-grid.svg",
+        "assets/graphics/waveform-signal.svg"
+      ]
+    }
+  ],
+  "previews": {
+    "desktop": "assets/cases/real-contact-sheet-desktop.jpg",
+    "mobile": "assets/cases/real-contact-sheet-mobile.jpg",
+    "heroRapidDesktop": "assets/media/hero/sequence/sequence-preview-contact-sheet-desktop.jpg",
+    "heroRapidMobile": "assets/media/hero/sequence/sequence-preview-contact-sheet-mobile.jpg"
+  },
+  "social": {
+    "openGraph": "assets/social/og-home-real.png",
+    "openGraphWebp": "assets/social/og-home-real.webp",
+    "twitterCard": "assets/social/twitter-card-real.png"
+  }
+}

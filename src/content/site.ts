@@ -48,8 +48,21 @@ export const hero = {
   ctaPrimary: { label: 'Explorar projetos', href: '#projetos' },
   ctaSecondary: { label: 'Iniciar um projeto', href: '#contato' },
   video: {
-    desktop: '/assets/media/hero/hero-real-loop-h264.mp4',
-    mobile: '/assets/media/hero/hero-real-loop-mobile-h264.mp4',
+    /**
+     * Sequência rápida (07_HERO_RAPID_SEQUENCE_SPEC): clipes de 3s derivados
+     * do acervo real, embaralhados a cada visita e cortados a seco nos trims
+     * aprovados. Fallback: montagem concatenada de 6s.
+     */
+    clips: [
+      { src: '/assets/media/hero/sequence/clips/01-oren-lab-review.mp4', start: 0.4, end: 1.3 },
+      { src: '/assets/media/hero/sequence/clips/02-oren-anatomy-interface.mp4', start: 0.25, end: 1.15 },
+      { src: '/assets/media/hero/sequence/clips/03-femur-dashboard-overview.mp4', start: 0.35, end: 1.1 },
+      { src: '/assets/media/hero/sequence/clips/04-femur-hotspots.mp4', start: 0.35, end: 1.1 },
+      { src: '/assets/media/hero/sequence/clips/05-efast-validation.mp4', start: 0.35, end: 1.25 },
+      { src: '/assets/media/hero/sequence/clips/06-efast-simulation.mp4', start: 0.3, end: 1.3 },
+    ],
+    fallback: '/assets/media/hero/sequence/hero-rapid-sequence-preview.mp4',
+    mobile: '/assets/media/hero/sequence/hero-rapid-sequence-preview-mobile.mp4',
     posterDesktop: '/assets/media/hero/hero-real-poster.webp',
     posterMobile: '/assets/media/hero/hero-real-poster-mobile.webp',
     posterAlt:

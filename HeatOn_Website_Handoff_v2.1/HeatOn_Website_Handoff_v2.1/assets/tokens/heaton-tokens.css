@@ -1,0 +1,42 @@
+:root {
+  --heaton-deep-carbon: #0e0e10;
+  --heaton-cream: #fff4e6;
+  --heaton-orange: #ff6a1a;
+  --heaton-amber: #ffb347;
+  --heaton-coral: #ff5c7a;
+  --heaton-cyan: #61d4e8;
+  --heaton-gray-inactive: #6e7074;
+  --heaton-gray-grid: #8a8f98;
+
+  --heaton-font-display: "Manrope", sans-serif;
+  --heaton-font-body: "Inter", sans-serif;
+  --heaton-font-data: "IBM Plex Mono", monospace;
+
+  --heaton-page-padding: clamp(20px, 3.5vw, 64px);
+  --heaton-gutter: clamp(16px, 2vw, 32px);
+  --heaton-section-block: clamp(96px, 14vw, 220px);
+  --heaton-max-width: 1600px;
+
+  --heaton-ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --heaton-ease-feedback: cubic-bezier(0.2, 0, 0, 1);
+  --heaton-duration-fast: 150ms;
+  --heaton-duration-base: 420ms;
+  --heaton-duration-slow: 850ms;
+
+  --heaton-thermal-gradient: linear-gradient(
+    90deg,
+    #ff5c3a 0%,
+    #ff6a1a 28%,
+    #ffb347 58%,
+    #fff0c8 84%,
+    #fff4e6 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --heaton-duration-base: 0ms;
+    --heaton-duration-slow: 0ms;
+  }
+}
+

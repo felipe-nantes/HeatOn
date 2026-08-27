@@ -110,44 +110,234 @@ function setupIndexOverlay(): void {
   });
 }
 
-/* ---------- Hero: fonte única escolhida antes do download, crossfade quando pronto ---------- */
+/* ----------------------------------------------------------------------
+ * Hero: sequência rápida de clipes reais.
+ * Desktop: playlist embaralhada por visita, cortes secos nos trims
+ * aprovados, buffer duplo (um vídeo toca, o outro pré-carrega o próximo).
+ * Mobile: montagem concatenada 4:5 em loop. Falha → montagem desktop em loop.
+ * Reduced motion / Save-Data: apenas o poster.
+ * -------------------------------------------------------------------- */
+interface HeroClip {
+  src: string;
+  start: number;
+  end: number;
+}
+
 function setupHeroVideo(): void {
-  const video = document.getElementById('hero-video') as HTMLVideoElement | null;
-  if (!video) return;
+  const wrap = document.getElementById('hero-media');
+  const a = document.getElementById('hero-video') as HTMLVideoElement | null;
+  const b = document.getElementById('hero-video-b') as HTMLVideoElement | null;
+  if (!wrap || !a || !b) return;
 
   type NetworkInfo = { saveData?: boolean };
   const connection = (navigator as Navigator & { connection?: NetworkInfo }).connection;
-
-  // Reduced motion e Save-Data ficam no poster; nunca baixar os dois MP4s.
   if (reducedMotion.matches || connection?.saveData) return;
 
   const isMobile = window.matchMedia('(max-width: 767px)').matches;
-  const src = isMobile ? video.dataset.srcMobile : video.dataset.srcDesktop;
-  if (!src) return;
 
-  if (isMobile && video.dataset.posterMobile) {
-    video.poster = video.dataset.posterMobile;
-  }
+  // Visibilidade guiada pelo evento: qualquer caminho que inicie a
+  // reprodução revela o vídeo.
+  [a, b].forEach((video) => {
+    video.addEventListener('playing', () => video.classList.add('is-playing'));
+  });
 
-  const load = (): void => {
+  /** play() com retentativas (rejeições transitórias de autoplay). */
+  const tryPlay = (
+    video: HTMLVideoElement,
+    attempts: number,
+    onOk?: () => void,
+    interval = 800
+  ): void => {
+    video
+      .play()
+      .then(() => onOk?.())
+      .catch(() => {
+        if (attempts > 0) {
+          window.setTimeout(() => tryPlay(video, attempts - 1, onOk, interval), interval);
+        }
+      });
+  };
+
+  /* Resgate: se o autoplay foi negado, tenta de novo quando a página fica
+     visível ou na primeira interação (vídeo mudo — retomar é permitido). */
+  const rescue = (): void => {
+    const current = [a, b].find((v) => v.currentSrc && v.classList.contains('is-playing'))
+      ?? [a, b].find((v) => v.currentSrc);
+    if (current && current.paused) void current.play().catch(() => {});
+  };
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) rescue();
+  });
+  ['pointerdown', 'keydown', 'touchstart'].forEach((ev) =>
+    window.addEventListener(ev, rescue, { once: true, passive: true })
+  );
+
+  const playSingleLoop = (video: HTMLVideoElement, src: string): void => {
+    video.loop = true;
     video.src = src;
     video.addEventListener(
       'canplaythrough',
-      () => {
-        video
-          .play()
-          .then(() => video.classList.add('is-playing'))
-          .catch(() => {
-            /* autoplay bloqueado: permanece o poster */
-          });
-      },
+      () => tryPlay(video, 12),
       { once: true }
     );
     video.load();
   };
 
-  if (document.readyState === 'complete') load();
-  else window.addEventListener('load', load, { once: true });
+  /* Mobile: montagem 4:5 já picotada, em loop. */
+  if (isMobile) {
+    const src = wrap.dataset.mobile;
+    if (!src) return;
+    if (wrap.dataset.posterMobile) a.poster = wrap.dataset.posterMobile;
+    const start = (): void => playSingleLoop(a, src);
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start, { once: true });
+    return;
+  }
+
+  let clips: HeroClip[] = [];
+  try {
+    clips = JSON.parse(wrap.dataset.clips ?? '[]') as HeroClip[];
+  } catch {
+    clips = [];
+  }
+  const fallbackSrc = wrap.dataset.fallback;
+
+  if (clips.length < 2) {
+    if (fallbackSrc) {
+      const start = (): void => playSingleLoop(a, fallbackSrc);
+      if (document.readyState === 'complete') start();
+      else window.addEventListener('load', start, { once: true });
+    }
+    return;
+  }
+
+  const shuffle = (list: HeroClip[]): HeroClip[] => {
+    const out = [...list];
+    for (let i = out.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [out[i], out[j]] = [out[j]!, out[i]!];
+    }
+    return out;
+  };
+
+  let order = shuffle(clips);
+  let pos = 0;
+  let active = a;
+  let standby = b;
+  let failed = false;
+
+  const clipOf = new WeakMap<HTMLVideoElement, HeroClip>();
+
+  const nextClip = (): HeroClip => {
+    if (pos >= order.length) {
+      const last = order[order.length - 1];
+      order = shuffle(clips);
+      if (order.length > 1 && order[0] === last) {
+        [order[0], order[1]] = [order[1]!, order[0]!];
+      }
+      pos = 0;
+    }
+    return order[pos++]!;
+  };
+
+  const preload = (video: HTMLVideoElement, clip: HeroClip): void => {
+    clipOf.set(video, clip);
+    video.src = clip.src;
+    video.load();
+  };
+
+  const enterFallback = (): void => {
+    if (failed) return;
+    failed = true;
+    a.classList.remove('is-playing');
+    b.classList.remove('is-playing');
+    if (fallbackSrc) playSingleLoop(a, fallbackSrc);
+  };
+
+  /* Corte seco: troca única em voo, validando o alvo ao concluir. */
+  let swapping = false;
+
+  const swap = (): void => {
+    if (swapping) return;
+    const target = standby;
+    const clip = clipOf.get(target);
+    if (!clip) return;
+    swapping = true;
+    target.currentTime = clip.start;
+    tryPlay(target, 2, () => {
+      if (target !== standby) {
+        swapping = false;
+        return;
+      }
+      active.classList.remove('is-playing');
+      active.pause();
+      const t = active;
+      active = standby;
+      standby = t;
+      preload(standby, nextClip());
+      swapping = false;
+    });
+    // Destrava caso todas as tentativas falhem (o ativo segue em mini-loop).
+    window.setTimeout(() => {
+      swapping = false;
+    }, 2400);
+  };
+
+  const onTime = (video: HTMLVideoElement): void => {
+    if (failed || video !== active) return;
+    const clip = clipOf.get(video);
+    if (!clip) return;
+    if (video.currentTime >= clip.end) {
+      if (!swapping && standby.readyState >= 3) {
+        swap();
+      } else {
+        // Próximo ainda não pronto: reinicia o trim atual sem cortar para preto.
+        video.currentTime = clip.start;
+      }
+    }
+  };
+
+  [a, b].forEach((video) => {
+    video.addEventListener('timeupdate', () => onTime(video));
+    video.addEventListener('ended', () => {
+      if (video !== active || failed) return;
+      if (!swapping && standby.readyState >= 3) {
+        swap();
+      } else {
+        const clip = clipOf.get(video);
+        if (clip) {
+          video.currentTime = clip.start;
+          void video.play().catch(() => {});
+        }
+      }
+    });
+    video.addEventListener('error', () => {
+      if (video === active) enterFallback();
+    });
+  });
+
+  const start = (): void => {
+    const first = nextClip();
+    preload(active, first);
+    active.addEventListener(
+      'canplaythrough',
+      () => {
+        active.currentTime = first.start;
+        tryPlay(active, 12, () => {
+          // Após o crossfade inicial, as trocas viram cortes secos.
+          window.setTimeout(() => {
+            a.classList.add('no-fade');
+            b.classList.add('no-fade');
+          }, 450);
+          preload(standby, nextClip());
+        });
+      },
+      { once: true }
+    );
+  };
+
+  if (document.readyState === 'complete') start();
+  else window.addEventListener('load', start, { once: true });
 }
 
 /* ---------- Sequências de mídia real: passo ativo controla o frame sticky ---------- */

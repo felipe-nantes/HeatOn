@@ -147,6 +147,11 @@ write(
     "wordmark-deep.svg",
     svg_doc(W_W, W_H, wordmark_group(DEEP, DEEP, DX, DY), "HeatOn wordmark deep"),
 )
+# Branco puro para o efeito de inversão do hero (mix-blend-mode: difference)
+write(
+    "wordmark-white.svg",
+    svg_doc(W_W, W_H, wordmark_group("#FFFFFF", "#FFFFFF", DX, DY), "HeatOn wordmark white"),
+)
 
 # ---------------------------------------------------------------- símbolo (reuso do master vetorial)
 symbol_src = (BRAND / "symbol-cream.svg").read_text(encoding="utf-8")

@@ -1,0 +1,41 @@
+{
+  "version": "2.1.0",
+  "strategy": "real-photo-image-to-video",
+  "preferredDesktop": "assets/media/hero/hero-real-loop-h264.mp4",
+  "preferredMobile": "assets/media/hero/hero-real-loop-mobile-h264.mp4",
+  "posterDesktop": "assets/media/hero/hero-real-poster.webp",
+  "posterMobile": "assets/media/hero/hero-real-poster-mobile.webp",
+  "archivalMaster": "assets/media/hero/hero-real-source-hevc.mp4",
+  "contactSheet": "assets/media/hero/hero-video-contact-sheet.jpg",
+  "homepagePreferredSequence": "assets/media/hero/sequence/hero-rapid-sequence-preview.mp4",
+  "sequenceMetadata": "assets/media/hero/sequence/sequence-metadata.json",
+  "sourceImage": "assets/cases/real/oren/source/oren-validation-vr-original.jpg",
+  "durationSeconds": 6.041667,
+  "audio": false,
+  "desktop": {
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "width": 1920,
+    "height": 1080,
+    "fastStart": true
+  },
+  "mobile": {
+    "codec": "h264",
+    "pixelFormat": "yuv420p",
+    "width": 1080,
+    "height": 1350,
+    "fastStart": true
+  },
+  "generation": {
+    "provider": "Higgsfield",
+    "model": "Seedance 2.5",
+    "jobId": "0ce3a68c-5612-4022-b1ab-439ed64b2477",
+    "creditsUsed": 54,
+    "promptRecord": "assets/tokens/generation-prompts.json"
+  },
+  "usage": {
+    "autoplay": "Only when reduced motion is off and Save-Data is false",
+    "fallback": "Always render the matching poster first",
+    "disclosure": "Editorial animation derived from a real project photograph; not documentary footage"
+  }
+}
