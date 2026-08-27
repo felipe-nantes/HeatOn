@@ -88,22 +88,25 @@ function setupIndexOverlay(): void {
     toggle.setAttribute('aria-expanded', overlay.open ? 'true' : 'false');
   };
 
+  const close = (): void => {
+    overlay.close();
+    sync();
+  };
+
   toggle.addEventListener('click', () => {
     if (overlay.open) overlay.close();
     else overlay.showModal();
     sync();
   });
 
-  closeBtn?.addEventListener('click', () => {
-    overlay.close();
-  });
+  closeBtn?.addEventListener('click', close);
 
+  // Cobre Esc e fechamentos programáticos.
   overlay.addEventListener('close', sync);
+  overlay.addEventListener('cancel', () => queueMicrotask(sync));
 
   overlay.querySelectorAll<HTMLAnchorElement>('[data-overlay-link]').forEach((link) => {
-    link.addEventListener('click', () => {
-      overlay.close();
-    });
+    link.addEventListener('click', close);
   });
 }
 
