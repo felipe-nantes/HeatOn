@@ -1,0 +1,148 @@
+---
+import { nav, footer } from '../content/site';
+---
+
+<dialog id="index-overlay" class="index-overlay" aria-label="Índice do site">
+  <div class="overlay-inner container">
+    <div class="overlay-head">
+      <p class="data overlay-tag">HEATON / INDEX</p>
+      <button id="index-close" class="data overlay-close" type="button">
+        FECHAR <span aria-hidden="true">×</span>
+      </button>
+    </div>
+
+    <nav aria-label="Índice de navegação">
+      <ol role="list" class="overlay-list">
+        {
+          nav.items.map((item) => (
+            <li>
+              <a href={item.href} data-overlay-link>
+                <span class="data overlay-num">{item.num}</span>
+                <span class="overlay-label">{item.label}</span>
+                <span class="overlay-plus" aria-hidden="true">+</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <div class="overlay-foot">
+      <hr class="rule" />
+      <p class="data overlay-tagline">{footer.tagline}</p>
+    </div>
+  </div>
+</dialog>
+
+<style>
+  .index-overlay {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100svh;
+    max-width: none;
+    max-height: none;
+    border: 0;
+    padding: 0;
+    background: var(--color-structure);
+    color: var(--color-information);
+    z-index: var(--z-overlay);
+  }
+
+  .index-overlay::backdrop {
+    background: rgba(14, 14, 16, 0.6);
+  }
+
+  .index-overlay[open] {
+    display: grid;
+  }
+
+  .overlay-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: 1.4rem clamp(1.5rem, 4vh, 3rem);
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .overlay-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .overlay-tag {
+    opacity: 0.6;
+  }
+
+  .overlay-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.55em 1.1em;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+  }
+
+  .overlay-close:hover span,
+  .overlay-close:focus-visible span {
+    color: var(--color-activity);
+  }
+
+  .overlay-list {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .overlay-list a {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    padding-block: clamp(0.8rem, 2.4vh, 1.4rem);
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    text-decoration: none;
+  }
+
+  .overlay-list li:last-child a {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .overlay-num {
+    opacity: 0.55;
+  }
+
+  .overlay-label {
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1rem + 3.4vw, 3.25rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.1;
+  }
+
+  .overlay-plus {
+    margin-left: auto;
+    font-family: var(--font-data);
+    font-size: 1.25rem;
+    opacity: 0.5;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  /* Um acento ativo por vez */
+  .overlay-list a:hover .overlay-plus,
+  .overlay-list a:focus-visible .overlay-plus {
+    color: var(--color-activity);
+    opacity: 1;
+  }
+
+  .overlay-foot {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .overlay-tagline {
+    opacity: 0.6;
+  }
+</style>

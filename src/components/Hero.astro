@@ -1,0 +1,207 @@
+---
+import { hero } from '../content/site';
+---
+
+<section id="hero" class="hero surface-deep" aria-labelledby="hero-title">
+  <div class="hero-media" aria-hidden="true">
+    <picture>
+      <source media="(max-width: 767px)" srcset={hero.video.posterMobile} />
+      <img
+        class="hero-poster"
+        src={hero.video.posterDesktop}
+        alt=""
+        width="1920"
+        height="1080"
+        fetchpriority="high"
+        decoding="async"
+      />
+    </picture>
+    <video
+      id="hero-video"
+      class="hero-video"
+      muted
+      playsinline
+      loop
+      preload="none"
+      data-src={hero.video.src}
+      tabindex="-1"
+    ></video>
+    <div class="hero-scrim"></div>
+  </div>
+
+  <div class="container hero-content section-content">
+    <p class="data hero-eyebrow">{hero.eyebrow}</p>
+    <h1 id="hero-title" class="display hero-title">{hero.display}</h1>
+    <div class="hero-signal" aria-hidden="true"></div>
+    <p class="hero-support body-copy">{hero.support}</p>
+    <div class="hero-ctas">
+      <a class="pill pill--solid" href={hero.ctaPrimary.href}>
+        {hero.ctaPrimary.label}
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+      <a class="pill" href={hero.ctaSecondary.href}>
+        {hero.ctaSecondary.label}
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="hero-wordmark" aria-hidden="true">
+    <img
+      src="/assets/brand/wordmark-color.svg"
+      alt=""
+      width="1125"
+      height="245"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-poster,
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-video {
+    opacity: 0;
+    transition: opacity var(--motion-slow) var(--ease-editorial);
+  }
+
+  .hero-video.is-playing {
+    opacity: 1;
+  }
+
+  /* Overlay Deep Carbon leve para legibilidade */
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(14, 14, 16, 0.62) 0%,
+      rgba(14, 14, 16, 0.34) 45%,
+      rgba(14, 14, 16, 0.78) 100%
+    );
+  }
+
+  .hero-content {
+    padding-block: clamp(7rem, 18vh, 10rem) clamp(4rem, 10vh, 6rem);
+  }
+
+  .hero-eyebrow {
+    opacity: 0.72;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    max-width: 14ch;
+  }
+
+  /* Linha de sinal: traço fino com o gradiente térmico, percorre 1x */
+  .hero-signal {
+    height: 2px;
+    width: min(360px, 42vw);
+    margin-block: clamp(1.5rem, 3.5vh, 2.5rem);
+    background: var(--gradient-thermal);
+    transform-origin: left center;
+  }
+
+  .hero-support {
+    max-width: 44ch;
+    opacity: 0.86;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: clamp(2rem, 4.5vh, 3rem);
+  }
+
+  .hero-wordmark {
+    position: relative;
+    z-index: 1;
+    padding: 0 var(--page-pad) clamp(1.25rem, 3.5vh, 2.5rem);
+    max-width: var(--layout-max);
+    margin-inline: auto;
+    width: 100%;
+  }
+
+  .hero-wordmark img {
+    width: 100%;
+    height: auto;
+    opacity: 0.94;
+  }
+
+  /* --- Sequência de abertura (~900–1300 ms percebidos) --- */
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes signal-run {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .hero-eyebrow,
+  .hero-title,
+  .hero-support,
+  .hero-ctas,
+  .hero-wordmark {
+    animation: hero-in var(--motion-base) var(--ease-editorial) both;
+  }
+
+  .hero-eyebrow { animation-delay: 80ms; }
+  .hero-title { animation-delay: 160ms; }
+  .hero-wordmark { animation-delay: 240ms; }
+
+  .hero-signal {
+    animation: signal-run 480ms var(--ease-editorial) 360ms both;
+  }
+
+  .hero-support { animation-delay: 620ms; }
+  .hero-ctas { animation-delay: 720ms; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-eyebrow,
+    .hero-title,
+    .hero-support,
+    .hero-ctas,
+    .hero-wordmark,
+    .hero-signal {
+      animation: none;
+    }
+  }
+</style>

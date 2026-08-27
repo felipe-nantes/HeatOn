@@ -1,0 +1,115 @@
+---
+import { conceptualCaption, type CaseItem } from '../content/site';
+
+interface Props {
+  item: CaseItem;
+}
+
+const { item } = Astro.props;
+const surfaceClass = item.surface === 'cream' ? 'surface-cream' : 'surface-deep';
+---
+
+<article
+  class:list={['case', surfaceClass, `case--img-${item.imageSide}`]}
+  aria-labelledby={`case-title-${item.id}`}
+>
+  <div class="container case-grid">
+    <div class="case-copy">
+      <p class="data case-num reveal reveal--label">
+        PROJECT {item.num}
+      </p>
+      <h3 id={`case-title-${item.id}`} class="h1 reveal reveal--title">{item.title}</h3>
+      <p class="body-copy reveal reveal--body">{item.body}</p>
+      <p class="data case-meta reveal reveal--body">{item.metadata.join(' / ')}</p>
+    </div>
+
+    <figure class="case-figure mask-reveal reveal">
+      <picture>
+        <source media="(max-width: 767px)" srcset={item.image.mobile} />
+        <img
+          src={item.image.desktop}
+          alt={item.image.alt}
+          width="1600"
+          height="1000"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <figcaption class="data figure-caption">{conceptualCaption}</figcaption>
+    </figure>
+  </div>
+</article>
+
+<style>
+  .case {
+    padding-block: clamp(4rem, 9vw, 8rem);
+  }
+
+  .case-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .case-copy {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+
+  .case-num {
+    color: var(--color-activity);
+  }
+
+  .case-meta {
+    opacity: 0.65;
+  }
+
+  .case-figure {
+    margin: 0;
+  }
+
+  .case-figure img {
+    width: 100%;
+    height: auto;
+    transition: transform var(--motion-base) var(--ease-editorial);
+  }
+
+  /* Hover: deslocamento sutil; o número laranja já é o acento ativo.
+     Touch não depende de hover — estado completo sempre visível. */
+  @media (hover: hover) {
+    .case:hover .case-figure img {
+      transform: scale(1.02);
+    }
+  }
+
+  .figure-caption {
+    margin-top: 0.9rem;
+    opacity: 0.5;
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 1200px) {
+    .case-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+
+    .case--img-left .case-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    }
+
+    .case--img-left .case-figure {
+      order: -1;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .case-figure img {
+      transition: none;
+    }
+
+    .case:hover .case-figure img {
+      transform: none;
+    }
+  }
+</style>

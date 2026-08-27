@@ -1,0 +1,39 @@
+{
+  "version": "1.0.0",
+  "generationPrompts": "assets/tokens/generation-prompts.json",
+  "brand": {
+    "headerDark": "assets/brand/logo-horizontal-cream.svg",
+    "headerLight": "assets/brand/logo-horizontal-deep.svg",
+    "heroSignature": "assets/brand/logo-scientific-signature.svg",
+    "stacked": "assets/brand/logo-stacked-color.svg",
+    "microDark": "assets/brand/symbol-cream.svg",
+    "microLight": "assets/brand/symbol-deep.svg",
+    "favicon": "assets/brand/favicon.ico",
+    "appleTouchIcon": "assets/brand/apple-touch-icon.png"
+  },
+  "hero": {
+    "videoSourceMetadata": "assets/media/hero/hero-video-source.json",
+    "posterDesktop": "assets/media/hero/hero-poster.webp",
+    "posterMobile": "assets/media/hero/hero-poster-mobile.webp"
+  },
+  "graphics": {
+    "contour": "assets/graphics/contour-field.svg",
+    "grid": "assets/graphics/scientific-grid.svg",
+    "nodes": "assets/graphics/nodes-data-points.svg",
+    "signal": "assets/graphics/waveform-signal.svg",
+    "measurement": "assets/graphics/measurement-crosshair.svg",
+    "icons": "assets/graphics/iconography-set.svg"
+  },
+  "cases": [
+    { "id": "oren", "desktop": "assets/cases/webp/desktop/case-01-oren.webp", "mobile": "assets/cases/webp/mobile/case-01-oren-mobile.webp", "conceptual": true },
+    { "id": "femur-fractures", "desktop": "assets/cases/webp/desktop/case-02-femur-fractures.webp", "mobile": "assets/cases/webp/mobile/case-02-femur-fractures-mobile.webp", "conceptual": true },
+    { "id": "samu-marialva", "desktop": "assets/cases/webp/desktop/case-03-samu-marialva.webp", "mobile": "assets/cases/webp/mobile/case-03-samu-marialva-mobile.webp", "conceptual": true },
+    { "id": "efast-vr", "desktop": "assets/cases/webp/desktop/case-04-efast-vr.webp", "mobile": "assets/cases/webp/mobile/case-04-efast-vr-mobile.webp", "conceptual": true },
+    { "id": "gsus-audit-automation", "desktop": "assets/cases/webp/desktop/case-05-gsus-audit-automation.webp", "mobile": "assets/cases/webp/mobile/case-05-gsus-audit-automation-mobile.webp", "conceptual": true },
+    { "id": "data-engineering", "desktop": "assets/cases/webp/desktop/case-06-data-engineering.webp", "mobile": "assets/cases/webp/mobile/case-06-data-engineering-mobile.webp", "conceptual": true }
+  ],
+  "social": {
+    "openGraph": "assets/social/og-home.png",
+    "twitterCard": "assets/social/twitter-card.png"
+  }
+}

@@ -1,0 +1,117 @@
+---
+import { capabilities } from '../content/site';
+---
+
+<section id="capacidades" class="section surface-cream" aria-labelledby="capabilities-title">
+  <div class="container section-content">
+    <p class="data reveal reveal--label">{capabilities.label}</p>
+    <h2 id="capabilities-title" class="h1 reveal reveal--title">
+      {capabilities.headline}
+    </h2>
+
+    <div class="capabilities-grid">
+      <ol role="list" class="capabilities-list reveal reveal--body">
+        {
+          capabilities.items.map((item, i) => (
+            <li class="capability">
+              <span class="data capability-num">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <span class="capability-name">{item}</span>
+              <span class="capability-plus data" aria-hidden="true">
+                +
+              </span>
+            </li>
+          ))
+        }
+      </ol>
+
+      <figure class="capabilities-icons reveal" aria-hidden="true">
+        <img
+          src="/assets/graphics/iconography-set.svg"
+          alt=""
+          width="1200"
+          height="900"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption class="data icons-caption">ICONOGRAPHY SET / 12 CORE SYMBOLS</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .capabilities-grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    margin-top: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .capabilities-list {
+    display: grid;
+  }
+
+  .capability {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding-block: 0.95rem;
+    border-top: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .capability:last-child {
+    border-bottom: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .capability-num {
+    opacity: 0.5;
+  }
+
+  .capability-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .capability-plus {
+    margin-left: auto;
+    opacity: 0.35;
+    transition:
+      color var(--motion-fast) var(--ease-feedback),
+      opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  /* Um item ativo laranja por vez (hover) */
+  @media (hover: hover) {
+    .capability:hover .capability-num,
+    .capability:hover .capability-plus {
+      color: var(--color-activity);
+      opacity: 1;
+    }
+  }
+
+  .capabilities-icons {
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .capabilities-icons img {
+    width: 100%;
+    height: auto;
+  }
+
+  .icons-caption {
+    opacity: 0.5;
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 1200px) {
+    .capabilities-grid {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+    }
+  }
+</style>

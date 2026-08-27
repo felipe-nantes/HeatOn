@@ -1,0 +1,127 @@
+---
+import { method } from '../content/site';
+import signalRaw from '../../public/assets/graphics/waveform-signal.svg?raw';
+
+// O master é inline para permitir a animação de stroke-dashoffset.
+// pathLength="1" normaliza o comprimento para a animação CSS.
+// A linha viaja sempre da esquerda para a direita e termina no node. Nunca espelhar.
+const signalSvg = signalRaw
+  .replace(/<\?xml[^?]*\?>/, '')
+  .replace(/<path /g, '<path pathLength="1" ');
+---
+
+<section id="metodo" class="section surface-deep" aria-labelledby="method-title">
+  <div class="container section-content">
+    <p class="data reveal reveal--label">{method.label}</p>
+    <h2 id="method-title" class="h1 reveal reveal--title">{method.headline}</h2>
+
+    <div class="method-signal" id="method-signal" aria-hidden="true">
+      <Fragment set:html={signalSvg} />
+    </div>
+
+    <ol role="list" class="method-steps">
+      {
+        method.steps.map((step) => (
+          <li class="method-step reveal reveal--body">
+            <span class="data step-num">{step.num}</span>
+            <span class="data step-code">{step.code}</span>
+            <span class="h2 step-name">{step.name}</span>
+            <span class="step-body">{step.body}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .method-signal {
+    margin-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .method-signal :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Linha desenhada 1x da esquerda para a direita; node aparece no fim */
+  .method-signal :global(path) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .method-signal :global(circle) {
+    opacity: 0;
+    transition: opacity var(--motion-base) var(--ease-editorial) 1.5s;
+  }
+
+  .method-signal.is-drawn :global(path) {
+    transition: stroke-dashoffset 1.6s var(--ease-editorial);
+    stroke-dashoffset: 0;
+  }
+
+  .method-signal.is-drawn :global(circle) {
+    opacity: 1;
+  }
+
+  html.no-js .method-signal :global(path) {
+    stroke-dashoffset: 0;
+  }
+
+  html.no-js .method-signal :global(circle) {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .method-signal :global(path) {
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+
+    .method-signal :global(circle) {
+      opacity: 1;
+      transition: none;
+    }
+  }
+
+  .method-steps {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .method-step {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    align-content: start;
+  }
+
+  .step-num {
+    color: var(--color-activity);
+  }
+
+  .step-code {
+    color: var(--color-measurement);
+    opacity: 0.85;
+  }
+
+  .step-body {
+    opacity: 0.78;
+    max-width: 34ch;
+  }
+
+  @media (min-width: 768px) {
+    .method-steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .method-steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

@@ -1,0 +1,40 @@
+{
+  "shared_constraints": "No text, no logo, no fake UI, no patient data, no medical cliches, no neon glow, no watermark. One active orange element; scientific cyan only for measurement/reference.",
+  "assets": [
+    {
+      "id": "hero-video",
+      "tool": "Higgsfield / Seedance 2.5",
+      "prompt": "Abstract cinematic scientific visualization for a premium technology company website hero. A continuous thermal signal emerges in deep carbon darkness as a thin coral-orange waveform, travels left to right through a sparse volumetric field of measurement particles and precise contour lines, intensifies into amber computation, then resolves into a calm cream terminal node. One active orange element at a time; subtle scientific cyan only on distant reference marks. Camera locked with very slow forward drift, generous negative space at center, minimal and sophisticated, tactile optical texture, documentary-grade macro cinematography, seamless loop with matching first and last frames. No text, no logo, no people, no medical cliches, no neon glow, no bloom, no UI, no watermark."
+    },
+    {
+      "id": "case-01-oren",
+      "tool": "OpenAI ImageGen",
+      "prompt": "Wide 16:10 editorial case-study cover for OREN. Deep carbon scientific field, subtle contour lines and measurement grid. A medically recognizable human liver volume reconstructed from layered medical-image slices, showing restrained segmented surfaces; one active orange signal travels left to right and resolves into a cream node. Premium cinematic scientific data art, asymmetric mass on the right and generous negative space on the left. Palette #0E0E10, #FFF4E6, #FF6A1A and tiny #61D4E8 references. No text, logo, people, blood, gore, fake UI or medical cliches."
+    },
+    {
+      "id": "case-02-femur-fractures",
+      "tool": "OpenAI ImageGen",
+      "prompt": "Wide 16:10 editorial case-study cover for population health analytics about femur fractures among older adults in Parana. Warm cream scientific-paper field, faint precise grid, medically recognizable translucent femur on the right, sparse anonymous data points, one orange analytical trace and a small abstract regional contour. Premium scientific editorial still life with generous negative space on the left. No text, logo, patient image, blood, invented values or fake chart labels."
+    },
+    {
+      "id": "case-03-samu-marialva",
+      "tool": "OpenAI ImageGen",
+      "prompt": "Wide 16:10 editorial case-study cover for emergency medical service operational intelligence. Abstract anonymized urban network at night, rendered as a measured dark field rather than a real map. Precise route lines and sparse response nodes; one heat-orange route progresses left to right and resolves at a destination, while cyan nodes remain reference-only. Premium cinematic data cartography, denser left side and quiet copy space on the right. No labels, personal data, ambulance, siren, medical cross, fake UI or watermark."
+    },
+    {
+      "id": "case-04-efast-vr",
+      "tool": "OpenAI ImageGen",
+      "prompt": "Wide 16:10 editorial case-study cover for an eFAST medical training simulator in virtual reality. Deep carbon clinical simulation space with subtle measurement grid. Clean training mannequin torso, unbranded ultrasound probe over one abdominal assessment window and four faint spatial scan planes; one orange signal marks the active examination point. Premium restrained photorealism, subject left/center and negative space right. No patient identity, blood, gore, medical cross, DNA, stethoscope, fake UI, neon or watermark."
+    },
+    {
+      "id": "case-05-gsus-audit-automation",
+      "tool": "OpenAI ImageGen",
+      "prompt": "Wide 16:10 editorial case-study cover for medical audit process automation in GSUS. Deep carbon tabletop and computational field. Anonymized paper-like records and data packets move left to right through precise translucent validation gates; one heat-orange packet is actively checked and resolves into a cream approved node. Premium tactile process visualization with quiet upper-left copy space. No readable text, logo, patient data, human figure, checkmark icon, fake UI, neon or watermark."
+    },
+    {
+      "id": "case-06-data-engineering",
+      "tool": "OpenAI ImageGen",
+      "prompt": "Wide 16:10 editorial case-study cover for large-scale health data extraction, transformation and integration. Deep carbon scientific field. Thousands of fine unstructured filaments enter from the left, pass through precise translucent transformation planes and emerge on the right as an ordered cream lattice; one heat-orange stream shows the active path. Premium macro scientific data art with a quiet upper band. No text, logo, binary digits, database cylinder, cloud icon, fake UI, neon or watermark."
+    }
+  ]
+}

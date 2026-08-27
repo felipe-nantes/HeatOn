@@ -1,0 +1,32 @@
+---
+import CaseCard from './CaseCard.astro';
+import { cases } from '../content/site';
+---
+
+<section id="projetos" class="surface-deep" aria-labelledby="projects-title">
+  <div class="container projects-head">
+    <p class="data reveal reveal--label">SECTION 04 / PROJECTS</p>
+    <h2 id="projects-title" class="h1 reveal reveal--title">Índice de projetos</h2>
+    <hr class="rule projects-rule reveal" />
+  </div>
+
+  <div class="projects-list">
+    {cases.map((item) => <CaseCard item={item} />)}
+  </div>
+</section>
+
+<style>
+  .projects-head {
+    display: grid;
+    gap: 1.25rem;
+    padding-top: var(--section-block);
+  }
+
+  .projects-rule {
+    margin-top: 1.5rem;
+  }
+
+  .projects-list {
+    margin-top: clamp(1rem, 3vw, 2rem);
+  }
+</style>

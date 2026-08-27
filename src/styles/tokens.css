@@ -1,0 +1,101 @@
+/*
+ * Heat On — design tokens
+ * Fonte canônica: HeatOn_Website_Handoff/assets/tokens/design-tokens.json
+ * + brandbook v1.0 (papéis semânticos, gradiente térmico, hierarquia tipográfica).
+ * Não editar valores sem confrontar o brandbook.
+ */
+:root {
+  /* ---- Cor: paleta núcleo ---- */
+  --color-deep-carbon: #0e0e10;
+  --color-cream: #fff4e6;
+  --color-heat-orange: #ff6a1a;
+  --color-amber: #ffb347;
+  --color-coral: #ff5c7a;
+  --color-scientific-cyan: #61d4e8;
+  --color-gray-inactive: #6e7074;
+  --color-gray-grid: #8a8f98;
+  --color-white: #ffffff;
+
+  /* ---- Cor: papéis semânticos ---- */
+  --color-structure: var(--color-deep-carbon);
+  --color-information: var(--color-cream);
+  --color-activity: var(--color-heat-orange);
+  --color-transition: var(--color-amber);
+  --color-edge: var(--color-coral);
+  --color-measurement: var(--color-scientific-cyan);
+  --color-inactive: var(--color-gray-inactive);
+
+  /* Gradiente térmico — só no símbolo, traços finos ou 1 superfície hero.
+     Nunca atrás de texto corrido. */
+  --gradient-thermal: linear-gradient(
+    90deg,
+    #ff5c3a 0%,
+    #ff6a1a 28%,
+    #ffb347 58%,
+    #fff0c8 84%,
+    #fff4e6 100%
+  );
+
+  /* ---- Tipografia: três vozes ---- */
+  --font-display: 'Manrope Variable', 'Manrope', system-ui, sans-serif;
+  --font-body: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-data: 'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --tracking-display: -0.03em;
+  --tracking-heading: -0.02em;
+  --tracking-data: 0.18em;
+  --tracking-label: 0.08em;
+
+  /* Hierarquia (brandbook p.26), fluida */
+  --text-display: clamp(2.625rem, 1.35rem + 5.4vw, 4.75rem);   /* ~72px desktop */
+  --leading-display: 1.06;
+  --text-h1: clamp(2rem, 1.45rem + 2.3vw, 2.75rem);            /* 44/52 */
+  --leading-h1: 1.18;
+  --text-h2: clamp(1.5rem, 1.28rem + 0.95vw, 1.875rem);        /* 30/40 */
+  --leading-h2: 1.33;
+  --text-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);         /* 16–18 */
+  --leading-body: 1.6;
+  --text-label: 0.8125rem;                                     /* 13/18 */
+  --leading-label: 1.38;
+  --text-data: 0.8125rem;                                      /* 13/20 */
+  --leading-data: 1.54;
+  --text-data-lg: 1.0625rem;                                   /* 17/26 */
+
+  /* ---- Layout ---- */
+  --layout-max: 1600px;
+  --gutter: clamp(16px, 2vw, 32px);
+  --page-pad: clamp(20px, 3.5vw, 64px);
+  --section-block: clamp(96px, 14vw, 220px);
+
+  /* ---- Motion ---- */
+  --motion-fast: 150ms;
+  --motion-base: 420ms;
+  --motion-slow: 850ms;
+  --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-feedback: cubic-bezier(0.2, 0, 0, 1);
+  --max-image-scale: 1.035;
+
+  /* Distâncias de entrada — zeradas em prefers-reduced-motion */
+  --reveal-shift: 24px;
+  --parallax-on: 1;
+
+  /* ---- Camadas gráficas (ordem fixa: contour → grid → nodes → signal → conteúdo) ---- */
+  --z-contour: 1;
+  --z-grid: 2;
+  --z-nodes: 3;
+  --z-signal: 4;
+  --z-content: 10;
+  --z-header: 100;
+  --z-overlay: 200;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --motion-fast: 1ms;
+    --motion-base: 1ms;
+    --motion-slow: 1ms;
+    --reveal-shift: 0px;
+    --parallax-on: 0;
+    --max-image-scale: 1;
+  }
+}

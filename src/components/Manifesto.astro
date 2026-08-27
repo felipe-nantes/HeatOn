@@ -1,0 +1,92 @@
+---
+import { manifesto } from '../content/site';
+---
+
+<section id="empresa" class="section surface-cream" aria-labelledby="manifesto-title">
+  <div class="layer layer--nodes manifesto-mark" aria-hidden="true">
+    <img
+      src="/assets/graphics/measurement-crosshair.svg"
+      alt=""
+      width="900"
+      height="900"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div class="container section-content">
+    <p class="data reveal reveal--label">{manifesto.label}</p>
+
+    <div class="manifesto-grid">
+      <h2 id="manifesto-title" class="h1 reveal reveal--title">
+        {manifesto.headline}
+      </h2>
+      <div class="manifesto-copy reveal reveal--body">
+        <p class="body-copy">{manifesto.body}</p>
+        <p class="data manifesto-principle">{manifesto.principle}</p>
+        <a class="pill" href={manifesto.cta.href}>
+          {manifesto.cta.label}
+          <span class="pill-plus" aria-hidden="true">+</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="manifesto-brand reveal">
+      <img
+        src="/assets/brand/logo-horizontal-deep.svg"
+        alt="Heat On"
+        width="180"
+        height="60"
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .manifesto-mark {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .manifesto-mark img {
+    width: min(52vw, 720px);
+    height: auto;
+    margin-right: -8%;
+    opacity: 0.5;
+  }
+
+  .manifesto-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 5rem);
+    margin-top: clamp(1.5rem, 3.5vw, 3rem);
+  }
+
+  .manifesto-copy {
+    display: grid;
+    gap: 1.75rem;
+    justify-items: start;
+  }
+
+  .manifesto-principle {
+    color: var(--color-activity);
+  }
+
+  .manifesto-brand {
+    margin-top: clamp(3rem, 8vw, 6rem);
+  }
+
+  .manifesto-brand img {
+    width: clamp(140px, 14vw, 200px);
+    height: auto;
+  }
+
+  @media (min-width: 1200px) {
+    .manifesto-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: start;
+    }
+  }
+</style>

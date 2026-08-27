@@ -1,0 +1,157 @@
+---
+import { territory } from '../content/site';
+---
+
+<section id="territorio" class="section surface-deep" aria-labelledby="territory-title">
+  <div class="layer layer--grid" aria-hidden="true">
+    <img
+      class="territory-grid"
+      src="/assets/graphics/scientific-grid.svg"
+      alt=""
+      width="2400"
+      height="1600"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+  <div class="layer layer--nodes territory-nodes-layer" aria-hidden="true">
+    <img
+      src="/assets/graphics/nodes-data-points.svg"
+      alt=""
+      width="1200"
+      height="800"
+      loading="lazy"
+      decoding="async"
+    />
+  </div>
+
+  <div class="container section-content">
+    <h2 id="territory-title" class="visually-hidden">Território da Heat On</h2>
+
+    <p class="territory-band reveal" aria-label="Science, Technology, Medicine, Computation, Intelligence">
+      {
+        territory.band.map((word, i) => (
+          <>
+            <span class="band-word">{word}</span>
+            {i < territory.band.length - 1 && (
+              <span class="band-x data" aria-hidden="true">
+                ×
+              </span>
+            )}
+          </>
+        ))
+      }
+    </p>
+
+    <div class="territory-rows reveal reveal--body">
+      {
+        territory.rows.map((row) => (
+          <div class="territory-row">
+            <span class="data row-label">{row.label}</span>
+            <span class="row-value">{row.value}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="territory-inventory reveal">
+      <span class="inventory-count" aria-hidden="true">{territory.inventory.count}</span>
+      <div class="inventory-copy">
+        <span class="data">{territory.inventory.count} {territory.inventory.label}</span>
+        <span class="data inventory-note">{territory.inventory.note}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .territory-grid {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.55;
+  }
+
+  .territory-nodes-layer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
+
+  .territory-nodes-layer img {
+    width: min(46vw, 640px);
+    height: auto;
+    margin: 0 -4% -3% 0;
+    opacity: 0.75;
+  }
+
+  .territory-band {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: clamp(0.75rem, 2vw, 1.75rem);
+    row-gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 0.7rem + 3.4vw, 3.25rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.15;
+  }
+
+  .band-x {
+    color: var(--color-measurement);
+    font-size: 0.55em;
+  }
+
+  .territory-rows {
+    margin-top: clamp(3rem, 7vw, 5.5rem);
+    max-width: 760px;
+  }
+
+  .territory-row {
+    display: grid;
+    grid-template-columns: minmax(90px, 140px) 1fr;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding-block: 1.1rem;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .territory-row:last-child {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .row-label {
+    color: var(--color-measurement);
+  }
+
+  .territory-inventory {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+    margin-top: clamp(3rem, 7vw, 5.5rem);
+  }
+
+  .inventory-count {
+    font-family: var(--font-data);
+    font-weight: 500;
+    font-size: clamp(4rem, 2.4rem + 7vw, 8.5rem);
+    line-height: 1;
+    color: var(--color-information);
+  }
+
+  .inventory-copy {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .inventory-copy > .data:first-child {
+    color: var(--color-activity);
+  }
+
+  .inventory-note {
+    opacity: 0.55;
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+</style>

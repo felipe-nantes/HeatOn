@@ -1,0 +1,125 @@
+---
+import { nav, footer } from '../content/site';
+---
+
+<footer class="site-footer surface-deep">
+  <div class="container">
+    <hr class="rule" />
+
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <img
+          src="/assets/brand/logo-horizontal-cream.svg"
+          alt="Heat On"
+          width="164"
+          height="34"
+          loading="lazy"
+          decoding="async"
+        />
+        <p class="data footer-tagline">{footer.tagline}</p>
+        <p class="footer-note body-copy--muted">{footer.note}</p>
+      </div>
+
+      <nav aria-label="Navegação do rodapé">
+        <ol role="list" class="footer-nav">
+          {
+            nav.items.map((item) => (
+              <li>
+                <a href={item.href}>
+                  <span class="data footer-num">{item.num}</span>
+                  <span>{item.label}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ol>
+      </nav>
+    </div>
+
+    <div class="footer-legal">
+      <p class="data footer-copy">{footer.copyright}</p>
+      <p class="data footer-meta">HEATON / WEBSITE / V1.0</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .footer-brand {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+  }
+
+  .footer-tagline {
+    color: var(--color-activity);
+  }
+
+  .footer-note {
+    max-width: 42ch;
+    opacity: 0.65;
+  }
+
+  .footer-nav {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .footer-nav a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.8em;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .footer-num {
+    opacity: 0.5;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  .footer-nav a:hover .footer-num,
+  .footer-nav a:focus-visible .footer-num {
+    color: var(--color-activity);
+    opacity: 1;
+  }
+
+  .footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .footer-copy,
+  .footer-meta {
+    opacity: 0.5;
+    font-size: 0.6875rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+    }
+
+    .footer-nav {
+      justify-items: end;
+      text-align: right;
+    }
+  }
+</style>

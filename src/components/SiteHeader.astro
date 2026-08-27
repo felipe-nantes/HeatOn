@@ -1,0 +1,202 @@
+---
+import { nav } from '../content/site';
+---
+
+<header id="site-header" class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="#hero" aria-label="Heat On — voltar ao início">
+      <img
+        class="brand-logo"
+        src="/assets/brand/logo-horizontal-cream.svg"
+        alt="Heat On"
+        width="126"
+        height="26"
+      />
+      <img
+        class="brand-symbol"
+        src="/assets/brand/symbol-cream.svg"
+        alt="Heat On"
+        width="52"
+        height="28"
+      />
+    </a>
+
+    <nav class="header-nav" aria-label="Navegação principal">
+      <ol role="list">
+        {
+          nav.items.map((item) => (
+            <li>
+              <a href={item.href}>
+                <span class="data nav-num">{item.num}</span>
+                <span class="nav-label">{item.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </nav>
+
+    <p class="header-meta data">
+      <span>PAGE: HOME</span>
+      <span aria-hidden="true">/</span>
+      <span>
+        SECTION: <span id="section-indicator" aria-live="polite">INTRO</span>
+      </span>
+    </p>
+
+    <button
+      id="index-toggle"
+      class="index-toggle data"
+      type="button"
+      aria-expanded="false"
+      aria-controls="index-overlay"
+    >
+      {nav.indexLabel}
+      <span class="index-plus" aria-hidden="true">+</span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: var(--z-header);
+    color: var(--color-information);
+    background: transparent;
+    transition:
+      background-color var(--motion-base) var(--ease-feedback),
+      box-shadow var(--motion-base) var(--ease-feedback);
+  }
+
+  .site-header::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.14;
+  }
+
+  .site-header.is-scrolled {
+    background: rgba(14, 14, 16, 0.94);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 3rem);
+    max-width: var(--layout-max);
+    margin-inline: auto;
+    padding: 0.9rem var(--page-pad);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .brand-symbol {
+    display: none;
+  }
+
+  .header-nav {
+    display: none;
+  }
+
+  .header-nav ol {
+    display: flex;
+    gap: clamp(1rem, 2.2vw, 2.25rem);
+  }
+
+  .header-nav a {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5em;
+    text-decoration: none;
+    font-family: var(--font-body);
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+
+  .nav-num {
+    font-size: 0.6875rem;
+    opacity: 0.55;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  /* Um elemento ativo por vez: o número do link em foco/hover */
+  .header-nav a:hover .nav-num,
+  .header-nav a:focus-visible .nav-num {
+    color: var(--color-activity);
+    opacity: 1;
+  }
+
+  .header-meta {
+    display: none;
+    margin-left: auto;
+    gap: 0.6em;
+    opacity: 0.7;
+    font-size: 0.6875rem;
+    white-space: nowrap;
+  }
+
+  .index-toggle {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    padding: 0.55em 1.1em;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+  }
+
+  .index-plus {
+    display: inline-block;
+    font-weight: 500;
+    transition:
+      transform var(--motion-fast) var(--ease-feedback),
+      color var(--motion-fast) var(--ease-feedback);
+  }
+
+  .index-toggle:hover .index-plus,
+  .index-toggle:focus-visible .index-plus {
+    color: var(--color-activity);
+  }
+
+  /* O + vira × sem rotacionar o logo ou outros símbolos */
+  .index-toggle[aria-expanded='true'] .index-plus {
+    transform: rotate(45deg);
+  }
+
+  @media (min-width: 768px) {
+    .header-meta {
+      display: inline-flex;
+    }
+
+    .index-toggle {
+      margin-left: 0;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .header-nav {
+      display: block;
+    }
+  }
+
+  @media (max-width: 479px) {
+    .brand-logo {
+      display: none;
+    }
+
+    .brand-symbol {
+      display: block;
+    }
+  }
+</style>

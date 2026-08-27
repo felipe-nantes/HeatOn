@@ -1,0 +1,51 @@
+---
+import { principles } from '../content/site';
+---
+
+<section id="principios" class="section surface-cream" aria-labelledby="principles-title">
+  <div class="container section-content">
+    <p class="data reveal reveal--label">{principles.label}</p>
+    <h2 id="principles-title" class="h1 reveal reveal--title">{principles.headline}</h2>
+
+    <ol role="list" class="principles-list">
+      {
+        principles.items.map((item) => (
+          <li class="principle reveal reveal--body">
+            <span class="data principle-num">{item.num}</span>
+            <span class="principle-name">{item.name}</span>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .principles-list {
+    margin-top: clamp(2rem, 5vw, 4rem);
+  }
+
+  .principle {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1.25rem, 3.5vw, 3rem);
+    padding-block: clamp(1rem, 2.6vw, 1.75rem);
+    border-top: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .principle:last-child {
+    border-bottom: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .principle-num {
+    opacity: 0.5;
+  }
+
+  .principle-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1rem + 2.2vw, 2.625rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.15;
+  }
+</style>

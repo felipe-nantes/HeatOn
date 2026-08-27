@@ -1,0 +1,18 @@
+{
+  "asset_id": "heaton-thermal-pulse-loop",
+  "status": "generated",
+  "provider": "Higgsfield / Seedance 2.5",
+  "job_id": "9f6b8fa0-ef35-4361-84aa-db957a5682ef",
+  "source_url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HPUeb9d5MK70E9YMpOKAruLeCh/hf_20260827_141728_9f6b8fa0-ef35-4361-84aa-db957a5682ef.mp4",
+  "download_to": "public/assets/media/hero/heaton-thermal-pulse-loop.mp4",
+  "duration_seconds": 8,
+  "aspect_ratio": "16:9",
+  "resolution": "1080p",
+  "audio": false,
+  "source_size_bytes": 8517785,
+  "poster_desktop": "assets/media/hero/hero-poster.webp",
+  "poster_mobile": "assets/media/hero/hero-poster-mobile.webp",
+  "production_rule": "Download and self-host. Do not hotlink the source URL in production.",
+  "fallback": "If the remote source is unavailable, ship the local poster and animate waveform-signal.svg progressively."
+}
+
