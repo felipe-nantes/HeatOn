@@ -153,6 +153,36 @@ write(
     svg_doc(W_W, W_H, wordmark_group("#FFFFFF", "#FFFFFF", DX, DY), "HeatOn wordmark white"),
 )
 
+# ------------------------------------------------- wordmark mono (hero)
+# Variante em IBM Plex Mono — mesma voz tipográfica dos metadados técnicos
+# (PAGE / SECTION). Usada apenas no wordmark monumental do hero.
+plex_wm = load_instanced(FONTS / "ibm-plex-mono-latin-500-normal.woff2", None)
+MONO_TRACK = -20
+mono_paths = text_paths(plex_wm, WORD, MONO_TRACK)
+mx0, my0, mx1, my1 = text_bounds(plex_wm, WORD, MONO_TRACK)
+M_W = (mx1 - mx0) + 2 * PAD
+M_H = (my1 - my0) + 2 * PAD
+
+
+def mono_wordmark_group(color_heat: str, color_on: str) -> str:
+    parts = [f'<g transform="translate({fmt(-mx0 + PAD)} {fmt(-my0 + PAD)})">']
+    for i, (_ch, d, _adv) in enumerate(mono_paths):
+        if d is None:
+            continue
+        parts.append(f'<path d="{d}" fill="{color_heat if i < 4 else color_on}"/>')
+    parts.append("</g>")
+    return "".join(parts)
+
+
+write(
+    "wordmark-white-mono.svg",
+    svg_doc(M_W, M_H, mono_wordmark_group("#FFFFFF", "#FFFFFF"), "HeatOn wordmark mono white"),
+)
+write(
+    "wordmark-color-mono.svg",
+    svg_doc(M_W, M_H, mono_wordmark_group(CREAM, ORANGE), "HeatOn wordmark mono color"),
+)
+
 # ---------------------------------------------------------------- símbolo (reuso do master vetorial)
 symbol_src = (BRAND / "symbol-cream.svg").read_text(encoding="utf-8")
 SYMBOL_DS = re.findall(r'<path[^>]*d="([^"]+)"', symbol_src)
