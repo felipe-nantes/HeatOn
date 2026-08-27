@@ -22,8 +22,11 @@ import { hero } from '../content/site';
       muted
       playsinline
       loop
-      preload="none"
-      data-src={hero.video.src}
+      preload="metadata"
+      poster={hero.video.posterDesktop}
+      data-src-desktop={hero.video.desktop}
+      data-src-mobile={hero.video.mobile}
+      data-poster-mobile={hero.video.posterMobile}
       tabindex="-1"
     ></video>
     <div class="hero-scrim"></div>
@@ -86,7 +89,8 @@ import { hero } from '../content/site';
 
   .hero-video {
     opacity: 0;
-    transition: opacity var(--motion-slow) var(--ease-editorial);
+    /* Crossfade de 250–400 ms quando o vídeo real está pronto */
+    transition: opacity 350ms var(--ease-editorial);
   }
 
   .hero-video.is-playing {

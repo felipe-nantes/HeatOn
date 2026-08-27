@@ -14,19 +14,24 @@ import { territory } from '../content/site';
       decoding="async"
     />
   </div>
-  <div class="layer layer--nodes territory-nodes-layer" aria-hidden="true">
-    <img
-      src="/assets/graphics/nodes-data-points.svg"
-      alt=""
-      width="1200"
-      height="800"
-      loading="lazy"
-      decoding="async"
-    />
-  </div>
 
   <div class="container section-content">
     <h2 id="territory-title" class="visually-hidden">Território da Heat On</h2>
+
+    <figure class="territory-mosaic mosaic-reveal reveal">
+      <picture>
+        <source media="(max-width: 767px)" srcset={territory.mosaic.mobile} />
+        <img
+          src={territory.mosaic.desktop}
+          alt={territory.mosaic.alt}
+          width="1920"
+          height="1080"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <figcaption class="media-caption">{territory.mosaic.caption}</figcaption>
+    </figure>
 
     <p class="territory-band reveal" aria-label="Science, Technology, Medicine, Computation, Intelligence">
       {
@@ -69,20 +74,32 @@ import { territory } from '../content/site';
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.55;
+    opacity: 0.5;
   }
 
-  .territory-nodes-layer {
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
+  .territory-mosaic {
+    margin: 0 0 clamp(3rem, 7vw, 5.5rem);
   }
 
-  .territory-nodes-layer img {
-    width: min(46vw, 640px);
+  .territory-mosaic img {
+    width: 100%;
     height: auto;
-    margin: 0 -4% -3% 0;
-    opacity: 0.75;
+  }
+
+  /* Entrada por máscara diagonal suave */
+  .mosaic-reveal img {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mosaic-reveal img {
+      clip-path: polygon(0 12%, 88% 0, 100% 88%, 12% 100%);
+      transition: clip-path 900ms var(--ease-editorial);
+    }
+
+    .mosaic-reveal.is-visible img {
+      clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
   }
 
   .territory-band {
@@ -137,7 +154,6 @@ import { territory } from '../content/site';
     font-weight: 500;
     font-size: clamp(4rem, 2.4rem + 7vw, 8.5rem);
     line-height: 1;
-    color: var(--color-information);
   }
 
   .inventory-copy {

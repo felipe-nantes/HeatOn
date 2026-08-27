@@ -110,20 +110,24 @@ function setupIndexOverlay(): void {
   });
 }
 
-/* ---------- Hero: vídeo adiado, crossfade quando pronto ---------- */
+/* ---------- Hero: fonte única escolhida antes do download, crossfade quando pronto ---------- */
 function setupHeroVideo(): void {
   const video = document.getElementById('hero-video') as HTMLVideoElement | null;
   if (!video) return;
 
-  const src = video.dataset.src;
-  if (!src) return;
-
   type NetworkInfo = { saveData?: boolean };
   const connection = (navigator as Navigator & { connection?: NetworkInfo }).connection;
-  const isMobile = window.matchMedia('(max-width: 767px)').matches;
 
-  // Reduced motion, mobile e rede econômica ficam no poster.
-  if (reducedMotion.matches || isMobile || connection?.saveData) return;
+  // Reduced motion e Save-Data ficam no poster; nunca baixar os dois MP4s.
+  if (reducedMotion.matches || connection?.saveData) return;
+
+  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  const src = isMobile ? video.dataset.srcMobile : video.dataset.srcDesktop;
+  if (!src) return;
+
+  if (isMobile && video.dataset.posterMobile) {
+    video.poster = video.dataset.posterMobile;
+  }
 
   const load = (): void => {
     video.src = src;
@@ -144,6 +148,39 @@ function setupHeroVideo(): void {
 
   if (document.readyState === 'complete') load();
   else window.addEventListener('load', load, { once: true });
+}
+
+/* ---------- Sequências de mídia real: passo ativo controla o frame sticky ---------- */
+function setupSequences(): void {
+  document.querySelectorAll<HTMLElement>('[data-sequence]').forEach((root) => {
+    const steps = [...root.querySelectorAll<HTMLElement>('.seq-step')];
+    const frames = [...root.querySelectorAll<HTMLElement>('.seq-frame')];
+    const stateName = root.querySelector<HTMLElement>('.seq-state-name');
+    if (steps.length < 2 || frames.length !== steps.length) return;
+
+    const names = steps.map(
+      (s) => s.querySelector('.seq-step-name')?.textContent?.trim() ?? ''
+    );
+
+    const activate = (index: number): void => {
+      steps.forEach((s, j) => s.classList.toggle('is-active', j === index));
+      frames.forEach((f, j) => f.classList.toggle('is-active', j === index));
+      if (stateName && names[index]) stateName.textContent = names[index];
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            activate(steps.indexOf(entry.target as HTMLElement));
+          }
+        }
+      },
+      { rootMargin: '-40% 0px -45% 0px', threshold: 0 }
+    );
+
+    steps.forEach((s) => io.observe(s));
+  });
 }
 
 /* ---------- Hero: parallax no scroll + pausa fora da viewport ---------- */
@@ -264,6 +301,7 @@ setupScrollspy();
 setupIndexOverlay();
 setupHeroVideo();
 setupHeroScroll();
+setupSequences();
 setupMethodSignal();
 setupParallax();
 setupContactForm();

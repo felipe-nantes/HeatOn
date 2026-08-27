@@ -1,32 +1,173 @@
 ---
-import CaseCard from './CaseCard.astro';
-import { cases } from '../content/site';
+import { projectsIndex, mediaNotDocumented } from '../content/site';
 ---
 
-<section id="projetos" class="surface-deep" aria-labelledby="projects-title">
-  <div class="container projects-head">
-    <p class="data reveal reveal--label">SECTION 04 / PROJECTS</p>
+<section id="projetos" class="section surface-deep" aria-labelledby="projects-title">
+  <div class="container section-content">
+    <p class="data reveal reveal--label">SECTION 06 / PROJECTS</p>
     <h2 id="projects-title" class="h1 reveal reveal--title">Índice de projetos</h2>
     <hr class="rule projects-rule reveal" />
-  </div>
 
-  <div class="projects-list">
-    {cases.map((item) => <CaseCard item={item} />)}
+    <ol role="list" class="projects-grid">
+      {
+        projectsIndex.map((p) => (
+          <li class:list={['project-card', { 'project-card--text': p.textOnly }]}>
+            <article aria-labelledby={`ptitle-${p.id}`} class="reveal">
+              <p class="data card-num">PROJECT {p.num}</p>
+
+              {p.thumb && p.href ? (
+                <a class="card-media-link" href={p.href} aria-describedby={`ptitle-${p.id}`}>
+                  <figure class="card-media">
+                    <picture>
+                      <source media="(max-width: 767px)" srcset={p.thumb.mobile} />
+                      <img
+                        src={p.thumb.desktop}
+                        alt={p.thumb.alt}
+                        width="1600"
+                        height="1000"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
+                  </figure>
+                </a>
+              ) : (
+                <div class="card-flow" aria-hidden="true">
+                  {p.flow?.map((stage, i) => (
+                    <>
+                      <span class="data flow-stage">{stage}</span>
+                      {i < (p.flow?.length ?? 0) - 1 && (
+                        <span class="data flow-arrow">→</span>
+                      )}
+                    </>
+                  ))}
+                </div>
+              )}
+
+              <h3 id={`ptitle-${p.id}`} class="h2 card-title">
+                {p.href ? <a class="card-title-link" href={p.href}>{p.title}</a> : p.title}
+              </h3>
+              <p class="card-body body-copy">{p.body}</p>
+              <p class="data card-meta">{p.metadata.join(' / ')}</p>
+
+              {p.textOnly && <p class="data card-nodoc">{mediaNotDocumented}</p>}
+              {p.href && (
+                <a class="seq-full-link card-jump" href={p.href}>
+                  VER CAPÍTULO +
+                </a>
+              )}
+            </article>
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
 <style>
-  .projects-head {
-    display: grid;
-    gap: 1.25rem;
-    padding-top: var(--section-block);
-  }
-
   .projects-rule {
-    margin-top: 1.5rem;
+    margin-block: 1.5rem clamp(1.5rem, 4vw, 3rem);
   }
 
-  .projects-list {
-    margin-top: clamp(1rem, 3vw, 2rem);
+  .projects-grid {
+    display: grid;
+    gap: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .project-card article {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    height: 100%;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .card-num {
+    color: var(--color-activity);
+  }
+
+  .card-media-link {
+    display: block;
+  }
+
+  .card-media {
+    margin: 0;
+    overflow: hidden;
+  }
+
+  .card-media img {
+    width: 100%;
+    height: auto;
+    transition: transform var(--motion-base) var(--ease-editorial);
+  }
+
+  @media (hover: hover) {
+    .card-media-link:hover img,
+    .card-media-link:focus-visible img {
+      transform: scale(1.02);
+    }
+  }
+
+  /* Cards sem acervo: fluxo textual sobre grid, sem área de imagem vazia */
+  .card-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.9em;
+    padding: clamp(1.25rem, 3vw, 2rem) 0;
+  }
+
+  .flow-stage {
+    font-size: clamp(0.8125rem, 0.7rem + 0.5vw, 1.0625rem);
+  }
+
+  .flow-arrow {
+    color: var(--color-measurement);
+  }
+
+  .card-title-link {
+    text-decoration: none;
+  }
+
+  .card-title-link:hover,
+  .card-title-link:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .card-body {
+    opacity: 0.8;
+  }
+
+  .card-meta {
+    opacity: 0.6;
+  }
+
+  .card-nodoc {
+    color: var(--color-measurement);
+    opacity: 0.8;
+  }
+
+  .card-jump {
+    justify-self: start;
+  }
+
+  @media (min-width: 768px) {
+    .projects-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .projects-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-media img {
+      transition: none;
+    }
   }
 </style>

@@ -1,0 +1,135 @@
+---
+import SequencePanel from './SequencePanel.astro';
+import { efast } from '../content/site';
+---
+
+<section id="efast" class="section surface-deep" aria-labelledby="efast-title">
+  <div class="container section-content">
+    <p class="data reveal reveal--label efast-label">{efast.label}</p>
+
+    <figure class="efast-opener mask-reveal reveal">
+      <picture>
+        <source media="(max-width: 767px)" srcset={efast.opener.mobile} />
+        <img
+          src={efast.opener.desktop}
+          alt={efast.opener.alt}
+          width="1920"
+          height="1080"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <figcaption class="media-caption">{efast.caption}</figcaption>
+    </figure>
+
+    <div class="efast-head">
+      <h2 id="efast-title" class="h1 reveal reveal--title">{efast.title}</h2>
+      <div class="efast-lede reveal reveal--body">
+        <p class="h2">{efast.headline}</p>
+        <p class="body-copy">{efast.body}</p>
+        <p class="data efast-meta">{efast.metadata.join(' / ')}</p>
+      </div>
+    </div>
+
+    <div class="efast-sequence">
+      <SequencePanel
+        seqId="seq-efast"
+        steps={efast.steps}
+        mediaCaption="Registro real / captura da simulação e do Unreal Engine."
+        wideFallback
+      />
+    </div>
+
+    <div class="efast-closing reveal">
+      {
+        efast.closing.map((item) => (
+          <figure class="efast-closing-item">
+            <img
+              src={item.src}
+              alt={item.alt}
+              width="1600"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))
+      }
+      <p class="media-caption efast-closing-caption">{efast.closingCaption}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .efast-label {
+    color: var(--color-activity);
+  }
+
+  /* Foto de validação abre ocupando 70–85% da largura */
+  .efast-opener {
+    margin: clamp(1.25rem, 2.5vw, 2rem) 0 0;
+    width: min(100%, 82%);
+  }
+
+  .efast-opener img {
+    width: 100%;
+    height: auto;
+  }
+
+  .efast-head {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    margin-top: clamp(2.5rem, 6vw, 5rem);
+    align-items: end;
+  }
+
+  .efast-lede {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .efast-meta {
+    opacity: 0.65;
+  }
+
+  .efast-sequence {
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .efast-closing {
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .efast-closing-item {
+    margin: 0;
+  }
+
+  .efast-closing-item img {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 767px) {
+    .efast-opener {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .efast-closing {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .efast-closing-caption {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .efast-head {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    }
+  }
+</style>

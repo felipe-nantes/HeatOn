@@ -1,6 +1,6 @@
 /**
- * Heat On — conteúdo canônico do site.
- * Fonte: HeatOn_Website_Handoff/03_CONTENT_MODEL_PTBR.md (+ portfolio_saude.md).
+ * Heat On — conteúdo canônico do site (handoff v2.0, real-first).
+ * Fontes: 03_CONTENT_MODEL_PTBR.md, 06_REAL_MEDIA_INVENTORY.md, portfolio_saude.md.
  * Copy inicial para prototipação; revisar com os sócios antes da publicação.
  * A tagline "Scientific Intelligence in Motion" nunca é traduzida.
  */
@@ -9,8 +9,8 @@ export const meta = {
   title: 'Heat On — Scientific Intelligence in Motion',
   description:
     'Software, dados e sistemas inteligentes para saúde, ciência e operações complexas. A Heat On transforma sinal em evidência e evidência em decisão.',
-  ogImage: '/assets/social/og-home.png',
-  twitterImage: '/assets/social/twitter-card.png',
+  ogImage: '/assets/social/og-home-real.png',
+  twitterImage: '/assets/social/twitter-card-real.png',
   locale: 'pt_BR',
 } as const;
 
@@ -31,11 +31,13 @@ export const sections = [
   { id: 'empresa', num: '01', name: 'TERRITORY' },
   { id: 'territorio', num: '02', name: 'FIELD' },
   { id: 'oren', num: '03', name: 'OREN' },
-  { id: 'projetos', num: '04', name: 'PROJECTS' },
-  { id: 'capacidades', num: '05', name: 'CAPABILITIES' },
-  { id: 'metodo', num: '06', name: 'METHOD' },
-  { id: 'principios', num: '07', name: 'PRINCIPLES' },
-  { id: 'contato', num: '08', name: 'CONTACT' },
+  { id: 'femur', num: '04', name: 'FEMUR' },
+  { id: 'efast', num: '05', name: 'EFAST' },
+  { id: 'projetos', num: '06', name: 'PROJECTS' },
+  { id: 'capacidades', num: '07', name: 'CAPABILITIES' },
+  { id: 'metodo', num: '08', name: 'METHOD' },
+  { id: 'principios', num: '09', name: 'PRINCIPLES' },
+  { id: 'contato', num: '10', name: 'CONTACT' },
 ] as const;
 
 export const hero = {
@@ -46,9 +48,12 @@ export const hero = {
   ctaPrimary: { label: 'Explorar projetos', href: '#projetos' },
   ctaSecondary: { label: 'Iniciar um projeto', href: '#contato' },
   video: {
-    src: '/assets/media/hero/heaton-thermal-pulse-loop.mp4',
-    posterDesktop: '/assets/media/hero/hero-poster.webp',
-    posterMobile: '/assets/media/hero/hero-poster-mobile.webp',
+    desktop: '/assets/media/hero/hero-real-loop-h264.mp4',
+    mobile: '/assets/media/hero/hero-real-loop-mobile-h264.mp4',
+    posterDesktop: '/assets/media/hero/hero-real-poster.webp',
+    posterMobile: '/assets/media/hero/hero-real-poster-mobile.webp',
+    posterAlt:
+      'Pessoa usando headset de realidade virtual diante de uma tela com exame de imagem médica segmentado.',
   },
 } as const;
 
@@ -60,7 +65,14 @@ export const manifesto = {
   cta: { label: 'Conhecer a Heat On', href: '#metodo' },
 } as const;
 
+/** Mosaico editorial + território (SECTION 02 / FIELD). */
 export const territory = {
+  mosaic: {
+    desktop: '/assets/home/home-project-mosaic-ai-assisted.webp',
+    mobile: '/assets/home/home-project-mosaic-ai-assisted-mobile.webp',
+    alt: 'Montagem editorial reunindo demonstração do OREN, visualização anatômica, validação em realidade virtual e dashboard de saúde pública.',
+    caption: 'Composição editorial a partir de registros reais dos projetos.',
+  },
   band: ['Science', 'Technology', 'Medicine', 'Computation', 'Intelligence'],
   rows: [
     { label: 'CAMPO', value: 'Saúde, pesquisa e sistemas complexos.' },
@@ -74,109 +86,299 @@ export const territory = {
   },
 } as const;
 
-export const conceptualCaption = 'Representação conceitual do projeto';
+export interface SequenceStep {
+  id: string;
+  /** Label mono externa exibida junto ao frame ativo. */
+  name: string;
+  text: string;
+  desktop: string;
+  mobile?: string;
+  alt: string;
+  /** Link "Ver captura completa" (screenshots). */
+  fullView?: string;
+}
 
+/** Capítulo OREN (SECTION 03). */
 export const oren = {
+  id: 'oren',
   label: 'PROJECT 01 / MEDICAL IMAGING',
   title: 'OREN',
   headline: 'Da imagem médica ao modelo anatômico digital.',
   body: 'Um pipeline de pesquisa e desenvolvimento que combina inteligência artificial, visão computacional, segmentação anatômica e reconstrução 3D para transformar exames em representações específicas do paciente.',
   metadata: ['AI', 'COMPUTER VISION', 'DICOM', 'NIFTI', '3D'],
-  cta: { label: 'Explorar o projeto', href: '#projetos' },
-  image: {
-    desktop: '/assets/cases/desktop/case-01-oren.webp',
-    mobile: '/assets/cases/mobile/case-01-oren-mobile.webp',
-    alt: 'Fatias de imagem médica se transformando em segmentação anatômica e em um volume 3D do fígado.',
+  caption:
+    'Registro de demonstração e revisão do OREN, acompanhado por estados reais do visualizador anatômico 3D.',
+  opener: {
+    desktop: '/assets/cases/real/oren/desktop/oren-cover-real.webp',
+    mobile: '/assets/cases/real/oren/mobile/oren-cover-real-mobile.webp',
+    alt: 'Pessoa utilizando headset de realidade virtual diante de telas com exame de imagem médica e área segmentada.',
+    mobileAlt:
+      'Visualização de um modelo anatômico tridimensional durante demonstração do OREN.',
   },
+  steps: [
+    {
+      id: 'revisao',
+      name: 'REVISÃO EM LABORATÓRIO',
+      text: 'O trabalho começa no laboratório: revisão de fluxos, modelos e resultados em múltiplas telas.',
+      desktop: '/assets/cases/real/oren/desktop/oren-lab-review.webp',
+      mobile: '/assets/cases/real/oren/mobile/oren-validation-vr-mobile.webp',
+      alt: 'Equipe reunida em laboratório revisando software e fluxos técnicos em múltiplas telas.',
+    },
+    {
+      id: 'realista',
+      name: 'MODELO REALISTA',
+      text: 'O visualizador reconstrói o órgão com acabamento realista, lado a lado com a referência do exame.',
+      desktop: '/assets/cases/real/oren/desktop/oren-interface-realistic.webp',
+      mobile: '/assets/cases/real/oren/mobile/oren-interface-realistic-mobile.webp',
+      alt: 'Visualizador OREN exibindo modelo anatômico tridimensional do fígado com acabamento realista e referência de imagem médica.',
+    },
+    {
+      id: 'interna',
+      name: 'ANATOMIA INTERNA',
+      text: 'A anatomia interna é exposta sem perder o registro com o exame de origem.',
+      desktop: '/assets/cases/real/oren/desktop/oren-interface-internal.webp',
+      alt: 'Visualizador OREN em modo de anatomia interna.',
+    },
+    {
+      id: 'segmentos',
+      name: 'SEGMENTOS ANATÔMICOS',
+      text: 'Cada segmento anatômico é isolado e identificado por cor.',
+      desktop: '/assets/cases/real/oren/desktop/oren-interface-segments.webp',
+      alt: 'Visualizador OREN exibindo segmentos anatômicos do fígado em cores distintas.',
+    },
+    {
+      id: 'triagem',
+      name: 'TRIAGEM',
+      text: 'A configuração de triagem organiza os estados do modelo para análise.',
+      desktop: '/assets/cases/real/oren/desktop/oren-interface-triage.webp',
+      alt: 'Visualizador OREN em configuração de triagem anatômica.',
+    },
+  ] as SequenceStep[],
+  panels: [
+    {
+      src: '/assets/cases/real/oren/desktop/oren-mri-panel-1.webp',
+      alt: 'Painel com cortes de imagem médica usados no processo de revisão do OREN.',
+    },
+    {
+      src: '/assets/cases/real/oren/desktop/oren-mri-panel-2.webp',
+      alt: 'Segundo painel com diferentes cortes de imagem médica para comparação.',
+    },
+  ],
+  panelsCaption: 'Painéis de imagem médica usados na revisão.',
 } as const;
 
-export interface CaseItem {
+/** Capítulo Fraturas de fêmur (SECTION 04). */
+export const femur = {
+  id: 'femur',
+  label: 'PROJECT 02 / PUBLIC HEALTH',
+  title: 'Fraturas de fêmur em idosos no Paraná',
+  headline: 'Dados de saúde pública transformados em leitura espacial.',
+  body: 'Analytics e Business Intelligence para organizar dados, indicadores e tendências de saúde pública.',
+  metadata: ['PUBLIC HEALTH', 'DATA ANALYTICS', 'BI'],
+  caption: 'Captura real do dashboard de análise de fraturas de fêmur no Paraná.',
+  cover: {
+    desktop: '/assets/cases/real/femur/desktop/femur-cover-dashboard.webp',
+    mobile: '/assets/cases/real/femur/mobile/femur-cover-dashboard-mobile.webp',
+    alt: 'Dashboard de análise de fraturas de fêmur com mapa do Paraná, indicadores e gráficos por faixa etária.',
+  },
+  steps: [
+    {
+      id: 'overview',
+      name: 'VISÃO GERAL',
+      text: 'Mapa, totais, faixa etária e gráficos convivem no mesmo sistema de leitura.',
+      desktop: '/assets/cases/real/femur/desktop/femur-dashboard-overview.webp',
+      mobile: '/assets/cases/real/femur/mobile/femur-cover-dashboard-mobile.webp',
+      alt: 'Visão geral do dashboard de fraturas de fêmur no Paraná.',
+      fullView: '/assets/cases/real/femur/desktop/femur-dashboard-overview.webp',
+    },
+    {
+      id: 'hotspots',
+      name: 'HOTSPOTS',
+      text: 'A análise espacial destaca hotspots e coldspots por macrorregiões de saúde.',
+      desktop: '/assets/cases/real/femur/desktop/femur-dashboard-hotspots.webp',
+      mobile: '/assets/cases/real/femur/mobile/femur-hotspots-mobile.webp',
+      alt: 'Mapa de hotspots e coldspots de fraturas de fêmur organizado por macrorregiões de saúde.',
+      fullView: '/assets/cases/real/femur/desktop/femur-dashboard-hotspots.webp',
+    },
+    {
+      id: 'trends',
+      name: 'TENDÊNCIAS',
+      text: 'A evolução temporal acompanha fraturas e densitometria ano a ano.',
+      desktop: '/assets/cases/real/femur/desktop/femur-dashboard-trends.webp',
+      alt: 'Dashboard com gráficos de evolução anual de fraturas e densitometria.',
+      fullView: '/assets/cases/real/femur/desktop/femur-dashboard-trends.webp',
+    },
+    {
+      id: 'map',
+      name: 'MAPA INTERATIVO',
+      text: 'Cada município do Paraná carrega sua taxa em um mapa interativo.',
+      desktop: '/assets/cases/real/femur/desktop/femur-dashboard-map.webp',
+      mobile: '/assets/cases/real/femur/mobile/femur-map-detail-mobile.webp',
+      alt: 'Mapa interativo do Paraná com taxas de fraturas por município.',
+      fullView: '/assets/cases/real/femur/desktop/femur-dashboard-map.webp',
+    },
+    {
+      id: 'flow',
+      name: 'FLUXO TERRITORIAL',
+      text: 'O fluxo por município e destino do atendimento fecha a leitura territorial.',
+      desktop: '/assets/cases/real/femur/desktop/femur-dashboard-flow.webp',
+      alt: 'Mapa de fluxo por município e destino do atendimento acompanhado por gráfico de distribuição.',
+      fullView: '/assets/cases/real/femur/desktop/femur-dashboard-flow.webp',
+    },
+  ] as SequenceStep[],
+} as const;
+
+/** Capítulo eFAST em VR (SECTION 05). */
+export const efast = {
+  id: 'efast',
+  label: 'PROJECT 04 / MEDICAL SIMULATION',
+  title: 'Simulador de eFAST em realidade virtual',
+  headline: 'Treinamento de avaliação ultrassonográfica em ambiente imersivo.',
+  body: 'Ambiente interativo em Unreal Engine para simulação e treinamento de avaliação ultrassonográfica no trauma.',
+  metadata: ['MEDICAL SIMULATION', 'VR', 'EDUCATION'],
+  caption:
+    'Registros reais de demonstração e validação do simulador, acompanhados por capturas da aplicação e do desenvolvimento em Unreal Engine.',
+  opener: {
+    desktop: '/assets/cases/real/efast/desktop/efast-cover-real.webp',
+    mobile: '/assets/cases/real/efast/mobile/efast-cover-real-mobile.webp',
+    alt: 'Pessoa utilizando o simulador eFAST em realidade virtual durante sessão de validação com profissionais.',
+  },
+  steps: [
+    {
+      id: 'validacao',
+      name: 'VALIDAÇÃO PRESENCIAL',
+      text: 'Sessões de validação aproximam o usuário em VR dos especialistas que observam.',
+      desktop: '/assets/cases/real/efast/desktop/efast-validation-session.webp',
+      mobile: '/assets/cases/real/efast/mobile/efast-validation-mobile.webp',
+      alt: 'Sessão de validação do simulador eFAST com usuário em realidade virtual e profissionais observando.',
+    },
+    {
+      id: 'simulacao',
+      name: 'SIMULAÇÃO EM EXECUÇÃO',
+      text: 'Dentro da simulação, o paciente virtual recebe o exame com a janela de ultrassom ativa.',
+      desktop: '/assets/cases/real/efast/desktop/efast-simulation-live.webp',
+      mobile: '/assets/cases/real/efast/mobile/efast-simulation-mobile.webp',
+      alt: 'Paciente virtual em maca com janela de ultrassom durante simulação eFAST.',
+    },
+    {
+      id: 'unreal',
+      name: 'CONSTRUÇÃO EM UNREAL',
+      text: 'O ambiente é construído no editor da Unreal Engine, cena a cena.',
+      desktop: '/assets/cases/real/efast/desktop/efast-unreal-scene.webp',
+      alt: 'Cena do simulador eFAST aberta no editor Unreal Engine.',
+    },
+    {
+      id: 'bastidores',
+      name: 'BASTIDOR TÉCNICO',
+      text: 'Volumes de avaliação e configurações técnicas definem o comportamento do exame.',
+      desktop: '/assets/cases/real/efast/desktop/efast-unreal-development.webp',
+      alt: 'Volume de avaliação e configurações técnicas no Unreal Engine.',
+    },
+  ] as SequenceStep[],
+  closing: [
+    {
+      src: '/assets/cases/real/efast/desktop/efast-demo-room.webp',
+      alt: 'Demonstração presencial do simulador com headset e monitor.',
+    },
+    {
+      src: '/assets/cases/real/efast/desktop/efast-headset-demo.webp',
+      alt: 'Pessoa apresentando o headset utilizado no simulador.',
+    },
+  ],
+  closingCaption: 'Demonstrações presenciais do simulador.',
+} as const;
+
+export interface ProjectIndexItem {
   num: string;
   id: string;
   title: string;
   body: string;
   metadata: string[];
-  surface: 'deep' | 'cream';
-  /** Lado da imagem no desktop. */
-  imageSide: 'left' | 'right';
-  image: { desktop: string; mobile: string; alt: string };
+  /** Capítulo na página, quando existe mídia real. */
+  href?: string;
+  thumb?: { desktop: string; mobile: string; alt: string };
+  /** Fluxo textual para projetos sem acervo. */
+  flow?: string[];
+  textOnly: boolean;
 }
 
-export const cases: CaseItem[] = [
+/** Índice dos seis projetos (SECTION 06). */
+export const projectsIndex: ProjectIndexItem[] = [
+  {
+    num: '01',
+    id: 'idx-oren',
+    title: 'OREN',
+    body: 'IA, visão computacional, imagem médica e modelos anatômicos 3D específicos do paciente.',
+    metadata: ['AI', 'MEDICAL IMAGING', 'DIGITAL TWINS'],
+    href: '#oren',
+    thumb: {
+      desktop: '/assets/cases/real/oren/desktop/oren-cover-real.webp',
+      mobile: '/assets/cases/real/oren/mobile/oren-cover-real-mobile.webp',
+      alt: 'Demonstração do OREN com headset de realidade virtual e exame segmentado ao fundo.',
+    },
+    textOnly: false,
+  },
   {
     num: '02',
-    id: 'femur',
+    id: 'idx-femur',
     title: 'Fraturas de fêmur em idosos no Paraná',
     body: 'Analytics e Business Intelligence para organizar dados, indicadores e tendências de saúde pública.',
     metadata: ['PUBLIC HEALTH', 'DATA ANALYTICS', 'BI'],
-    surface: 'cream',
-    imageSide: 'right',
-    image: {
-      desktop: '/assets/cases/desktop/case-02-femur-fractures.webp',
-      mobile: '/assets/cases/mobile/case-02-femur-fractures-mobile.webp',
-      alt: 'Fêmur translúcido sobre superfície clara, cercado por um campo de dados anônimo e um traço analítico.',
+    href: '#femur',
+    thumb: {
+      desktop: '/assets/cases/real/femur/desktop/femur-cover-dashboard.webp',
+      mobile: '/assets/cases/real/femur/mobile/femur-cover-dashboard-mobile.webp',
+      alt: 'Dashboard de fraturas de fêmur com mapa do Paraná e indicadores.',
     },
+    textOnly: false,
   },
   {
     num: '03',
-    id: 'samu',
+    id: 'idx-samu',
     title: 'SAMU Marialva',
     body: 'Dashboard operacional para tornar dados de atendimento e funcionamento do serviço mais acessíveis à gestão.',
     metadata: ['EMERGENCY SERVICES', 'OPERATIONS', 'BI'],
-    surface: 'deep',
-    imageSide: 'left',
-    image: {
-      desktop: '/assets/cases/desktop/case-03-samu-marialva.webp',
-      mobile: '/assets/cases/mobile/case-03-samu-marialva-mobile.webp',
-      alt: 'Cartografia urbana abstrata com uma única rota ativa destacada.',
-    },
+    flow: ['ATENDIMENTO', 'INDICADORES', 'GESTÃO'],
+    textOnly: true,
   },
   {
     num: '04',
-    id: 'efast',
+    id: 'idx-efast',
     title: 'Simulador de eFAST em realidade virtual',
     body: 'Ambiente interativo em Unreal Engine para simulação e treinamento de avaliação ultrassonográfica no trauma.',
     metadata: ['MEDICAL SIMULATION', 'VR', 'EDUCATION'],
-    surface: 'deep',
-    imageSide: 'left',
-    image: {
-      desktop: '/assets/cases/desktop/case-04-efast-vr.webp',
-      mobile: '/assets/cases/mobile/case-04-efast-vr-mobile.webp',
-      alt: 'Manequim de treinamento com janelas de avaliação e probe de ultrassom em ambiente virtual.',
+    href: '#efast',
+    thumb: {
+      desktop: '/assets/cases/real/efast/desktop/efast-cover-real.webp',
+      mobile: '/assets/cases/real/efast/mobile/efast-cover-real-mobile.webp',
+      alt: 'Sessão de validação do simulador eFAST em realidade virtual.',
     },
+    textOnly: false,
   },
   {
     num: '05',
-    id: 'gsus',
+    id: 'idx-gsus',
     title: 'Automação de auditoria médica no GSUS',
     body: 'Mapeamento e automação de tarefas repetitivas, conferência e processamento de dados em fluxos de auditoria.',
     metadata: ['PROCESS AUTOMATION', 'HEALTHCARE OPERATIONS'],
-    surface: 'deep',
-    imageSide: 'right',
-    image: {
-      desktop: '/assets/cases/desktop/case-05-gsus-audit-automation.webp',
-      mobile: '/assets/cases/mobile/case-05-gsus-audit-automation-mobile.webp',
-      alt: 'Registros anônimos atravessando portões de validação em um pipeline central.',
-    },
+    flow: ['MAPEAMENTO', 'AUTOMAÇÃO', 'CONFERÊNCIA'],
+    textOnly: true,
   },
   {
     num: '06',
-    id: 'dados',
+    id: 'idx-dados',
     title: 'Engenharia de dados em massa',
     body: 'Extração, limpeza, padronização, integração e processamento em lote para análise, dashboards e sistemas.',
     metadata: ['ETL', 'DATA ENGINEERING', 'AUTOMATED PIPELINES'],
-    surface: 'deep',
-    imageSide: 'right',
-    image: {
-      desktop: '/assets/cases/desktop/case-06-data-engineering.webp',
-      mobile: '/assets/cases/mobile/case-06-data-engineering-mobile.webp',
-      alt: 'Filamentos não estruturados atravessando planos de transformação e emergindo como malha organizada.',
-    },
+    flow: ['EXTRAÇÃO', 'PADRONIZAÇÃO', 'INTEGRAÇÃO'],
+    textOnly: true,
   },
 ];
 
+export const mediaNotDocumented = 'MEDIA: NOT DOCUMENTED';
+
 export const capabilities = {
-  label: 'SECTION 05 / CAPABILITIES',
+  label: 'SECTION 07 / CAPABILITIES',
   headline: 'Capacidades e verticais',
   items: [
     'Software sob medida',
@@ -195,7 +397,7 @@ export const capabilities = {
 } as const;
 
 export const method = {
-  label: 'SECTION 06 / METHOD',
+  label: 'SECTION 08 / METHOD',
   headline: 'Método Heat On',
   steps: [
     {
@@ -226,7 +428,7 @@ export const method = {
 } as const;
 
 export const principles = {
-  label: 'SECTION 07 / PRINCIPLES',
+  label: 'SECTION 09 / PRINCIPLES',
   headline: 'Cinco compromissos',
   items: [
     { num: '01', name: 'Rigor científico' },
@@ -238,7 +440,7 @@ export const principles = {
 } as const;
 
 export const contact = {
-  label: 'SECTION 08 / CONTACT',
+  label: 'SECTION 10 / CONTACT',
   headline: 'Se o problema cruza software, dados e saúde, queremos entendê-lo.',
   body: 'Conte o contexto, o desafio e o que precisa mudar. A conversa começa pelo problema, não pela tecnologia.',
   cta: 'Falar sobre um projeto',

@@ -1,0 +1,44 @@
+{
+  "version": "2.0.0",
+  "policy": "AI is used only for editorial composition or motion derived from real Heat On media. It must not fabricate project evidence.",
+  "assets": [
+    {
+      "id": "home-project-mosaic-ai-assisted",
+      "tool": "OpenAI ImageGen",
+      "useCase": "compositing",
+      "output": "assets/home/home-project-mosaic-ai-assisted.png",
+      "inputs": [
+        "assets/cases/real/oren/source/oren-validation-vr-original.jpg",
+        "assets/cases/real/oren/source/oren-ui-realistic.png",
+        "assets/cases/real/efast/source/efast-validation-session.jpg",
+        "assets/cases/real/femur/source/femur-dashboard-overview.png"
+      ],
+      "prompt": "Build a sophisticated, energetic editorial montage using only the four supplied real project images. Keep the real OREN demonstration dominant; arrange the OREN visualizer, eFAST validation and femur dashboard as secondary evidence panels. Use a Deep Carbon background, strong asymmetric depth and one restrained Heat Orange accent line. Preserve identities, anatomy, hands, headset, people, scans, interfaces, charts, maps and existing source content. Do not invent people, organs, equipment, data or text. No new text, glow, stock-photo look, medical cliché or watermark.",
+      "documentary": false,
+      "allowedUsage": [
+        "homepage editorial transition",
+        "portfolio introduction",
+        "Open Graph and social cards"
+      ]
+    },
+    {
+      "id": "hero-real-video",
+      "tool": "Higgsfield / Seedance 2.5",
+      "jobId": "0ce3a68c-5612-4022-b1ab-439ed64b2477",
+      "output": "assets/media/hero/hero-real-loop-h264.mp4",
+      "input": "assets/cases/real/oren/source/oren-validation-vr-original.jpg",
+      "prompt": "Use the supplied real photograph as the immutable visual source and first frame. Create a six-second silent cinematic website hero with a very slow controlled dolly-in and subtle lateral parallax. The real person makes only minimal natural breathing and a small believable hand movement. Keep the VR headset rigidly fitted. Keep the monitor, medical scan, room, cables, equipment, body, face, hands, clothing and all existing screen content unchanged and stable. Preserve realistic documentary lighting and natural textures. No cuts, no new objects, no text, no interface animation, no screen morphing, no anatomy changes, no extra fingers, no fake glow, no cyberpunk. Finish close to the starting composition so the clip can loop softly.",
+      "documentary": false,
+      "derivedFromRealPhoto": true
+    }
+  ],
+  "removedFromV1": [
+    "conceptual OREN cover",
+    "conceptual femur cover",
+    "conceptual SAMU cover",
+    "conceptual eFAST cover",
+    "conceptual GSUS cover",
+    "conceptual data engineering cover",
+    "abstract thermal hero"
+  ]
+}

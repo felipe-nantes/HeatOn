@@ -1,0 +1,73 @@
+---
+import type { SequenceStep } from '../content/site';
+
+interface Props {
+  seqId: string;
+  steps: readonly SequenceStep[];
+  /** Legenda mono exibida sob o painel de mídia (tipo do registro). */
+  mediaCaption: string;
+  /** Screenshots ultrawide sem recorte mobile rolam horizontalmente. */
+  wideFallback?: boolean;
+}
+
+const { seqId, steps, mediaCaption, wideFallback = false } = Astro.props;
+---
+
+<div class="sequence" data-sequence={seqId}>
+  <div class="seq-media" aria-hidden="true">
+    <p class="data seq-state">
+      <span class="seq-state-tag">[ ESTADO ]</span>
+      <span class="seq-state-name" id={`${seqId}-state`}>{steps[0]?.name}</span>
+    </p>
+    <div class="seq-frames">
+      {
+        steps.map((step, i) => (
+          <figure class:list={['seq-frame', { 'is-active': i === 0 }]} data-frame={step.id}>
+            <img
+              src={step.desktop}
+              alt=""
+              width="1600"
+              height="1000"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))
+      }
+    </div>
+    <p class="media-caption">{mediaCaption}</p>
+  </div>
+
+  <ol role="list" class="seq-steps">
+    {
+      steps.map((step, i) => (
+        <li class:list={['seq-step', { 'is-active': i === 0 }]} data-step={step.id}>
+          <span class="data seq-step-num">{String(i + 1).padStart(2, '0')}</span>
+          <span class="seq-step-name">{step.name}</span>
+          <span class="seq-step-text">{step.text}</span>
+          {step.fullView && (
+            <a class="seq-full-link" href={step.fullView} target="_blank" rel="noopener">
+              VER CAPTURA COMPLETA +
+            </a>
+          )}
+          <figure
+            class:list={[
+              'seq-step-figure',
+              { 'seq-step-figure--wide': wideFallback && !step.mobile },
+            ]}
+          >
+            <img
+              src={step.mobile ?? step.desktop}
+              alt={step.alt}
+              width="1080"
+              height="1350"
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption class="media-caption">{mediaCaption}</figcaption>
+          </figure>
+        </li>
+      ))
+    }
+  </ol>
+</div>

@@ -1,0 +1,84 @@
+---
+import SequencePanel from './SequencePanel.astro';
+import { femur } from '../content/site';
+---
+
+<section id="femur" class="section surface-cream" aria-labelledby="femur-title">
+  <div class="container section-content">
+    <p class="data reveal reveal--label femur-label">{femur.label}</p>
+
+    <div class="femur-head">
+      <h2 id="femur-title" class="h1 reveal reveal--title">{femur.title}</h2>
+      <div class="femur-lede reveal reveal--body">
+        <p class="h2">{femur.headline}</p>
+        <p class="body-copy">{femur.body}</p>
+        <p class="data femur-meta">{femur.metadata.join(' / ')}</p>
+      </div>
+    </div>
+
+    <figure class="femur-cover mask-reveal reveal">
+      <picture>
+        <source media="(max-width: 767px)" srcset={femur.cover.mobile} />
+        <img
+          src={femur.cover.desktop}
+          alt={femur.cover.alt}
+          width="1920"
+          height="1080"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+      <figcaption class="media-caption">{femur.caption}</figcaption>
+    </figure>
+
+    <div class="femur-sequence">
+      <SequencePanel
+        seqId="seq-femur"
+        steps={femur.steps}
+        mediaCaption="Captura real do dashboard; dados e textos internos inalterados."
+        wideFallback
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .femur-label {
+    color: var(--color-activity);
+  }
+
+  .femur-head {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+    align-items: end;
+  }
+
+  .femur-lede {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .femur-meta {
+    opacity: 0.65;
+  }
+
+  .femur-cover {
+    margin: clamp(2.5rem, 6vw, 5rem) 0 0;
+  }
+
+  .femur-cover img {
+    width: 100%;
+    height: auto;
+  }
+
+  .femur-sequence {
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  @media (min-width: 1200px) {
+    .femur-head {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    }
+  }
+</style>

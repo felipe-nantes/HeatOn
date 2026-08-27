@@ -1,0 +1,131 @@
+---
+import SequencePanel from './SequencePanel.astro';
+import { oren } from '../content/site';
+---
+
+<section id="oren" class="section surface-deep" aria-labelledby="oren-title">
+  <div class="container section-content">
+    <p class="data reveal reveal--label chapter-label">{oren.label}</p>
+
+    <div class="oren-opener">
+      <div class="oren-copy">
+        <h2 id="oren-title" class="display oren-name reveal reveal--title">{oren.title}</h2>
+        <p class="h2 reveal reveal--title">{oren.headline}</p>
+        <p class="body-copy reveal reveal--body">{oren.body}</p>
+        <p class="data chapter-meta reveal reveal--body">{oren.metadata.join(' / ')}</p>
+      </div>
+
+      <figure class="oren-cover reveal">
+        <picture>
+          <source media="(max-width: 767px)" srcset={oren.opener.mobile} />
+          <img
+            src={oren.opener.desktop}
+            alt={oren.opener.alt}
+            width="1600"
+            height="1000"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+        <figcaption class="media-caption">{oren.caption}</figcaption>
+      </figure>
+    </div>
+
+    <div class="oren-sequence">
+      <SequencePanel
+        seqId="seq-oren"
+        steps={oren.steps}
+        mediaCaption="Registro real / captura de interface do OREN."
+      />
+    </div>
+
+    <div class="oren-panels reveal">
+      {
+        oren.panels.map((panel) => (
+          <figure class="oren-panel">
+            <img
+              src={panel.src}
+              alt={panel.alt}
+              width="1600"
+              height="900"
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        ))
+      }
+      <p class="media-caption oren-panels-caption">{oren.panelsCaption}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .chapter-label {
+    color: var(--color-activity);
+  }
+
+  .oren-opener {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    align-items: center;
+  }
+
+  .oren-copy {
+    display: grid;
+    gap: 1.4rem;
+    justify-items: start;
+  }
+
+  .oren-name {
+    letter-spacing: 0.02em;
+  }
+
+  .chapter-meta {
+    opacity: 0.65;
+  }
+
+  .oren-cover {
+    margin: 0;
+  }
+
+  .oren-cover img {
+    width: 100%;
+    height: auto;
+  }
+
+  .oren-sequence {
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .oren-panels {
+    display: grid;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    margin-top: clamp(3rem, 7vw, 6rem);
+  }
+
+  .oren-panel {
+    margin: 0;
+  }
+
+  .oren-panel img {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (min-width: 768px) {
+    .oren-panels {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .oren-panels-caption {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .oren-opener {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    }
+  }
+</style>
