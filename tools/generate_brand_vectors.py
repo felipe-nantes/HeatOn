@@ -200,6 +200,17 @@ def symbol_group(fill: str, scale: float, dx: float, dy: float) -> str:
     return f'<g transform="{tf}">{ps}</g>'
 
 
+# Símbolo isolado em branco puro, para a inversão do hero (difference).
+write(
+    "symbol-white.svg",
+    svg_doc(
+        SB_W + 2 * PAD,
+        SB_H + 2 * PAD,
+        symbol_group("#FFFFFF", 1.0, PAD, PAD),
+        "HeatOn symbol white",
+    ),
+)
+
 # ---------------------------------------------------------------- lockups horizontais
 SYM_H = CAP * 1.32          # altura do símbolo relativa à caixa alta
 GAP = CAP * 0.34            # respiro símbolo -> wordmark

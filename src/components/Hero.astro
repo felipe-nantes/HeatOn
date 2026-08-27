@@ -85,13 +85,13 @@ const clipsJson = JSON.stringify(hero.video.clips);
     </h1>
   </div>
 
-  <!-- Wordmark gigante na base: branco + difference = vídeo invertido nas letras -->
-  <div class="hero-wordmark" aria-hidden="true">
+  <!-- Símbolo da marca: branco + difference = vídeo invertido dentro da onda -->
+  <div class="hero-symbol" aria-hidden="true">
     <img
-      src="/assets/brand/wordmark-white-mono.svg"
+      src="/assets/brand/symbol-white.svg"
       alt=""
-      width="3361"
-      height="734"
+      width="667"
+      height="363"
       decoding="async"
     />
   </div>
@@ -339,33 +339,30 @@ const clipsJson = JSON.stringify(hero.video.clips);
     mask-image: linear-gradient(90deg, #000 0%, #000 45%, transparent 100%);
   }
 
-  /* ---------- Wordmark na base, full-bleed ---------- */
-  .hero-wordmark {
-    position: relative;
-    width: 100%;
-    padding-inline: var(--page-pad);
+  /* ---------- Símbolo da marca sobre o vídeo ---------- */
+  .hero-symbol {
+    position: absolute;
+    left: 27%;
+    top: 41%;
+    transform: translate(-50%, -50%);
+    width: clamp(190px, 31vw, 600px);
+    z-index: var(--z-content);
+    pointer-events: none;
     line-height: 0;
   }
 
-  .hero-wordmark img {
+  .hero-symbol img {
     width: 100%;
-    max-width: 1180px;
     height: auto;
-    /* Branco puro + difference: as letras invertem o vídeo por trás */
+    /* Branco puro + difference: a onda inverte o vídeo por trás */
     mix-blend-mode: difference;
-    animation: wordmark-rise 700ms var(--ease-editorial) 380ms both;
+    animation: symbol-in 800ms var(--ease-editorial) 380ms both;
   }
 
-  @media (min-width: 768px) {
-    .hero-wordmark img {
-      width: 64%;
-    }
-  }
-
-  @keyframes hero-fade {
+  @keyframes symbol-in {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(12px);
     }
     to {
       opacity: 1;
@@ -373,10 +370,19 @@ const clipsJson = JSON.stringify(hero.video.clips);
     }
   }
 
-  @keyframes wordmark-rise {
+  /* Na tela pequena sobe para não encostar na microcopy centralizada */
+  @media (max-width: 767px) {
+    .hero-symbol {
+      left: 50%;
+      top: 32%;
+      width: min(62vw, 260px);
+    }
+  }
+
+  @keyframes hero-fade {
     from {
       opacity: 0;
-      transform: translateY(6%);
+      transform: translateY(10px);
     }
     to {
       opacity: 1;
@@ -401,13 +407,13 @@ const clipsJson = JSON.stringify(hero.video.clips);
 
   @media (prefers-reduced-motion: reduce) {
     .hero-microcopy,
-    .hero-wordmark img,
+    .hero-symbol img,
     .hero-marks,
     .hero-grain {
       animation: none;
     }
 
-    .hero-wordmark img {
+    .hero-symbol img {
       opacity: 1;
     }
   }
