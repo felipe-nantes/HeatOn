@@ -1,5 +1,11 @@
 ---
 import { nav } from '../content/site';
+
+// Nav em pares empilhados (01/02, 03/04, 05) com separadores verticais.
+const pairs: (typeof nav.items)[number][][] = [];
+for (let i = 0; i < nav.items.length; i += 2) {
+  pairs.push(nav.items.slice(i, i + 2));
+}
 ---
 
 <header id="site-header" class="site-header">
@@ -22,18 +28,22 @@ import { nav } from '../content/site';
     </a>
 
     <nav class="header-nav" aria-label="Navegação principal">
-      <ol role="list">
+      <div class="nav-cols">
         {
-          nav.items.map((item) => (
-            <li>
-              <a href={item.href}>
-                <span class="data nav-num">{item.num}</span>
-                <span class="nav-label">{item.label}</span>
-              </a>
-            </li>
+          pairs.map((pair) => (
+            <ol role="list" class="nav-col">
+              {pair.map((item) => (
+                <li>
+                  <a href={item.href}>
+                    <span class="nav-num">{item.num}</span>
+                    <span class="nav-label">{item.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
           ))
         }
-      </ol>
+      </div>
     </nav>
 
     <p class="header-meta data">
@@ -90,7 +100,7 @@ import { nav } from '../content/site';
     gap: clamp(1rem, 3vw, 3rem);
     max-width: var(--layout-max);
     margin-inline: auto;
-    padding: 0.9rem var(--page-pad);
+    padding: 0.8rem var(--page-pad);
   }
 
   .brand {
@@ -107,27 +117,41 @@ import { nav } from '../content/site';
     display: none;
   }
 
-  .header-nav ol {
+  .nav-cols {
     display: flex;
-    gap: clamp(1rem, 2.2vw, 2.25rem);
+  }
+
+  .nav-col {
+    display: grid;
+    gap: 0.35rem;
+    padding-inline: clamp(1.25rem, 2vw, 2.25rem);
+    border-left: 1px solid rgba(255, 244, 230, 0.18);
+  }
+
+  .nav-col:first-child {
+    border-left: 0;
+    padding-left: 0;
   }
 
   .header-nav a {
     display: inline-flex;
     align-items: baseline;
-    gap: 0.5em;
+    gap: 0.7em;
     text-decoration: none;
-    font-family: var(--font-body);
-    font-size: var(--text-label);
-    font-weight: 600;
-    letter-spacing: var(--tracking-label);
+    font-family: var(--font-data);
+    font-size: 0.6875rem;
+    font-weight: 400;
+    letter-spacing: var(--tracking-data);
     text-transform: uppercase;
+    line-height: 1.5;
+    white-space: nowrap;
   }
 
   .nav-num {
-    font-size: 0.6875rem;
-    opacity: 0.55;
-    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+    opacity: 0.5;
+    transition:
+      color var(--motion-fast) var(--ease-feedback),
+      opacity var(--motion-fast) var(--ease-feedback);
   }
 
   /* Um elemento ativo por vez: o número do link em foco/hover */

@@ -46,32 +46,24 @@ const clipsJson = JSON.stringify(hero.video.clips);
     <div class="hero-scrim"></div>
   </div>
 
-  <!-- Wordmark no topo: branco puro + difference = vídeo invertido nas letras -->
+  <!-- Microcopy única, centralizada, com traço técnico -->
+  <div class="hero-center">
+    <h1 id="hero-title" class="hero-microcopy">
+      <span class="visually-hidden">Heat On — {hero.display}. </span>
+      <span class="microcopy-text">{hero.support}</span>
+      <span class="microcopy-dash" aria-hidden="true"></span>
+    </h1>
+  </div>
+
+  <!-- Wordmark gigante ancorado na base, escuro translúcido sobre o vídeo -->
   <div class="hero-wordmark" aria-hidden="true">
     <img
-      src="/assets/brand/wordmark-white.svg"
+      src="/assets/brand/wordmark-deep.svg"
       alt=""
       width="699"
       height="151"
       decoding="async"
     />
-  </div>
-
-  <div class="container hero-content section-content">
-    <p class="data hero-eyebrow">{hero.eyebrow}</p>
-    <h1 id="hero-title" class="display hero-title">{hero.display}</h1>
-    <div class="hero-signal" aria-hidden="true"></div>
-    <p class="hero-support body-copy">{hero.support}</p>
-    <div class="hero-ctas">
-      <a class="pill pill--solid" href={hero.ctaPrimary.href}>
-        {hero.ctaPrimary.label}
-        <span class="pill-plus" aria-hidden="true">+</span>
-      </a>
-      <a class="pill" href={hero.ctaSecondary.href}>
-        {hero.ctaSecondary.label}
-        <span class="pill-plus" aria-hidden="true">+</span>
-      </a>
-    </div>
   </div>
 </section>
 
@@ -83,7 +75,6 @@ const clipsJson = JSON.stringify(hero.video.clips);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    /* Contém o blend do wordmark dentro do hero */
     isolation: isolate;
   }
 
@@ -117,80 +108,69 @@ const clipsJson = JSON.stringify(hero.video.clips);
     opacity: 1;
   }
 
-  /* Filtro mais escuro sobre o vídeo */
+  /* Escurecimento uniforme; base mais clara para o wordmark deep assentar */
   .hero-scrim {
     position: absolute;
     inset: 0;
     background:
       linear-gradient(
         180deg,
-        rgba(14, 14, 16, 0.55) 0%,
-        rgba(14, 14, 16, 0.18) 42%,
-        rgba(14, 14, 16, 0.72) 100%
+        rgba(14, 14, 16, 0.5) 0%,
+        rgba(14, 14, 16, 0.16) 45%,
+        rgba(14, 14, 16, 0.28) 100%
       ),
-      rgba(14, 14, 16, 0.24);
+      rgba(14, 14, 16, 0.22);
   }
 
-  /* ---------- Wordmark no topo, letras invertendo o vídeo ---------- */
+  /* ---------- Microcopy central ---------- */
+  .hero-center {
+    position: relative;
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: clamp(5rem, 12vh, 7rem) var(--page-pad) clamp(1.5rem, 4vh, 3rem);
+  }
+
+  .hero-microcopy {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: clamp(0.9375rem, 0.85rem + 0.35vw, 1.125rem);
+    font-weight: 400;
+    line-height: 1.55;
+    letter-spacing: 0.01em;
+    text-align: center;
+    max-width: 60ch;
+    animation: hero-fade 600ms var(--ease-editorial) 250ms both;
+  }
+
+  .microcopy-dash {
+    flex: none;
+    width: clamp(70px, 9vw, 150px);
+    border-top: 1px dashed rgba(255, 244, 230, 0.55);
+  }
+
+  /* ---------- Wordmark na base, full-bleed ---------- */
   .hero-wordmark {
     position: relative;
     width: 100%;
-    max-width: var(--layout-max);
-    margin-inline: auto;
-    padding: clamp(4.25rem, 10vh, 6rem) var(--page-pad) 0;
+    padding-inline: clamp(10px, 1.2vw, 28px);
+    line-height: 0;
   }
 
   .hero-wordmark img {
     width: 100%;
     height: auto;
-    mix-blend-mode: difference;
-    animation: hero-in var(--motion-base) var(--ease-editorial) 160ms both;
+    opacity: 0.82;
+    animation: wordmark-rise 700ms var(--ease-editorial) 380ms both;
   }
 
-  .hero-content {
-    position: relative;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-block: clamp(2.5rem, 6vh, 4rem) clamp(3.5rem, 9vh, 5.5rem);
-  }
-
-  .hero-eyebrow {
-    opacity: 0.72;
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-title {
-    max-width: 14ch;
-  }
-
-  /* Linha de sinal: traço fino com o gradiente térmico, percorre 1x */
-  .hero-signal {
-    height: 2px;
-    width: min(360px, 42vw);
-    margin-block: clamp(1.5rem, 3.5vh, 2.5rem);
-    background: var(--gradient-thermal);
-    transform-origin: left center;
-  }
-
-  .hero-support {
-    max-width: 44ch;
-    opacity: 0.86;
-  }
-
-  .hero-ctas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: clamp(2rem, 4.5vh, 3rem);
-  }
-
-  /* --- Sequência de abertura (~900–1300 ms percebidos) --- */
-  @keyframes hero-in {
+  @keyframes hero-fade {
     from {
       opacity: 0;
-      transform: translateY(14px);
+      transform: translateY(10px);
     }
     to {
       opacity: 1;
@@ -198,40 +178,35 @@ const clipsJson = JSON.stringify(hero.video.clips);
     }
   }
 
-  @keyframes signal-run {
+  @keyframes wordmark-rise {
     from {
-      transform: scaleX(0);
+      opacity: 0;
+      transform: translateY(6%);
     }
     to {
-      transform: scaleX(1);
+      opacity: 0.82;
+      transform: none;
     }
   }
 
-  .hero-eyebrow,
-  .hero-title,
-  .hero-support,
-  .hero-ctas {
-    animation: hero-in var(--motion-base) var(--ease-editorial) both;
+  @media (max-width: 767px) {
+    .microcopy-dash {
+      display: none;
+    }
+
+    .hero-microcopy {
+      max-width: 34ch;
+    }
   }
-
-  .hero-eyebrow { animation-delay: 80ms; }
-  .hero-title { animation-delay: 240ms; }
-
-  .hero-signal {
-    animation: signal-run 480ms var(--ease-editorial) 380ms both;
-  }
-
-  .hero-support { animation-delay: 620ms; }
-  .hero-ctas { animation-delay: 720ms; }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-eyebrow,
-    .hero-title,
-    .hero-support,
-    .hero-ctas,
-    .hero-wordmark img,
-    .hero-signal {
+    .hero-microcopy,
+    .hero-wordmark img {
       animation: none;
+    }
+
+    .hero-wordmark img {
+      opacity: 0.82;
     }
   }
 </style>
