@@ -146,6 +146,48 @@ function setupHeroVideo(): void {
   else window.addEventListener('load', load, { once: true });
 }
 
+/* ---------- Hero: parallax no scroll + pausa fora da viewport ---------- */
+function setupHeroScroll(): void {
+  const heroSection = document.getElementById('hero');
+  if (!heroSection) return;
+
+  // Pausa marquee/zoom/scroll-hint quando o hero não está visível.
+  const pauseIO = new IntersectionObserver(([entry]) => {
+    heroSection.classList.toggle('is-offscreen', !(entry && entry.isIntersecting));
+  });
+  pauseIO.observe(heroSection);
+
+  if (reducedMotion.matches) return;
+  if (window.matchMedia('(max-width: 767px)').matches) return;
+
+  const stage = document.getElementById('hero-stage');
+  const media = heroSection.querySelector<HTMLElement>('.hero-media');
+  if (!stage || !media) return;
+
+  let ticking = false;
+
+  const update = (): void => {
+    ticking = false;
+    const heroH = heroSection.offsetHeight || 1;
+    const progress = Math.min(Math.max(window.scrollY / heroH, 0), 1);
+    // Tipografia sobe um pouco mais rápida que o fundo (≤4% cada).
+    stage.style.transform = `translateY(${(-progress * heroH * 0.04).toFixed(1)}px)`;
+    media.style.transform = `translateY(${(progress * heroH * 0.035).toFixed(1)}px)`;
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    },
+    { passive: true }
+  );
+  update();
+}
+
 /* ---------- Signal line do método: desenha 1x por entrada ---------- */
 function setupMethodSignal(): void {
   const wrap = document.getElementById('method-signal');
@@ -221,6 +263,7 @@ setupHeaderState();
 setupScrollspy();
 setupIndexOverlay();
 setupHeroVideo();
+setupHeroScroll();
 setupMethodSignal();
 setupParallax();
 setupContactForm();

@@ -39,8 +39,16 @@ export const sections = [
 ] as const;
 
 export const hero = {
-  eyebrow: 'HEATON / SCIENTIFIC INTELLIGENCE IN MOTION',
+  eyebrow: 'HEATON / [ 000-00 / INTRO ]',
   display: 'Scientific Intelligence in Motion',
+  /** Linhas do display monumental; a última palavra é o elemento ativo (laranja). */
+  displayLines: ['Scientific', 'Intelligence', 'In Motion'],
+  /** Leitura de dados de exemplo do brandbook (p.22/25) — linguagem da marca, não métricas. */
+  dataReadout: [
+    ['MODEL_ID', 'HTO-042'],
+    ['CONFIDENCE', '0.942'],
+    ['STATUS', 'ACTIVE'],
+  ],
   support:
     'Software, dados e sistemas inteligentes para saúde, ciência e operações complexas.',
   ctaPrimary: { label: 'Explorar projetos', href: '#projetos' },

@@ -1,5 +1,8 @@
 ---
-import { hero } from '../content/site';
+import { hero, capabilities } from '../content/site';
+
+const marqueeItems = capabilities.items.map((c) => c.toUpperCase());
+const lines = hero.displayLines;
 ---
 
 <section id="hero" class="hero surface-deep" aria-labelledby="hero-title">
@@ -27,34 +30,81 @@ import { hero } from '../content/site';
       tabindex="-1"
     ></video>
     <div class="hero-scrim"></div>
+    <img
+      class="hero-grid"
+      src="/assets/graphics/scientific-grid.svg"
+      alt=""
+      width="2400"
+      height="1600"
+      loading="lazy"
+      decoding="async"
+    />
   </div>
 
   <div class="container hero-content section-content">
     <p class="data hero-eyebrow">{hero.eyebrow}</p>
-    <h1 id="hero-title" class="display hero-title">{hero.display}</h1>
-    <div class="hero-signal" aria-hidden="true"></div>
-    <p class="hero-support body-copy">{hero.support}</p>
-    <div class="hero-ctas">
-      <a class="pill pill--solid" href={hero.ctaPrimary.href}>
-        {hero.ctaPrimary.label}
-        <span class="pill-plus" aria-hidden="true">+</span>
-      </a>
-      <a class="pill" href={hero.ctaSecondary.href}>
-        {hero.ctaSecondary.label}
-        <span class="pill-plus" aria-hidden="true">+</span>
-      </a>
+
+    <div class="hero-stage" id="hero-stage">
+      <span class="hero-mark hero-mark--tl data" aria-hidden="true">+</span>
+      <span class="hero-mark hero-mark--br data" aria-hidden="true">+</span>
+
+      <h1 id="hero-title" class="hero-headline">
+        <span class="line"><span class="line-inner">{lines[0]}</span></span>
+        <span class="line line--outline"><span class="line-inner">{lines[1]}</span></span>
+        <span class="line">
+          <span class="line-inner">
+            In <span class="line-accent">Motion</span>
+          </span>
+        </span>
+      </h1>
+    </div>
+
+    <div class="hero-sub">
+      <p class="hero-support body-copy">{hero.support}</p>
+      <div class="hero-ctas">
+        <a class="pill pill--solid" href={hero.ctaPrimary.href}>
+          {hero.ctaPrimary.label}
+          <span class="pill-plus" aria-hidden="true">+</span>
+        </a>
+        <a class="pill" href={hero.ctaSecondary.href}>
+          {hero.ctaSecondary.label}
+          <span class="pill-plus" aria-hidden="true">+</span>
+        </a>
+      </div>
+
+      <dl class="hero-data data" aria-label="Leitura de sistema (ilustrativa)">
+        {
+          hero.dataReadout.map(([key, value]) => (
+            <div class="data-row">
+              <dt>{key}</dt>
+              <dd>{value}</dd>
+            </div>
+          ))
+        }
+        <span class="data-ref" aria-hidden="true">[ REF ]</span>
+      </dl>
     </div>
   </div>
 
-  <div class="hero-wordmark" aria-hidden="true">
-    <img
-      src="/assets/brand/wordmark-color.svg"
-      alt=""
-      width="699"
-      height="151"
-      loading="lazy"
-      decoding="async"
-    />
+  <div class="hero-bottom">
+    <div class="container hero-bottom-inner">
+      <p class="data hero-scroll">
+        SCROLL
+        <span class="scroll-track" aria-hidden="true"><span class="scroll-dot"></span></span>
+      </p>
+    </div>
+    <div class="hero-signal" aria-hidden="true"></div>
+    <div class="hero-marquee" aria-hidden="true">
+      <div class="marquee-track data">
+        {[0, 1].map(() => (
+          <span class="marquee-seq">
+            {marqueeItems.map((item) => (
+              <span class="marquee-item">{item}<span class="marquee-sep">/</span></span>
+            ))}
+          </span>
+        ))}
+      </div>
+    </div>
   </div>
 </section>
 
@@ -65,10 +115,10 @@ import { hero } from '../content/site';
     min-height: 100svh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     overflow: hidden;
   }
 
+  /* ---------- Mídia em camadas ---------- */
   .hero-media {
     position: absolute;
     inset: 0;
@@ -84,6 +134,22 @@ import { hero } from '../content/site';
     object-fit: cover;
   }
 
+  /* Zoom lento "respirando" — pausa fora da viewport e em reduced motion */
+  .hero-poster,
+  .hero-video {
+    animation: hero-breathe 26s var(--ease-editorial) infinite alternate;
+  }
+
+  .hero.is-offscreen .hero-poster,
+  .hero.is-offscreen .hero-video {
+    animation-play-state: paused;
+  }
+
+  @keyframes hero-breathe {
+    from { transform: scale(1); }
+    to { transform: scale(1.035); }
+  }
+
   .hero-video {
     opacity: 0;
     transition: opacity var(--motion-slow) var(--ease-editorial);
@@ -93,115 +159,326 @@ import { hero } from '../content/site';
     opacity: 1;
   }
 
-  /* Overlay Deep Carbon leve para legibilidade */
   .hero-scrim {
     position: absolute;
     inset: 0;
     background: linear-gradient(
       180deg,
-      rgba(14, 14, 16, 0.62) 0%,
-      rgba(14, 14, 16, 0.34) 45%,
-      rgba(14, 14, 16, 0.78) 100%
+      rgba(14, 14, 16, 0.58) 0%,
+      rgba(14, 14, 16, 0.22) 42%,
+      rgba(14, 14, 16, 0.82) 100%
     );
   }
 
+  .hero-grid {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.14;
+  }
+
+  /* ---------- Conteúdo ---------- */
   .hero-content {
-    padding-block: clamp(7rem, 18vh, 10rem) clamp(4rem, 10vh, 6rem);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: clamp(5.5rem, 14vh, 8rem);
+    padding-bottom: clamp(1.5rem, 4vh, 3rem);
   }
 
   .hero-eyebrow {
-    opacity: 0.72;
-    margin-bottom: 1.5rem;
+    opacity: 0;
+    margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
+    animation: hero-fade 500ms var(--ease-editorial) 150ms forwards;
   }
 
-  .hero-title {
-    max-width: 14ch;
+  .hero-stage {
+    position: relative;
+    width: fit-content;
+    will-change: transform;
   }
 
-  /* Linha de sinal: traço fino com o gradiente térmico, percorre 1x */
-  .hero-signal {
-    height: 2px;
-    width: min(360px, 42vw);
-    margin-block: clamp(1.5rem, 3.5vh, 2.5rem);
-    background: var(--gradient-thermal);
-    transform-origin: left center;
+  /* Crosshairs de medição nos cantos do bloco tipográfico */
+  .hero-mark {
+    position: absolute;
+    font-size: 1.1rem;
+    letter-spacing: 0;
+    opacity: 0;
+    animation: hero-fade 500ms var(--ease-editorial) 1150ms forwards;
+  }
+
+  .hero-mark--tl { top: -0.9em; left: -0.15em; }
+  .hero-mark--br { bottom: -0.9em; right: -0.15em; color: var(--color-measurement); }
+
+  /* ---------- Display monumental ---------- */
+  .hero-headline {
+    font-family: var(--font-display);
+    font-weight: 250;
+    font-size: clamp(2.9rem, 10.4vw, 9.75rem);
+    line-height: 0.97;
+    letter-spacing: var(--tracking-display);
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .line {
+    display: block;
+    overflow: hidden;
+    padding-block: 0.02em;
+  }
+
+  .line-inner {
+    display: inline-block;
+    transform: translateY(112%);
+    animation: line-rise 780ms var(--ease-editorial) forwards;
+  }
+
+  .line:nth-child(1) .line-inner { animation-delay: 160ms; }
+  .line:nth-child(2) .line-inner { animation-delay: 320ms; }
+  .line:nth-child(3) .line-inner { animation-delay: 480ms; }
+
+  @keyframes line-rise {
+    to { transform: translateY(0); }
+  }
+
+  /* Linha em contorno: espessura fina, sem preenchimento */
+  .line--outline .line-inner {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--color-information);
+  }
+
+  @supports not (-webkit-text-stroke: 1px #fff) {
+    .line--outline .line-inner {
+      color: var(--color-information);
+      opacity: 0.55;
+    }
+  }
+
+  /* O único elemento ativo do hero */
+  .line-accent {
+    color: var(--color-activity);
+  }
+
+  /* ---------- Suporte, CTAs e leitura de dados ---------- */
+  .hero-sub {
+    display: grid;
+    gap: clamp(1.5rem, 3vh, 2.25rem);
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+    align-items: end;
   }
 
   .hero-support {
-    max-width: 44ch;
-    opacity: 0.86;
+    max-width: 40ch;
+    opacity: 0;
+    animation: hero-fade 550ms var(--ease-editorial) 900ms forwards;
   }
 
   .hero-ctas {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
-    margin-top: clamp(2rem, 4.5vh, 3rem);
+    opacity: 0;
+    animation: hero-fade 550ms var(--ease-editorial) 1020ms forwards;
   }
 
-  .hero-wordmark {
+  .hero-data {
+    display: none;
+    opacity: 0;
+    animation: hero-fade 550ms var(--ease-editorial) 1150ms forwards;
+  }
+
+  .data-row {
+    display: grid;
+    grid-template-columns: 8.5em 1fr;
+    gap: 1.25em;
+    padding-block: 0.35em;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .data-row dt {
+    opacity: 0.55;
+  }
+
+  .data-row dd {
+    margin: 0;
+  }
+
+  .data-ref {
+    display: block;
+    margin-top: 0.6em;
+    color: var(--color-measurement);
+    opacity: 0.75;
+  }
+
+  /* ---------- Faixa inferior ---------- */
+  .hero-bottom {
     position: relative;
-    z-index: 1;
-    padding: 0 var(--page-pad) clamp(1.25rem, 3.5vh, 2.5rem);
-    max-width: var(--layout-max);
-    margin-inline: auto;
-    width: 100%;
+    z-index: var(--z-content);
+    opacity: 0;
+    animation: hero-fade 600ms var(--ease-editorial) 1250ms forwards;
   }
 
-  .hero-wordmark img {
-    width: 100%;
-    height: auto;
-    opacity: 0.94;
+  .hero-bottom-inner {
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 0.9rem;
   }
 
-  /* --- Sequência de abertura (~900–1300 ms percebidos) --- */
-  @keyframes hero-in {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    to {
-      opacity: 1;
-      transform: none;
-    }
+  .hero-scroll {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9em;
+    opacity: 0.7;
+  }
+
+  .scroll-track {
+    position: relative;
+    width: 1px;
+    height: 2.4em;
+    background: rgba(255, 244, 230, 0.25);
+    overflow: hidden;
+  }
+
+  .scroll-dot {
+    position: absolute;
+    left: -1px;
+    top: 0;
+    width: 3px;
+    height: 0.7em;
+    background: var(--color-information);
+    animation: scroll-hint 2.2s var(--ease-editorial) infinite;
+  }
+
+  .hero.is-offscreen .scroll-dot {
+    animation-play-state: paused;
+  }
+
+  @keyframes scroll-hint {
+    0% { transform: translateY(-100%); }
+    60%, 100% { transform: translateY(2.6em); }
+  }
+
+  /* Traço fino com o gradiente térmico — energia atravessando a base */
+  .hero-signal {
+    height: 2px;
+    background: var(--gradient-thermal);
+    transform-origin: left center;
+    animation: signal-run 900ms var(--ease-editorial) 700ms both;
   }
 
   @keyframes signal-run {
-    from {
-      transform: scaleX(0);
-    }
-    to {
-      transform: scaleX(1);
-    }
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* Marquee técnico de capacidades */
+  .hero-marquee {
+    overflow: hidden;
+    border-top: 1px solid rgba(255, 244, 230, 0.1);
+    background: rgba(14, 14, 16, 0.55);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    padding-block: 0.85rem;
+    animation: marquee 64s linear infinite;
+    opacity: 0.6;
+  }
+
+  .hero.is-offscreen .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .marquee-seq {
+    display: flex;
+    white-space: nowrap;
+  }
+
+  .marquee-item {
+    display: inline-flex;
+    align-items: baseline;
+  }
+
+  .marquee-sep {
+    margin-inline: 1.4em;
+    color: var(--color-activity);
+    opacity: 0.8;
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes hero-fade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: none; }
   }
 
   .hero-eyebrow,
-  .hero-title,
-  .hero-support,
-  .hero-ctas,
-  .hero-wordmark {
-    animation: hero-in var(--motion-base) var(--ease-editorial) both;
+  .hero-bottom {
+    animation-name: hero-fade;
   }
 
-  .hero-eyebrow { animation-delay: 80ms; }
-  .hero-title { animation-delay: 160ms; }
-  .hero-wordmark { animation-delay: 240ms; }
+  /* ---------- Desktop ---------- */
+  @media (min-width: 1200px) {
+    .hero-sub {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
 
-  .hero-signal {
-    animation: signal-run 480ms var(--ease-editorial) 360ms both;
+    .hero-support {
+      grid-column: 1;
+    }
+
+    .hero-ctas {
+      grid-column: 1;
+    }
+
+    .hero-data {
+      display: block;
+      grid-column: 2;
+      grid-row: 1 / 3;
+      min-width: 21rem;
+      align-self: end;
+    }
   }
 
-  .hero-support { animation-delay: 620ms; }
-  .hero-ctas { animation-delay: 720ms; }
-
+  /* ---------- Reduced motion: tudo visível, nada se move ---------- */
   @media (prefers-reduced-motion: reduce) {
+    .hero-poster,
+    .hero-video,
+    .line-inner,
     .hero-eyebrow,
-    .hero-title,
+    .hero-mark,
     .hero-support,
     .hero-ctas,
-    .hero-wordmark,
-    .hero-signal {
+    .hero-data,
+    .hero-bottom,
+    .hero-signal,
+    .scroll-dot,
+    .marquee-track {
       animation: none;
+    }
+
+    .line-inner {
+      transform: none;
+    }
+
+    .hero-eyebrow,
+    .hero-mark,
+    .hero-support,
+    .hero-ctas,
+    .hero-data,
+    .hero-bottom {
+      opacity: 1;
+    }
+
+    .hero-signal {
+      transform: none;
     }
   }
 </style>
