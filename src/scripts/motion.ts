@@ -158,6 +158,19 @@ function setupHeroVideo(): void {
       });
   };
 
+  /* Textura sobreposta (blend screen no CSS): mesma política de motion/dados. */
+  const overlay = document.getElementById('hero-overlay') as HTMLVideoElement | null;
+  const overlaySrc = overlay?.dataset.src;
+  if (overlay && overlaySrc) {
+    const startOverlay = (): void => {
+      overlay.src = overlaySrc;
+      overlay.addEventListener('canplay', () => tryPlay(overlay, 8), { once: true });
+      overlay.load();
+    };
+    if (document.readyState === 'complete') startOverlay();
+    else window.addEventListener('load', startOverlay, { once: true });
+  }
+
   /* Resgate: se o autoplay foi negado, tenta de novo quando a página fica
      visível ou na primeira interação (vídeo mudo — retomar é permitido). */
   const rescue = (): void => {
@@ -335,9 +348,11 @@ function setupHeroVideo(): void {
       if (heroVisible) {
         startTicker();
         if (active.currentSrc) void active.play().catch(() => {});
+        if (overlay?.currentSrc) void overlay.play().catch(() => {});
       } else {
         stopTicker();
         active.pause();
+        overlay?.pause();
       }
     }).observe(heroSection);
   }

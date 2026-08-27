@@ -44,6 +44,17 @@ const clipsJson = JSON.stringify(hero.video.clips);
       tabindex="-1"
     ></video>
     <div class="hero-scrim"></div>
+    <!-- Textura: blend screen descarta o preto, sobra só o efeito luminoso -->
+    <video
+      id="hero-overlay"
+      class="hero-overlay"
+      muted
+      playsinline
+      loop
+      preload="none"
+      data-src={hero.video.overlay}
+      tabindex="-1"
+    ></video>
     <div class="hero-grain"></div>
   </div>
 
@@ -141,6 +152,19 @@ const clipsJson = JSON.stringify(hero.video.clips);
         rgba(14, 14, 16, 0.66) 100%
       ),
       rgba(14, 14, 16, 0.4);
+  }
+
+  /* Textura do cliente sobre o vídeo. O blend screen anula o fundo preto
+     (preto + screen = transparente), restando apenas as partes luminosas. */
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    mix-blend-mode: screen;
+    opacity: 0.1;
+    pointer-events: none;
   }
 
   /* Granulado de filme: ruído fractal que salta em passos, como emulsão */

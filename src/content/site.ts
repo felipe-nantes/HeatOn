@@ -65,6 +65,8 @@ export const hero = {
     ],
     fallback: '/assets/media/hero/sequence/hero-rapid-sequence-preview.mp4',
     mobile: '/assets/media/hero/sequence/hero-rapid-sequence-preview-mobile.mp4',
+    /** Textura fornecida pelo cliente; o fundo preto é descartado por blend screen. */
+    overlay: '/assets/media/hero/overlay/grain-overlay.mp4',
     posterDesktop: '/assets/media/hero/hero-real-poster.webp',
     posterMobile: '/assets/media/hero/hero-real-poster-mobile.webp',
     posterAlt:
