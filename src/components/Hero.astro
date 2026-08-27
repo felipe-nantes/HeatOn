@@ -340,13 +340,18 @@ const clipsJson = JSON.stringify(hero.video.clips);
   }
 
   /* ---------- Símbolo da marca sobre o vídeo ---------- */
+  /* Nem z-index nem transform aqui: qualquer um dos dois cria contexto de
+     empilhamento e o difference passaria a mesclar com o vazio do próprio
+     contêiner em vez do vídeo. Centralização por margem negativa, e a ordem
+     no DOM já coloca o símbolo por cima. */
   .hero-symbol {
+    --sym-w: clamp(190px, 31vw, 600px);
     position: absolute;
     left: 27%;
     top: 41%;
-    transform: translate(-50%, -50%);
-    width: clamp(190px, 31vw, 600px);
-    z-index: var(--z-content);
+    width: var(--sym-w);
+    margin-left: calc(var(--sym-w) / -2);
+    margin-top: calc(var(--sym-w) * -0.2721); /* metade da altura (363/667) */
     pointer-events: none;
     line-height: 0;
   }
@@ -362,20 +367,18 @@ const clipsJson = JSON.stringify(hero.video.clips);
   @keyframes symbol-in {
     from {
       opacity: 0;
-      transform: translateY(12px);
     }
     to {
       opacity: 1;
-      transform: none;
     }
   }
 
   /* Na tela pequena sobe para não encostar na microcopy centralizada */
   @media (max-width: 767px) {
     .hero-symbol {
+      --sym-w: min(62vw, 260px);
       left: 50%;
       top: 32%;
-      width: min(62vw, 260px);
     }
   }
 

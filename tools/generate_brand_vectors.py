@@ -11,6 +11,7 @@ Saída (public/assets/brand/): wordmark-color/deep, logo-horizontal-color/
 cream/deep/orange, logo-scientific-signature.
 """
 
+import math
 import re
 from pathlib import Path
 
@@ -185,8 +186,96 @@ write(
 
 # ---------------------------------------------------------------- símbolo (reuso do master vetorial)
 symbol_src = (BRAND / "symbol-cream.svg").read_text(encoding="utf-8")
-SYMBOL_DS = re.findall(r'<path[^>]*d="([^"]+)"', symbol_src)
-assert len(SYMBOL_DS) == 2, "esperava onda + node no symbol-cream.svg"
+RAW_SYMBOL_DS = re.findall(r'<path[^>]*d="([^"]+)"', symbol_src)
+assert len(RAW_SYMBOL_DS) == 2, "esperava onda + node no symbol-cream.svg"
+
+
+# --- Suavização: os masters do símbolo são autotraçados de bitmap (só
+# segmentos retos com coordenadas inteiras), o que serrilha em tamanho
+# grande. Simplificamos o ruído do traçado e reconstruímos com curvas.
+def parse_polygon(d: str):
+    pts = [
+        (float(x), float(y))
+        for _cmd, x, y in re.findall(r"([ML])\s*([\d.]+),([\d.]+)", d)
+    ]
+    # remove repetição do ponto inicial no fecho
+    if len(pts) > 1 and math.dist(pts[0], pts[-1]) < 1e-6:
+        pts.pop()
+    return pts
+
+
+def _perp_dist(p, a, b) -> float:
+    if math.dist(a, b) < 1e-9:
+        return math.dist(p, a)
+    num = abs((b[0] - a[0]) * (a[1] - p[1]) - (a[0] - p[0]) * (b[1] - a[1]))
+    return num / math.dist(a, b)
+
+
+def rdp(points, eps: float):
+    """Ramer–Douglas–Peucker: descarta os degraus de 1px do autotraçado."""
+    if len(points) < 3:
+        return list(points)
+    dmax, idx = 0.0, 0
+    for i in range(1, len(points) - 1):
+        d = _perp_dist(points[i], points[0], points[-1])
+        if d > dmax:
+            dmax, idx = d, i
+    if dmax > eps:
+        return rdp(points[: idx + 1], eps)[:-1] + rdp(points[idx:], eps)
+    return [points[0], points[-1]]
+
+
+def catmull_rom_closed(pts) -> str:
+    """Converte o polígono fechado em cúbicas contínuas (Catmull-Rom → Bézier)."""
+    n = len(pts)
+    out = [f"M {fmt(pts[0][0])},{fmt(pts[0][1])}"]
+    for i in range(n):
+        p0, p1, p2, p3 = pts[(i - 1) % n], pts[i], pts[(i + 1) % n], pts[(i + 2) % n]
+        c1 = (p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6)
+        c2 = (p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6)
+        out.append(
+            f"C {fmt(c1[0])},{fmt(c1[1])} {fmt(c2[0])},{fmt(c2[1])} {fmt(p2[0])},{fmt(p2[1])}"
+        )
+    out.append("Z")
+    return " ".join(out)
+
+
+def circle_fit(points):
+    # Centro pela caixa delimitadora: imune à densidade irregular de
+    # vértices do autotraçado (o centroide dos pontos se desloca).
+    xs = [p[0] for p in points]
+    ys = [p[1] for p in points]
+    cx = (min(xs) + max(xs)) / 2
+    cy = (min(ys) + max(ys)) / 2
+    radii = [math.hypot(p[0] - cx, p[1] - cy) for p in points]
+    r = sum(radii) / len(radii)
+    spread = (max(radii) - min(radii)) / r if r else 1.0
+    return cx, cy, r, spread
+
+
+def smooth_path(d: str, eps: float = 2.5) -> str:
+    pts = parse_polygon(d)
+    if not pts:
+        return d
+    cx, cy, r, spread = circle_fit(pts)
+    if spread < 0.08:
+        # É um círculo: reconstrói exato com dois arcos, sem aproximação.
+        return (
+            f"M {fmt(cx - r)},{fmt(cy)} "
+            f"A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx + r)},{fmt(cy)} "
+            f"A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx - r)},{fmt(cy)} Z"
+        )
+    return catmull_rom_closed(rdp(pts, eps))
+
+
+SYMBOL_DS = [smooth_path(d) for d in RAW_SYMBOL_DS]
+print(
+    "simbolo suavizado: "
+    + ", ".join(
+        f"{len(parse_polygon(raw))} pontos -> {new.count('C') or 'arco'} curvas"
+        for raw, new in zip(RAW_SYMBOL_DS, SYMBOL_DS)
+    )
+)
 # bounds do conteúdo do símbolo (onda + node), medidos do master
 SB = (166.0, 174.0, 821.0, 525.0)
 SB_W, SB_H = SB[2] - SB[0], SB[3] - SB[1]
