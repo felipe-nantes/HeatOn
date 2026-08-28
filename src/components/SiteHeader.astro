@@ -84,6 +84,15 @@ import { nav } from '../content/site';
     backdrop-filter: blur(10px);
   }
 
+  /* Fora do hero o header enxuga: a nav numerada recolhe e ficam logo,
+     indicador de seção e INDEX — que segue dando acesso a tudo.
+     visibility (e não só opacity) para sair também da ordem de tabulação. */
+  .site-header.is-scrolled .header-nav {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+  }
+
   .header-inner {
     display: flex;
     align-items: center;
@@ -105,6 +114,10 @@ import { nav } from '../content/site';
 
   .header-nav {
     display: none;
+    transition:
+      opacity var(--motion-base) var(--ease-feedback),
+      visibility var(--motion-base) var(--ease-feedback),
+      transform var(--motion-base) var(--ease-feedback);
   }
 
   /* Linha única: com 5 itens, empilhar em pares deixaria o último órfão. */
@@ -209,6 +222,16 @@ import { nav } from '../content/site';
   @media (min-width: 1280px) {
     .header-nav {
       display: block;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header-nav {
+      transition: none;
+    }
+
+    .site-header.is-scrolled .header-nav {
+      transform: none;
     }
   }
 
