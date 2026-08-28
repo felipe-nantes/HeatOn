@@ -461,9 +461,11 @@ function setupHeroScroll(): void {
     ticking = false;
     const heroH = heroSection.offsetHeight || 1;
     const progress = Math.min(Math.max(window.scrollY / heroH, 0), 1);
-    // Fundo desce e conteúdo sobe: profundidade sem passar de 4% cada.
-    const push = (progress * heroH * 0.03).toFixed(1);
-    const lift = (-progress * heroH * 0.04).toFixed(1);
+    // Fundo desce e conteúdo sobe. A spec de motion sugere teto de 4% por
+    // elemento; ampliado a pedido do cliente para a profundidade ficar
+    // perceptível — a separação relativa entre as camadas é o que se lê.
+    const push = (progress * heroH * 0.05).toFixed(1);
+    const lift = (-progress * heroH * 0.08).toFixed(1);
     if (media) media.style.transform = `translate3d(0, ${push}px, 0)`;
     for (const el of symbol) el.style.transform = `translate3d(0, ${lift}px, 0)`;
     if (copy) copy.style.transform = `translate3d(0, ${lift}px, 0)`;

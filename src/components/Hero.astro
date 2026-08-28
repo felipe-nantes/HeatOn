@@ -318,7 +318,7 @@ const clipsJson = JSON.stringify(hero.video.clips);
     letter-spacing: -0.005em;
     text-align: center;
     max-width: 62ch;
-    animation: hero-fade 600ms var(--ease-editorial) 250ms both;
+    animation: micro-in 600ms var(--ease-editorial) 250ms both;
   }
 
   /* Régua de medição: traços verticais densos que se dissolvem */
@@ -357,8 +357,9 @@ const clipsJson = JSON.stringify(hero.video.clips);
     -webkit-mask: url('/assets/brand/symbol-white.svg') center / contain no-repeat;
     mask: url('/assets/brand/symbol-white.svg') center / contain no-repeat;
 
-    -webkit-backdrop-filter: sepia(1) saturate(3.4) hue-rotate(-14deg) brightness(1.14) contrast(1.06);
-    backdrop-filter: sepia(1) saturate(3.4) hue-rotate(-14deg) brightness(1.14) contrast(1.06);
+    --sym-filter: brightness(2.6) sepia(1) saturate(5) hue-rotate(-18deg) contrast(1.12);
+    -webkit-backdrop-filter: var(--sym-filter);
+    backdrop-filter: var(--sym-filter);
 
     animation: symbol-in 800ms var(--ease-editorial) 380ms both;
     will-change: transform;
@@ -386,6 +387,17 @@ const clipsJson = JSON.stringify(hero.video.clips);
       --sym-w: min(62vw, 260px);
       left: 50%;
       top: 32%;
+    }
+  }
+
+  /* Só opacidade: qualquer transform aqui travaria o parallax, porque
+     animação tem precedência sobre o estilo inline escrito pelo script. */
+  @keyframes micro-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 
