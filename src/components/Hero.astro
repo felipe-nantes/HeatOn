@@ -85,9 +85,19 @@ const clipsJson = JSON.stringify(hero.video.clips);
     </h1>
   </div>
 
-  <!-- Símbolo da marca: branco + difference = vídeo invertido dentro da onda -->
+  <!-- Símbolo em duas camadas: a branca inverte o vídeo por difference;
+       a laranja entra por cima em opacidade baixa, dando o calor sutil. -->
   <div class="hero-symbol" aria-hidden="true">
     <img
+      class="sym-invert"
+      src="/assets/brand/symbol-white.svg"
+      alt=""
+      width="667"
+      height="363"
+      decoding="async"
+    />
+    <img
+      class="sym-tint"
       src="/assets/brand/symbol-orange.svg"
       alt=""
       width="667"
@@ -362,12 +372,27 @@ const clipsJson = JSON.stringify(hero.video.clips);
   }
 
   .hero-symbol img {
+    --sym-op: 1;
     width: 100%;
     height: auto;
-    /* Heat Orange + screen: a onda acende sobre o vídeo escuro e deixa a
-       textura atravessar, mantendo a translucidez sem virar branco chapado. */
-    mix-blend-mode: screen;
     animation: symbol-in 800ms var(--ease-editorial) 380ms both;
+    /* O parallax escreve transform aqui (na própria imagem, nunca no
+       contêiner: no contêiner viraria contexto de empilhamento e mataria
+       a mesclagem com o vídeo). */
+    will-change: transform;
+  }
+
+  /* Camada 1 — branco puro em difference: inverte as cores do vídeo */
+  .hero-symbol .sym-invert {
+    mix-blend-mode: difference;
+  }
+
+  /* Camada 2 — Heat Orange bem discreto por cima, só para aquecer */
+  .hero-symbol .sym-tint {
+    --sym-op: 0.24;
+    position: absolute;
+    inset: 0;
+    mix-blend-mode: screen;
   }
 
   @keyframes symbol-in {
@@ -375,7 +400,7 @@ const clipsJson = JSON.stringify(hero.video.clips);
       opacity: 0;
     }
     to {
-      opacity: 1;
+      opacity: var(--sym-op);
     }
   }
 
@@ -423,7 +448,7 @@ const clipsJson = JSON.stringify(hero.video.clips);
     }
 
     .hero-symbol img {
-      opacity: 1;
+      opacity: var(--sym-op);
     }
   }
 </style>

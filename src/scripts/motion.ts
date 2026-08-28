@@ -439,7 +439,7 @@ function setupHeroScroll(): void {
   const heroSection = document.getElementById('hero');
   if (!heroSection) return;
 
-  // Pausa marquee/zoom/scroll-hint quando o hero não está visível.
+  // Pausa marquee/granulado/zoom quando o hero não está visível.
   const pauseIO = new IntersectionObserver(([entry]) => {
     heroSection.classList.toggle('is-offscreen', !(entry && entry.isIntersecting));
   });
@@ -448,9 +448,12 @@ function setupHeroScroll(): void {
   if (reducedMotion.matches) return;
   if (window.matchMedia('(max-width: 767px)').matches) return;
 
-  const stage = document.getElementById('hero-stage');
   const media = heroSection.querySelector<HTMLElement>('.hero-media');
-  if (!stage || !media) return;
+  // O transform vai nas imagens do símbolo, nunca no contêiner: ali criaria
+  // contexto de empilhamento e isolaria o difference do vídeo.
+  const symbol = [...heroSection.querySelectorAll<HTMLElement>('.hero-symbol img')];
+  const copy = heroSection.querySelector<HTMLElement>('.hero-microcopy');
+  if (!media && !symbol.length && !copy) return;
 
   let ticking = false;
 
@@ -458,9 +461,12 @@ function setupHeroScroll(): void {
     ticking = false;
     const heroH = heroSection.offsetHeight || 1;
     const progress = Math.min(Math.max(window.scrollY / heroH, 0), 1);
-    // Tipografia sobe um pouco mais rápida que o fundo (≤4% cada).
-    stage.style.transform = `translateY(${(-progress * heroH * 0.04).toFixed(1)}px)`;
-    media.style.transform = `translateY(${(progress * heroH * 0.035).toFixed(1)}px)`;
+    // Fundo desce e conteúdo sobe: profundidade sem passar de 4% cada.
+    const push = (progress * heroH * 0.03).toFixed(1);
+    const lift = (-progress * heroH * 0.04).toFixed(1);
+    if (media) media.style.transform = `translate3d(0, ${push}px, 0)`;
+    for (const el of symbol) el.style.transform = `translate3d(0, ${lift}px, 0)`;
+    if (copy) copy.style.transform = `translate3d(0, ${lift}px, 0)`;
   };
 
   window.addEventListener(
