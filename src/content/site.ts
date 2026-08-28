@@ -37,7 +37,8 @@ export const sections = [
   { id: 'capacidades', num: '07', name: 'CAPABILITIES' },
   { id: 'metodo', num: '08', name: 'METHOD' },
   { id: 'principios', num: '09', name: 'PRINCIPLES' },
-  { id: 'contato', num: '10', name: 'CONTACT' },
+  { id: 'time', num: '10', name: 'TEAM' },
+  { id: 'contato', num: '11', name: 'CONTACT' },
 ] as const;
 
 export const hero = {
@@ -456,8 +457,55 @@ export const principles = {
   ],
 } as const;
 
+export interface TeamMember {
+  num: string;
+  id: string;
+  name: string;
+  role: string;
+  discipline: string;
+  photo: string;
+  alt: string;
+}
+
+/** Time (SECTION 10). Apenas nomes e funções informados pela empresa —
+ *  sem cargos, credenciais ou biografias inventadas. */
+export const team = {
+  label: 'SECTION 10 / TEAM',
+  headline: 'Engenharia e ciência na mesma mesa.',
+  body: 'Duas frentes de engenharia de software e uma de biotecnologia, trabalhando lado a lado no mesmo problema.',
+  members: [
+    {
+      num: '01',
+      id: 'felipe',
+      name: 'Felipe',
+      role: 'Engenharia de software',
+      discipline: 'SOFTWARE ENGINEERING',
+      photo: '/assets/team/felipe.webp',
+      alt: 'Retrato de Felipe, engenheiro de software da Heat On.',
+    },
+    {
+      num: '02',
+      id: 'matheus',
+      name: 'Matheus',
+      role: 'Engenharia de software',
+      discipline: 'SOFTWARE ENGINEERING',
+      photo: '/assets/team/matheus.webp',
+      alt: 'Retrato de Matheus, engenheiro de software da Heat On.',
+    },
+    {
+      num: '03',
+      id: 'joao-marcelo',
+      name: 'João Marcelo',
+      role: 'Biotecnologia',
+      discipline: 'BIOTECHNOLOGY',
+      photo: '/assets/team/joao-marcelo.webp',
+      alt: 'Retrato de João Marcelo, biotecnologista da Heat On.',
+    },
+  ] as TeamMember[],
+} as const;
+
 export const contact = {
-  label: 'SECTION 10 / CONTACT',
+  label: 'SECTION 11 / CONTACT',
   headline: 'Se o problema cruza software, dados e saúde, queremos entendê-lo.',
   body: 'Conte o contexto, o desafio e o que precisa mudar. A conversa começa pelo problema, não pela tecnologia.',
   cta: 'Falar sobre um projeto',
