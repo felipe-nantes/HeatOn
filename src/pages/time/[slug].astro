@@ -1,6 +1,7 @@
 ---
 import Page from '../../layouts/Page.astro';
 import { team } from '../../content/site';
+import { projectPages } from '../../content/pages';
 
 export function getStaticPaths() {
   return team.members.map((member, i) => ({
@@ -14,8 +15,14 @@ export function getStaticPaths() {
 
 const { member, next } = Astro.props;
 
-// Só o que a empresa informou. Biografia, formação e projetos por pessoa
-// ainda não foram fornecidos e não serão presumidos aqui.
+const worked = member.projects
+  .map((slug) => projectPages.find((p) => p.slug === slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+// Quem divide a mesma função — usado para situar a ênfase de cada um.
+const peers = team.members.filter(
+  (m) => m.id !== member.id && m.discipline === member.discipline
+);
 ---
 
 <Page
@@ -24,8 +31,9 @@ const { member, next } = Astro.props;
   eyebrow={`TEAM ${member.num} / ${member.discipline}`}
   heading={member.name}
   headline={member.role}
+  meta={[member.institution, `${worked.length} PROJETOS`]}
 >
-  <section class="section surface-cream" aria-label={`Perfil de ${member.name}`}>
+  <section class="section surface-cream" aria-label={`Perfil de ${member.shortName}`}>
     <div class="container section-content profile">
       <figure class="profile-figure reveal">
         <img
@@ -41,35 +49,67 @@ const { member, next } = Astro.props;
       <div class="profile-body">
         <dl class="profile-rows reveal reveal--body">
           <div class="row">
-            <dt class="data">NOME</dt>
-            <dd>{member.name}</dd>
-          </div>
-          <div class="row">
             <dt class="data">FUNÇÃO</dt>
             <dd>{member.role}</dd>
           </div>
           <div class="row">
-            <dt class="data">DISCIPLINA</dt>
-            <dd>{member.discipline}</dd>
+            <dt class="data">ÊNFASE</dt>
+            <dd>{member.focus}</dd>
           </div>
           <div class="row">
-            <dt class="data">TIME</dt>
-            <dd>{member.num} / {team.members.length}</dd>
+            <dt class="data">INSTITUIÇÃO</dt>
+            <dd>{member.institution}</dd>
+          </div>
+          <div class="row">
+            <dt class="data">PROJETOS</dt>
+            <dd>{String(worked.length).padStart(2, '0')} / {String(projectPages.length).padStart(2, '0')}</dd>
           </div>
         </dl>
 
-        <p class="body-copy team-context reveal reveal--body">{team.body}</p>
+        {
+          peers.length > 0 && (
+            <p class="body-copy peer-note reveal reveal--body">
+              {member.shortName} divide a mesma função com{' '}
+              {peers.map((p) => p.shortName).join(' e ')}; o que muda entre eles é a
+              ênfase do dia a dia.
+            </p>
+          )
+        }
 
-        <div class="profile-actions reveal">
-          <a class="pill" href="/time">
-            Todo o time
-            <span class="pill-plus" aria-hidden="true">+</span>
-          </a>
-          <a class="pill" href={`/time/${next.id}`}>
-            {next.name}
-            <span class="pill-plus" aria-hidden="true">+</span>
-          </a>
-        </div>
+        <p class="body-copy team-context reveal reveal--body">{team.body}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-deep" aria-label={`Projetos de ${member.shortName}`}>
+    <div class="container section-content">
+      <p class="data dark-label reveal reveal--label">PROJETOS EM QUE ATUOU</p>
+      <ol role="list" class="proj-list">
+        {
+          worked.map((p) => (
+            <li class="proj-row reveal">
+              <a class="proj-link" href={`/projetos/${p.slug}`}>
+                <span class="data proj-num">{p.num}</span>
+                <span class="proj-copy">
+                  <span class="proj-title">{p.title}</span>
+                  <span class="data proj-area">{p.area}</span>
+                </span>
+                <span class="data proj-plus" aria-hidden="true">+</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="profile-actions reveal">
+        <a class="pill" href="/time">
+          Todo o time
+          <span class="pill-plus" aria-hidden="true">+</span>
+        </a>
+        <a class="pill" href={`/time/${next.id}`}>
+          {next.shortName}
+          <span class="pill-plus" aria-hidden="true">+</span>
+        </a>
       </div>
     </div>
   </section>
@@ -124,9 +164,73 @@ const { member, next } = Astro.props;
     letter-spacing: var(--tracking-heading);
   }
 
+  .peer-note {
+    margin-top: clamp(1.5rem, 3.5vw, 2.25rem);
+    opacity: 0.75;
+  }
+
   .team-context {
-    margin-top: clamp(1.75rem, 4vw, 2.75rem);
-    opacity: 0.8;
+    margin-top: 1rem;
+    opacity: 0.75;
+  }
+
+  .dark-label {
+    color: var(--color-measurement);
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .proj-list {
+    display: grid;
+  }
+
+  .proj-row {
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .proj-row:last-child {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .proj-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: baseline;
+    padding-block: clamp(1.1rem, 2.4vw, 1.7rem);
+    text-decoration: none;
+  }
+
+  .proj-num {
+    opacity: 0.5;
+  }
+
+  .proj-copy {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .proj-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1rem + 0.7vw, 1.625rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .proj-area {
+    opacity: 0.5;
+  }
+
+  .proj-plus {
+    opacity: 0.4;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  @media (hover: hover) {
+    .proj-link:hover .proj-plus,
+    .proj-link:focus-visible .proj-plus {
+      color: var(--color-activity);
+      opacity: 1;
+    }
   }
 
   .profile-actions {

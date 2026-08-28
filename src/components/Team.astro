@@ -23,9 +23,12 @@ import { team } from '../content/site';
               />
             </figure>
             <p class="data member-num">{m.num}</p>
-            <h3 class="member-name">{m.name}</h3>
+            <h3 class="member-name">{m.shortName}</h3>
             <p class="member-role">{m.role}</p>
             <p class="data member-discipline">{m.discipline}</p>
+            <a class="seq-full-link member-link" href={`/time/${m.id}`}>
+              VER PERFIL +
+            </a>
           </li>
         ))
       }
@@ -101,6 +104,11 @@ import { team } from '../content/site';
 
   .member-role {
     opacity: 0.8;
+  }
+
+  .member-link {
+    justify-self: start;
+    margin-top: 0.6rem;
   }
 
   .member-discipline {

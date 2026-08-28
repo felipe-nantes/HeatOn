@@ -31,9 +31,12 @@ import { team } from '../../content/site';
                   />
                 </figure>
                 <span class="data member-num">{m.num}</span>
-                <span class="member-name">{m.name}</span>
+                <span class="member-name">{m.shortName}</span>
                 <span class="member-role">{m.role}</span>
                 <span class="data member-discipline">{m.discipline}</span>
+                <span class="data member-projects">
+                  {String(m.projects.length).padStart(2, '0')} PROJETOS
+                </span>
               </a>
             </li>
           ))
@@ -109,6 +112,10 @@ import { team } from '../../content/site';
 
   .member-role {
     opacity: 0.8;
+  }
+
+  .member-projects {
+    opacity: 0.45;
   }
 
   .member-discipline {

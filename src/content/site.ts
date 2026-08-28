@@ -460,46 +460,80 @@ export const principles = {
 export interface TeamMember {
   num: string;
   id: string;
+  /** Nome completo, usado nas páginas de perfil. */
   name: string;
+  /** Primeiro nome, para grades e cartões. */
+  shortName: string;
   role: string;
   discipline: string;
+  /** Ênfase dentro da função, quando duas pessoas dividem a mesma. */
+  focus: string;
+  institution: string;
+  /** Slugs dos projetos em que a pessoa atuou. */
+  projects: string[];
   photo: string;
   alt: string;
 }
 
-/** Time (SECTION 10). Apenas nomes e funções informados pela empresa —
- *  sem cargos, credenciais ou biografias inventadas. */
+/** Time (SECTION 10). Nomes, funções, instituições e autoria por projeto
+ *  informados pela empresa. Cargos formais não existem: os três são sócios. */
 export const team = {
   label: 'SECTION 10 / TEAM',
   headline: 'Engenharia e ciência na mesma mesa.',
-  body: 'Duas frentes de engenharia de software e uma de biotecnologia, trabalhando lado a lado no mesmo problema.',
+  body: 'Três sócios: duas frentes de engenharia de software e uma de biotecnologia, trabalhando lado a lado no mesmo problema.',
   members: [
     {
       num: '01',
       id: 'felipe',
-      name: 'Felipe',
-      role: 'Engenharia de software',
+      name: 'Felipe Morais Nantes',
+      shortName: 'Felipe',
+      role: 'Sócio · Engenharia de software',
       discipline: 'SOFTWARE ENGINEERING',
+      focus: 'Ênfase em desenvolvimento.',
+      institution: 'Unicesumar',
+      projects: ['oren', 'auditoria-gsus'],
       photo: '/assets/team/felipe.webp',
-      alt: 'Retrato de Felipe, engenheiro de software da Heat On.',
+      alt: 'Retrato de Felipe Morais Nantes, sócio e engenheiro de software da Heat On.',
     },
     {
       num: '02',
       id: 'matheus',
-      name: 'Matheus',
-      role: 'Engenharia de software',
+      name: 'Matheus de Lara Campos',
+      shortName: 'Matheus',
+      role: 'Sócio · Engenharia de software',
       discipline: 'SOFTWARE ENGINEERING',
+      focus: 'Ênfase em revisão e estruturação.',
+      institution: 'UEM',
+      projects: [
+        'oren',
+        'fraturas-femur',
+        'samu-marialva',
+        'efast-vr',
+        'auditoria-gsus',
+        'engenharia-dados',
+      ],
       photo: '/assets/team/matheus.webp',
-      alt: 'Retrato de Matheus, engenheiro de software da Heat On.',
+      alt: 'Retrato de Matheus de Lara Campos, sócio e engenheiro de software da Heat On.',
     },
     {
       num: '03',
       id: 'joao-marcelo',
-      name: 'João Marcelo',
-      role: 'Biotecnologia',
+      name: 'João Marcelo Granzotto Vicente',
+      shortName: 'João Marcelo',
+      role: 'Sócio · Biotecnologia',
       discipline: 'BIOTECHNOLOGY',
+      focus: 'Linha de pesquisa em saúde.',
+      institution: 'UEM',
+      projects: [
+        'oren',
+        'fraturas-femur',
+        'samu-marialva',
+        'efast-vr',
+        'auditoria-gsus',
+        'engenharia-dados',
+      ],
       photo: '/assets/team/joao-marcelo.webp',
-      alt: 'Retrato de João Marcelo, biotecnologista da Heat On.',
+      alt: 'Retrato de João Marcelo Granzotto Vicente, sócio e biotecnologista da Heat On.',
     },
   ] as TeamMember[],
 } as const;
