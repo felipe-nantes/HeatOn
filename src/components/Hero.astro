@@ -387,12 +387,14 @@ const clipsJson = JSON.stringify(hero.video.clips);
     mix-blend-mode: difference;
   }
 
-  /* Camada 2 — Heat Orange bem discreto por cima, só para aquecer */
+  /* Camada 2 — Heat Orange por cima. Multiply, e não screen: a inversão
+     resulta em tons claros, e screen só clareia — não teria como colorir.
+     Multiply puxa verde e azul para baixo e deixa o laranja aparecer. */
   .hero-symbol .sym-tint {
-    --sym-op: 0.24;
+    --sym-op: 0.55;
     position: absolute;
     inset: 0;
-    mix-blend-mode: screen;
+    mix-blend-mode: multiply;
   }
 
   @keyframes symbol-in {
