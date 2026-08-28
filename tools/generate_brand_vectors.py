@@ -204,35 +204,31 @@ def parse_polygon(d: str):
     return pts
 
 
-def _perp_dist(p, a, b) -> float:
-    if math.dist(a, b) < 1e-9:
-        return math.dist(p, a)
-    num = abs((b[0] - a[0]) * (a[1] - p[1]) - (a[0] - p[0]) * (b[1] - a[1]))
-    return num / math.dist(a, b)
+def catmull_rom_closed(pts, alpha: float = 0.5) -> str:
+    """Spline Catmull-Rom centrípeta convertida em cúbicas de Bézier.
 
-
-def rdp(points, eps: float):
-    """Ramer–Douglas–Peucker: descarta os degraus de 1px do autotraçado."""
-    if len(points) < 3:
-        return list(points)
-    dmax, idx = 0.0, 0
-    for i in range(1, len(points) - 1):
-        d = _perp_dist(points[i], points[0], points[-1])
-        if d > dmax:
-            dmax, idx = d, i
-    if dmax > eps:
-        return rdp(points[: idx + 1], eps)[:-1] + rdp(points[idx:], eps)
-    return [points[0], points[-1]]
-
-
-def catmull_rom_closed(pts) -> str:
-    """Converte o polígono fechado em cúbicas contínuas (Catmull-Rom → Bézier)."""
+    Passa exatamente por todos os vértices recebidos: o desenho original é
+    preservado ponto a ponto, e apenas as retas entre eles viram curvas.
+    A parametrização centrípeta (alpha=0.5) evita laços e ultrapassagens
+    nas mudanças bruscas de direção.
+    """
     n = len(pts)
     out = [f"M {fmt(pts[0][0])},{fmt(pts[0][1])}"]
     for i in range(n):
         p0, p1, p2, p3 = pts[(i - 1) % n], pts[i], pts[(i + 1) % n], pts[(i + 2) % n]
-        c1 = (p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6)
-        c2 = (p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6)
+        d1 = max(math.dist(p0, p1) ** alpha, 1e-9)
+        d2 = max(math.dist(p1, p2) ** alpha, 1e-9)
+        d3 = max(math.dist(p2, p3) ** alpha, 1e-9)
+        c1 = [
+            (d1 * d1 * p2[k] - d2 * d2 * p0[k] + (2 * d1 * d1 + 3 * d1 * d2 + d2 * d2) * p1[k])
+            / (3 * d1 * (d1 + d2))
+            for k in (0, 1)
+        ]
+        c2 = [
+            (d3 * d3 * p1[k] - d2 * d2 * p3[k] + (2 * d3 * d3 + 3 * d3 * d2 + d2 * d2) * p2[k])
+            / (3 * d3 * (d3 + d2))
+            for k in (0, 1)
+        ]
         out.append(
             f"C {fmt(c1[0])},{fmt(c1[1])} {fmt(c2[0])},{fmt(c2[1])} {fmt(p2[0])},{fmt(p2[1])}"
         )
@@ -241,8 +237,8 @@ def catmull_rom_closed(pts) -> str:
 
 
 def circle_fit(points):
-    # Centro pela caixa delimitadora: imune à densidade irregular de
-    # vértices do autotraçado (o centroide dos pontos se desloca).
+    # Centro pela caixa delimitadora: imune a densidade irregular de
+    # vertices do autotracado (o centroide dos pontos se desloca).
     xs = [p[0] for p in points]
     ys = [p[1] for p in points]
     cx = (min(xs) + max(xs)) / 2
@@ -253,34 +249,31 @@ def circle_fit(points):
     return cx, cy, r, spread
 
 
-def moving_average_closed(points, window: int = 2):
-    """Média móvel no contorno fechado: dissolve a ondulação do autotraçado
-    antes da simplificação, deixando as curvas finais mais macias."""
-    n = len(points)
-    out = []
-    for i in range(n):
-        sx = sy = 0.0
-        for k in range(-window, window + 1):
-            p = points[(i + k) % n]
-            sx += p[0]
-            sy += p[1]
-        out.append((sx / (2 * window + 1), sy / (2 * window + 1)))
+def dedup_closed(points, min_dist: float = 1.2):
+    """Descarta apenas vertices praticamente coincidentes, que gerariam
+    tangentes instaveis. Nenhum ponto que descreve a forma e removido."""
+    out = [points[0]]
+    for pt in points[1:]:
+        if math.dist(pt, out[-1]) >= min_dist:
+            out.append(pt)
+    while len(out) > 3 and math.dist(out[0], out[-1]) < min_dist:
+        out.pop()
     return out
 
 
-def smooth_path(d: str, eps: float = 5.0) -> str:
+def smooth_path(d: str) -> str:
     pts = parse_polygon(d)
     if not pts:
         return d
     cx, cy, r, spread = circle_fit(pts)
     if spread < 0.08:
-        # É um círculo: reconstrói exato com dois arcos, sem aproximação.
+        # E um circulo: reconstroi exato com dois arcos, sem aproximacao.
         return (
             f"M {fmt(cx - r)},{fmt(cy)} "
             f"A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx + r)},{fmt(cy)} "
             f"A {fmt(r)},{fmt(r)} 0 1 0 {fmt(cx - r)},{fmt(cy)} Z"
         )
-    return catmull_rom_closed(rdp(moving_average_closed(pts, 2), eps))
+    return catmull_rom_closed(dedup_closed(pts))
 
 
 SYMBOL_DS = [smooth_path(d) for d in RAW_SYMBOL_DS]
