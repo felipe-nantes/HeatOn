@@ -1,0 +1,281 @@
+---
+import Page from '../../layouts/Page.astro';
+import { sectors } from '../../content/sectors';
+import { projectPages } from '../../content/pages';
+
+export function getStaticPaths() {
+  return sectors.map((sector, i) => ({
+    params: { slug: sector.slug },
+    props: {
+      sector,
+      next: sectors[(i + 1) % sectors.length],
+    },
+  }));
+}
+
+const { sector, next } = Astro.props;
+
+// Só projetos cuja "Área" declarada no portfólio cobre este setor.
+const related = sector.projects
+  .map((slug) => projectPages.find((p) => p.slug === slug))
+  .filter((p): p is NonNullable<typeof p> => Boolean(p));
+---
+
+<Page
+  title={`${sector.title} — Heat On`}
+  description={sector.headline}
+  eyebrow={sector.eyebrow}
+  heading={sector.title}
+  headline={sector.headline}
+  meta={sector.stack}
+>
+  <section class="section surface-deep" aria-label="A disciplina">
+    <div class="container section-content field-grid">
+      <div>
+        <p class="data field-label reveal reveal--label">O CAMPO</p>
+        <div class="field-body reveal reveal--body">
+          {sector.field.map((paragraph) => <p class="body-copy">{paragraph}</p>)}
+        </div>
+      </div>
+
+      <dl class="stakes reveal reveal--body">
+        {
+          sector.stakes.map((s) => (
+            <div class="stake">
+              <dt class="data stake-label">{s.label}</dt>
+              <dd class="stake-text">{s.text}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="section surface-cream" aria-label="Capacidades da Heat On neste setor">
+    <div class="container section-content">
+      <p class="data light-label reveal reveal--label">O QUE A HEAT ON FAZ AQUI</p>
+      <ol role="list" class="cap-list reveal reveal--body">
+        {
+          sector.capabilities.map((c, i) => (
+            <li>
+              <span class="data cap-num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="cap-text">{c}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  {
+    related.length > 0 && (
+      <section class="section surface-deep" aria-label="Projetos neste setor">
+        <div class="container section-content">
+          <p class="data dark-label reveal reveal--label">
+            PROJETOS QUE ATRAVESSAM ESTE SETOR
+          </p>
+          <ol role="list" class="proj-list">
+            {related.map((p) => (
+              <li class="proj-row reveal">
+                <a class="proj-link" href={`/projetos/${p.slug}`}>
+                  <span class="data proj-num">{p.num}</span>
+                  <span class="proj-copy">
+                    <span class="proj-title">{p.title}</span>
+                    <span class="data proj-area">{p.area}</span>
+                  </span>
+                  <span class="data proj-plus" aria-hidden="true">+</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section-tight surface-deep" aria-label="Próximo setor">
+    <div class="container">
+      <a class="next-link" href={`/setores/${next.slug}`}>
+        <span class="data next-label">PRÓXIMO SETOR / {next.num}</span>
+        <span class="next-title">{next.title}</span>
+        <span class="data next-plus" aria-hidden="true">+</span>
+      </a>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .section-tight {
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .field-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .field-label {
+    color: var(--color-measurement);
+    margin-bottom: 1rem;
+  }
+
+  .field-body {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .stakes {
+    display: grid;
+  }
+
+  .stake {
+    padding-block: 1.1rem;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .stake:last-child {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .stake-label {
+    color: var(--color-activity);
+    margin-bottom: 0.5rem;
+  }
+
+  .stake-text {
+    margin: 0;
+    opacity: 0.8;
+    max-width: 46ch;
+  }
+
+  .light-label {
+    color: var(--color-structure);
+    opacity: 0.55;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .dark-label {
+    color: var(--color-measurement);
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .cap-list {
+    display: grid;
+  }
+
+  .cap-list li {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding-block: 0.85rem;
+    border-top: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .cap-list li:last-child {
+    border-bottom: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .cap-num {
+    opacity: 0.45;
+  }
+
+  .cap-text {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 0.94rem + 0.4vw, 1.25rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .proj-list {
+    display: grid;
+  }
+
+  .proj-row {
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .proj-row:last-child {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .proj-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: baseline;
+    padding-block: clamp(1.2rem, 2.5vw, 1.8rem);
+    text-decoration: none;
+  }
+
+  .proj-num {
+    opacity: 0.5;
+  }
+
+  .proj-copy {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .proj-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1rem + 0.7vw, 1.625rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .proj-area {
+    opacity: 0.5;
+  }
+
+  .proj-plus,
+  .next-plus {
+    opacity: 0.4;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  @media (hover: hover) {
+    .proj-link:hover .proj-plus,
+    .proj-link:focus-visible .proj-plus,
+    .next-link:hover .next-plus,
+    .next-link:focus-visible .next-plus {
+      color: var(--color-activity);
+      opacity: 1;
+    }
+  }
+
+  .next-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1rem;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    text-decoration: none;
+  }
+
+  .next-label {
+    grid-column: 1;
+    color: var(--color-measurement);
+  }
+
+  .next-title {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .next-plus {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    font-size: 1.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .field-grid {
+      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    }
+  }
+</style>

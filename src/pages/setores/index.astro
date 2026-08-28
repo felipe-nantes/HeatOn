@@ -1,0 +1,166 @@
+---
+import Page from '../../layouts/Page.astro';
+import { sectors, sectorsIndex } from '../../content/sectors';
+import { verticals } from '../../content/pages';
+---
+
+<Page
+  title="Setores — Heat On"
+  description={sectorsIndex.body}
+  eyebrow={sectorsIndex.eyebrow}
+  heading={sectorsIndex.title}
+  headline={sectorsIndex.headline}
+  meta={[`${sectors.length} SETORES`, `${verticals.length} VERTICAIS`]}
+>
+  <section class="section surface-deep" aria-label="Índice de setores">
+    <div class="container section-content">
+      <p class="body-copy sectors-lede reveal reveal--body">{sectorsIndex.body}</p>
+
+      <ol role="list" class="sector-list">
+        {
+          sectors.map((s) => (
+            <li class="sector-row reveal">
+              <a class="row-link" href={`/setores/${s.slug}`}>
+                <span class="data row-num">{s.num}</span>
+                <span class="row-copy">
+                  <span class="row-title">{s.title}</span>
+                  <span class="row-headline">{s.headline}</span>
+                  <span class="data row-stack">{s.stack.join(' / ')}</span>
+                </span>
+                <span class="data row-count">
+                  {String(s.projects.length).padStart(2, '0')} PROJ.
+                </span>
+                <span class="data row-plus" aria-hidden="true">+</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section surface-cream" aria-label="Verticais de atuação">
+    <div class="container section-content">
+      <p class="data light-label reveal reveal--label">VERTICAIS DE ATUAÇÃO</p>
+      <ul role="list" class="vert-list reveal">
+        {verticals.map((v) => <li class="vert">{v}</li>)}
+      </ul>
+
+      <a class="pill caps-link" href="/capacidades">
+        Ver todas as capacidades
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .sectors-lede {
+    max-width: 62ch;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .sector-list {
+    display: grid;
+  }
+
+  .sector-row {
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .sector-row:last-child {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .row-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: baseline;
+    padding-block: clamp(1.4rem, 3vw, 2.25rem);
+    text-decoration: none;
+  }
+
+  .row-num {
+    opacity: 0.5;
+    transition: color var(--motion-fast) var(--ease-feedback);
+  }
+
+  .row-copy {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .row-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.125rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.15;
+  }
+
+  .row-headline {
+    opacity: 0.78;
+    max-width: 48ch;
+  }
+
+  .row-stack {
+    opacity: 0.5;
+  }
+
+  .row-count {
+    display: none;
+    color: var(--color-measurement);
+    white-space: nowrap;
+  }
+
+  .row-plus {
+    font-size: 1.25rem;
+    opacity: 0.4;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  @media (hover: hover) {
+    .row-link:hover .row-plus,
+    .row-link:focus-visible .row-plus {
+      color: var(--color-activity);
+      opacity: 1;
+    }
+  }
+
+  .light-label {
+    color: var(--color-structure);
+    opacity: 0.55;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .vert-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .vert {
+    padding: 0.55em 1.1em;
+    border: 1px solid rgba(14, 14, 16, 0.24);
+    border-radius: 999px;
+    font-family: var(--font-data);
+    font-size: 0.6875rem;
+    letter-spacing: var(--tracking-data);
+    text-transform: uppercase;
+  }
+
+  .caps-link {
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  @media (min-width: 1024px) {
+    .row-link {
+      grid-template-columns: auto 1fr auto auto;
+    }
+
+    .row-count {
+      display: inline;
+    }
+  }
+</style>

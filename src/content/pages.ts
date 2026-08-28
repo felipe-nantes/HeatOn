@@ -21,14 +21,22 @@ export const siteIndex: PageMeta[] = [
   { code: '001D-00', slug: '/projetos/efast-vr', label: 'Simulador eFAST' },
   { code: '001E-00', slug: '/projetos/auditoria-gsus', label: 'Auditoria GSUS' },
   { code: '001F-00', slug: '/projetos/engenharia-dados', label: 'Engenharia de dados' },
-  { code: '002-00', slug: '/capacidades', label: 'Capacidades' },
-  { code: '003-00', slug: '/metodo', label: 'Método' },
-  { code: '004-00', slug: '/empresa', label: 'Empresa' },
-  { code: '005-00', slug: '/time', label: 'Time' },
-  { code: '005A-00', slug: '/time/felipe', label: 'Felipe' },
-  { code: '005B-00', slug: '/time/matheus', label: 'Matheus' },
-  { code: '005C-00', slug: '/time/joao-marcelo', label: 'João Marcelo' },
-  { code: '006-00', slug: '/contato', label: 'Contato' },
+  { code: '002-00', slug: '/setores', label: 'Setores' },
+  { code: '002A-00', slug: '/setores/software', label: 'Desenvolvimento de software' },
+  { code: '002B-00', slug: '/setores/dados', label: 'Engenharia de dados' },
+  { code: '002C-00', slug: '/setores/business-intelligence', label: 'Business Intelligence' },
+  { code: '002D-00', slug: '/setores/inteligencia-artificial', label: 'Inteligência artificial' },
+  { code: '002E-00', slug: '/setores/imagem-medica', label: 'Imagem médica' },
+  { code: '002F-00', slug: '/setores/realidade-virtual', label: 'Realidade virtual e simulação' },
+  { code: '002G-00', slug: '/setores/automacao', label: 'Automação de processos' },
+  { code: '003-00', slug: '/capacidades', label: 'Capacidades' },
+  { code: '004-00', slug: '/metodo', label: 'Método' },
+  { code: '005-00', slug: '/empresa', label: 'Empresa' },
+  { code: '006-00', slug: '/time', label: 'Time' },
+  { code: '006A-00', slug: '/time/felipe', label: 'Felipe' },
+  { code: '006B-00', slug: '/time/matheus', label: 'Matheus' },
+  { code: '006C-00', slug: '/time/joao-marcelo', label: 'João Marcelo' },
+  { code: '007-00', slug: '/contato', label: 'Contato' },
 ];
 
 export interface ProjectPage {
@@ -379,7 +387,7 @@ export const verticals = [
 
 /** Institucional (portfolio_saude.md + brandbook). */
 export const companyPage = {
-  eyebrow: 'PAGE 004 / COMPANY',
+  eyebrow: 'PAGE 005 / COMPANY',
   title: 'Empresa',
   headline: 'Ciência é o método. Tecnologia é a ferramenta.',
   valueProposition: [

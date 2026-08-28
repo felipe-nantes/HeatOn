@@ -17,7 +17,7 @@ export const meta = {
 export const nav = {
   items: [
     { num: '01', label: 'Projetos', href: '/projetos' },
-    { num: '02', label: 'Capacidades', href: '/capacidades' },
+    { num: '02', label: 'Setores', href: '/setores' },
     { num: '03', label: 'Método', href: '/metodo' },
     { num: '04', label: 'Empresa', href: '/empresa' },
     { num: '05', label: 'Contato', href: '/contato' },
