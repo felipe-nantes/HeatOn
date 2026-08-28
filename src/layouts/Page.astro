@@ -1,0 +1,94 @@
+---
+import Base from './Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import IndexOverlay from '../components/IndexOverlay.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow: string;
+  heading: string;
+  headline?: string;
+  /** Metadados técnicos exibidos ao lado do título. */
+  meta?: readonly string[];
+}
+
+const { title, description, eyebrow, heading, headline, meta = [] } = Astro.props;
+---
+
+<Base title={title} description={description}>
+  <SiteHeader solid />
+  <IndexOverlay />
+
+  <main id="conteudo">
+    <section class="page-hero surface-deep">
+      <div class="layer layer--grid" aria-hidden="true">
+        <img
+          class="page-grid"
+          src="/assets/graphics/scientific-grid.svg"
+          alt=""
+          width="2400"
+          height="1600"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div class="container section-content">
+        <p class="data page-eyebrow">{eyebrow}</p>
+        <h1 class="display page-title">{heading}</h1>
+        {headline && <p class="h2 page-headline">{headline}</p>}
+        {
+          meta.length > 0 && (
+            <p class="data page-meta">{meta.join(' / ')}</p>
+          )
+        }
+        <hr class="rule page-rule" />
+      </div>
+    </section>
+
+    <slot />
+  </main>
+
+  <SiteFooter />
+</Base>
+
+<style>
+  .page-hero {
+    position: relative;
+    padding-block: clamp(7rem, 16vh, 11rem) clamp(2.5rem, 6vw, 4.5rem);
+    overflow: hidden;
+  }
+
+  .page-grid {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.16;
+  }
+
+  .page-eyebrow {
+    color: var(--color-activity);
+  }
+
+  .page-title {
+    margin-top: clamp(1rem, 2.5vw, 1.75rem);
+    max-width: 18ch;
+  }
+
+  .page-headline {
+    margin-top: clamp(1rem, 2.5vw, 1.75rem);
+    max-width: 30ch;
+    opacity: 0.86;
+  }
+
+  .page-meta {
+    margin-top: clamp(1.25rem, 3vw, 2rem);
+    opacity: 0.6;
+  }
+
+  .page-rule {
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+  }
+</style>

@@ -1,0 +1,239 @@
+---
+import Page from '../layouts/Page.astro';
+import { principles, territory, team, manifesto } from '../content/site';
+import { companyPage } from '../content/pages';
+---
+
+<Page
+  title="Empresa — Heat On"
+  description={companyPage.positioning}
+  eyebrow={companyPage.eyebrow}
+  heading={companyPage.title}
+  headline={companyPage.headline}
+  meta={territory.band}
+>
+  <section class="section surface-deep" aria-label="Proposta de valor">
+    <div class="container section-content company-brief">
+      <div>
+        <p class="data brief-label reveal reveal--label">PROPOSTA DE VALOR</p>
+        <div class="brief-body reveal reveal--body">
+          {companyPage.valueProposition.map((p) => <p class="body-copy">{p}</p>)}
+        </div>
+      </div>
+
+      <div>
+        <p class="data brief-label reveal reveal--label">POSICIONAMENTO</p>
+        <p class="body-copy reveal reveal--body">{companyPage.positioning}</p>
+        <p class="data principle-line reveal">{manifesto.principle}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-cream" aria-label="Níveis de maturidade atendidos">
+    <div class="container section-content">
+      <p class="data light-label reveal reveal--label">{companyPage.maturityLabel}</p>
+      <ol role="list" class="maturity">
+        {
+          companyPage.maturity.map((item, i) => (
+            <li class="reveal reveal--body">
+              <span class="data mat-num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="mat-text">{item}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section surface-deep" aria-label="Princípios">
+    <div class="container section-content">
+      <p class="data dark-label reveal reveal--label">{principles.headline.toUpperCase()}</p>
+      <ol role="list" class="principles">
+        {
+          principles.items.map((item) => (
+            <li class="principle reveal reveal--body">
+              <span class="data pr-num">{item.num}</span>
+              <span class="pr-name">{item.name}</span>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section surface-cream" aria-label="Time">
+    <div class="container section-content">
+      <p class="data light-label reveal reveal--label">TIME</p>
+      <h2 class="h1 reveal reveal--title">{team.headline}</h2>
+      <p class="body-copy team-lede reveal reveal--body">{team.body}</p>
+
+      <ul role="list" class="team-strip reveal">
+        {
+          team.members.map((m) => (
+            <li>
+              <a class="member-link" href={`/time/${m.id}`}>
+                <img
+                  src={m.photo}
+                  alt={m.alt}
+                  width="640"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span class="member-name">{m.name}</span>
+                <span class="data member-role">{m.role}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <a class="pill team-cta" href="/time">
+        Conhecer o time
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .company-brief {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  .brief-label {
+    color: var(--color-measurement);
+    margin-bottom: 1rem;
+  }
+
+  .brief-body {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .principle-line {
+    margin-top: 1.5rem;
+    color: var(--color-activity);
+  }
+
+  .light-label {
+    color: var(--color-structure);
+    opacity: 0.55;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .dark-label {
+    color: var(--color-measurement);
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .maturity,
+  .principles {
+    display: grid;
+  }
+
+  .maturity li,
+  .principle {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding-block: 0.9rem;
+  }
+
+  .maturity li {
+    border-top: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .maturity li:last-child {
+    border-bottom: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .principle {
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    padding-block: clamp(0.9rem, 2.2vw, 1.5rem);
+  }
+
+  .principle:last-child {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .mat-num,
+  .pr-num {
+    opacity: 0.45;
+  }
+
+  .mat-text {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 0.94rem + 0.4vw, 1.25rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .pr-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1rem + 1.6vw, 2.25rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .team-lede {
+    margin-top: 1rem;
+  }
+
+  .team-strip {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(2rem, 5vw, 3.5rem);
+  }
+
+  .member-link {
+    display: grid;
+    gap: 0.4rem;
+    text-decoration: none;
+  }
+
+  .member-link img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    filter: grayscale(1);
+    margin-bottom: 0.9rem;
+    transition: filter var(--motion-base) var(--ease-editorial);
+  }
+
+  @media (hover: hover) {
+    .member-link:hover img,
+    .member-link:focus-visible img {
+      filter: grayscale(0);
+    }
+  }
+
+  .member-name {
+    font-family: var(--font-display);
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .member-role {
+    opacity: 0.6;
+  }
+
+  .team-cta {
+    margin-top: clamp(2rem, 5vw, 3rem);
+  }
+
+  @media (min-width: 768px) {
+    .team-strip {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .company-brief {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

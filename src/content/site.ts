@@ -16,11 +16,11 @@ export const meta = {
 
 export const nav = {
   items: [
-    { num: '01', label: 'Projetos', href: '#projetos' },
-    { num: '02', label: 'Capacidades', href: '#capacidades' },
-    { num: '03', label: 'Método', href: '#metodo' },
-    { num: '04', label: 'Empresa', href: '#empresa' },
-    { num: '05', label: 'Contato', href: '#contato' },
+    { num: '01', label: 'Projetos', href: '/projetos' },
+    { num: '02', label: 'Capacidades', href: '/capacidades' },
+    { num: '03', label: 'Método', href: '/metodo' },
+    { num: '04', label: 'Empresa', href: '/empresa' },
+    { num: '05', label: 'Contato', href: '/contato' },
   ],
   indexLabel: 'INDEX',
 } as const;
@@ -328,7 +328,7 @@ export const projectsIndex: ProjectIndexItem[] = [
     title: 'OREN',
     body: 'IA, visão computacional, imagem médica e modelos anatômicos 3D específicos do paciente.',
     metadata: ['AI', 'MEDICAL IMAGING', 'DIGITAL TWINS'],
-    href: '#oren',
+    href: '/projetos/oren',
     thumb: {
       desktop: '/assets/cases/real/oren/desktop/oren-cover-real.webp',
       mobile: '/assets/cases/real/oren/mobile/oren-cover-real-mobile.webp',
@@ -342,7 +342,7 @@ export const projectsIndex: ProjectIndexItem[] = [
     title: 'Fraturas de fêmur em idosos no Paraná',
     body: 'Analytics e Business Intelligence para organizar dados, indicadores e tendências de saúde pública.',
     metadata: ['PUBLIC HEALTH', 'DATA ANALYTICS', 'BI'],
-    href: '#femur',
+    href: '/projetos/fraturas-femur',
     thumb: {
       desktop: '/assets/cases/real/femur/desktop/femur-cover-dashboard.webp',
       mobile: '/assets/cases/real/femur/mobile/femur-cover-dashboard-mobile.webp',
@@ -365,7 +365,7 @@ export const projectsIndex: ProjectIndexItem[] = [
     title: 'Simulador de eFAST em realidade virtual',
     body: 'Ambiente interativo em Unreal Engine para simulação e treinamento de avaliação ultrassonográfica no trauma.',
     metadata: ['MEDICAL SIMULATION', 'VR', 'EDUCATION'],
-    href: '#efast',
+    href: '/projetos/efast-vr',
     thumb: {
       desktop: '/assets/cases/real/efast/desktop/efast-cover-real.webp',
       mobile: '/assets/cases/real/efast/mobile/efast-cover-real-mobile.webp',

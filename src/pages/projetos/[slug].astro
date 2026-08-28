@@ -1,0 +1,295 @@
+---
+import Page from '../../layouts/Page.astro';
+import SequencePanel from '../../components/SequencePanel.astro';
+import { projectPages } from '../../content/pages';
+import { oren, femur, efast } from '../../content/site';
+
+export function getStaticPaths() {
+  return projectPages.map((project, i) => ({
+    params: { slug: project.slug },
+    props: {
+      project,
+      next: projectPages[(i + 1) % projectPages.length],
+    },
+  }));
+}
+
+const { project, next } = Astro.props;
+
+// Capítulos com acervo real; os demais seguem tipográficos.
+const chapters = { oren, femur, efast } as const;
+const chapter = project.mediaKey ? chapters[project.mediaKey] : undefined;
+
+const cover =
+  chapter && 'opener' in chapter
+    ? chapter.opener
+    : chapter && 'cover' in chapter
+      ? chapter.cover
+      : undefined;
+---
+
+<Page
+  title={`${project.title} — Heat On`}
+  description={project.headline}
+  eyebrow={project.eyebrow}
+  heading={project.title}
+  headline={project.headline}
+  meta={project.metadata}
+>
+  {
+    cover && (
+      <section class="section-tight surface-deep" aria-label="Registro do projeto">
+        <div class="container">
+          <figure class="project-cover">
+            <picture>
+              <source media="(max-width: 767px)" srcset={cover.mobile} />
+              <img
+                src={cover.desktop}
+                alt={cover.alt}
+                width="1920"
+                height="1080"
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
+            {chapter?.caption && (
+              <figcaption class="media-caption">{chapter.caption}</figcaption>
+            )}
+          </figure>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section surface-deep" aria-label="Contexto e solução">
+    <div class="container section-content project-brief">
+      <div class="brief-block">
+        <p class="data brief-label reveal reveal--label">CONTEXTO</p>
+        <div class="brief-body reveal reveal--body">
+          {project.context.map((paragraph) => <p class="body-copy">{paragraph}</p>)}
+        </div>
+      </div>
+
+      <div class="brief-block">
+        <p class="data brief-label reveal reveal--label">SOLUÇÃO</p>
+        <p class="body-copy brief-body reveal reveal--body">{project.solution}</p>
+      </div>
+    </div>
+  </section>
+
+  {
+    chapter && (
+      <section class="section surface-deep" aria-label="Registros do projeto">
+        <div class="container section-content">
+          <SequencePanel
+            seqId={`seq-page-${project.slug}`}
+            steps={chapter.steps}
+            mediaCaption={chapter.caption}
+            wideFallback={project.mediaKey !== 'oren'}
+          />
+        </div>
+      </section>
+    )
+  }
+
+  {
+    !chapter && project.flow && (
+      <section class="section surface-deep" aria-label="Fluxo do projeto">
+        <div class="container section-content">
+          <p class="data flow-label reveal reveal--label">FLUXO</p>
+          <div class="project-flow reveal">
+            {project.flow.map((stage, i) => (
+              <>
+                <span class="flow-stage">{stage}</span>
+                {i < project.flow!.length - 1 && (
+                  <span class="data flow-arrow" aria-hidden="true">
+                    →
+                  </span>
+                )}
+              </>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section surface-cream" aria-label="Capacidades aplicadas">
+    <div class="container section-content">
+      {
+        project.lists.map((list) => (
+          <div class="list-block">
+            <p class="data list-label reveal reveal--label">{list.label}</p>
+            <ol role="list" class="list-items reveal reveal--body">
+              {list.items.map((item, i) => (
+                <li>
+                  <span class="data item-num">{String(i + 1).padStart(2, '0')}</span>
+                  <span class="item-text">{item}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+
+      <div class="area-block reveal">
+        <p class="data list-label">ÁREA</p>
+        <p class="area-value">{project.area}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight surface-deep" aria-label="Próximo projeto">
+    <div class="container">
+      <a class="next-link" href={`/projetos/${next.slug}`}>
+        <span class="data next-label">PRÓXIMO PROJETO / {next.num}</span>
+        <span class="next-title">{next.title}</span>
+        <span class="data next-plus" aria-hidden="true">+</span>
+      </a>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .section-tight {
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  .project-cover {
+    margin: 0;
+  }
+
+  .project-cover img {
+    width: 100%;
+    height: auto;
+  }
+
+  .project-brief {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+
+  .brief-label {
+    color: var(--color-measurement);
+    margin-bottom: 1rem;
+  }
+
+  .brief-body {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .flow-label {
+    color: var(--color-measurement);
+    margin-bottom: 1.5rem;
+  }
+
+  .project-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: clamp(0.75rem, 2vw, 1.75rem);
+  }
+
+  .flow-stage {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1rem + 2.4vw, 3rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .flow-arrow {
+    color: var(--color-activity);
+  }
+
+  .list-block {
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .list-label {
+    color: var(--color-structure);
+    opacity: 0.55;
+    margin-bottom: 1.25rem;
+  }
+
+  .list-items {
+    display: grid;
+    gap: 0;
+  }
+
+  .list-items li {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    padding-block: 0.85rem;
+    border-top: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .list-items li:last-child {
+    border-bottom: 1px solid rgba(14, 14, 16, 0.14);
+  }
+
+  .item-num {
+    opacity: 0.45;
+  }
+
+  .item-text {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 0.94rem + 0.4vw, 1.25rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .area-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1rem + 1.2vw, 1.875rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-heading);
+    max-width: 26ch;
+  }
+
+  .next-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 1rem;
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    text-decoration: none;
+  }
+
+  .next-label {
+    grid-column: 1;
+    color: var(--color-measurement);
+  }
+
+  .next-title {
+    grid-column: 1;
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.5rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .next-plus {
+    grid-column: 2;
+    grid-row: 1 / 3;
+    align-self: center;
+    font-size: 1.5rem;
+    opacity: 0.4;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  @media (hover: hover) {
+    .next-link:hover .next-plus,
+    .next-link:focus-visible .next-plus {
+      color: var(--color-activity);
+      opacity: 1;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .project-brief {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

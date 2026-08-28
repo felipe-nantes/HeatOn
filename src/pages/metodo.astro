@@ -1,0 +1,194 @@
+---
+import Page from '../layouts/Page.astro';
+import { method, manifesto, territory } from '../content/site';
+import signalRaw from '../../public/assets/graphics/waveform-signal.svg?raw';
+
+const signalSvg = signalRaw
+  .replace(/<\?xml[^?]*\?>/, '')
+  .replace(/<path /g, '<path pathLength="1" ');
+---
+
+<Page
+  title="Método — Heat On"
+  description="Sinal, processamento, validação e entrega: como a Heat On transforma sinal em evidência e evidência em decisão."
+  eyebrow="PAGE 003 / METHOD"
+  heading="Método"
+  headline={manifesto.principle}
+  meta={['MEDIR', 'COMPUTAR', 'INTERPRETAR']}
+>
+  <section class="section surface-deep" aria-label="Linha do método">
+    <div class="container section-content">
+      <div class="method-signal" id="method-signal" aria-hidden="true">
+        <Fragment set:html={signalSvg} />
+      </div>
+
+      <ol role="list" class="steps">
+        {
+          method.steps.map((step) => (
+            <li class="step reveal reveal--body">
+              <span class="data step-num">{step.num}</span>
+              <span class="data step-code">{step.code}</span>
+              <h2 class="step-name">{step.name}</h2>
+              <p class="step-body body-copy">{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section surface-cream" aria-label="Saída do método">
+    <div class="container section-content">
+      <div class="output-rows">
+        {
+          territory.rows.map((row) => (
+            <div class="output-row reveal reveal--body">
+              <span class="data row-label">{row.label}</span>
+              <span class="row-value">{row.value}</span>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="principle reveal">{manifesto.principle}</p>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .method-signal {
+    margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .method-signal :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  .method-signal :global(path) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .method-signal :global(circle) {
+    opacity: 0;
+    transition: opacity var(--motion-base) var(--ease-editorial) 1.5s;
+  }
+
+  .method-signal.is-drawn :global(path) {
+    transition: stroke-dashoffset 1.6s var(--ease-editorial);
+    stroke-dashoffset: 0;
+  }
+
+  .method-signal.is-drawn :global(circle) {
+    opacity: 1;
+  }
+
+  html.no-js .method-signal :global(path) {
+    stroke-dashoffset: 0;
+  }
+
+  html.no-js .method-signal :global(circle) {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .method-signal :global(path) {
+      stroke-dasharray: none;
+      stroke-dashoffset: 0;
+      transition: none;
+    }
+
+    .method-signal :global(circle) {
+      opacity: 1;
+      transition: none;
+    }
+  }
+
+  .steps {
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .step {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .step-num {
+    color: var(--color-activity);
+  }
+
+  .step-code {
+    color: var(--color-measurement);
+    opacity: 0.85;
+  }
+
+  .step-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .step-body {
+    opacity: 0.78;
+    max-width: 34ch;
+  }
+
+  .output-rows {
+    max-width: 820px;
+  }
+
+  .output-row {
+    display: grid;
+    grid-template-columns: minmax(90px, 150px) 1fr;
+    gap: 1.5rem;
+    align-items: baseline;
+    padding-block: 1.1rem;
+    border-top: 1px solid rgba(14, 14, 16, 0.16);
+  }
+
+  .output-row:last-child {
+    border-bottom: 1px solid rgba(14, 14, 16, 0.16);
+  }
+
+  .row-label {
+    color: var(--color-structure);
+    opacity: 0.5;
+  }
+
+  .row-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 0.96rem + 0.5vw, 1.375rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .principle {
+    margin-top: clamp(3rem, 7vw, 5rem);
+    font-family: var(--font-display);
+    font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.15;
+    max-width: 18ch;
+    color: var(--color-activity);
+  }
+
+  @media (min-width: 768px) {
+    .steps {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .steps {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+</style>

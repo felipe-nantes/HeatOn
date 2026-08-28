@@ -1,8 +1,15 @@
 ---
 import { nav } from '../content/site';
+
+interface Props {
+  /** Páginas internas não têm hero em vídeo: o header já nasce com superfície. */
+  solid?: boolean;
+}
+
+const { solid = false } = Astro.props;
 ---
 
-<header id="site-header" class="site-header">
+<header id="site-header" class:list={['site-header', { 'is-solid': solid }]}>
   <div class="header-inner">
     <a class="brand" href="#hero" aria-label="Heat On — voltar ao início">
       <img
@@ -78,6 +85,7 @@ import { nav } from '../content/site';
     opacity: 0.14;
   }
 
+  .site-header.is-solid,
   .site-header.is-scrolled {
     background: rgba(14, 14, 16, 0.94);
     -webkit-backdrop-filter: blur(10px);

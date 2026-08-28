@@ -1,0 +1,193 @@
+---
+import Page from '../../layouts/Page.astro';
+import { projectPages } from '../../content/pages';
+import { projectsIndex, mediaNotDocumented } from '../../content/site';
+
+// Casa o conteúdo textual (portfólio) com as capas reais já catalogadas.
+const thumbs = new Map(
+  projectsIndex.filter((p) => p.thumb).map((p) => [p.title, p.thumb!])
+);
+const cards = projectPages.map((p) => ({
+  ...p,
+  thumb:
+    thumbs.get(p.title) ??
+    (p.slug === 'oren' ? thumbs.get('OREN') : undefined),
+}));
+---
+
+<Page
+  title="Projetos — Heat On"
+  description="Seis projetos documentados em software, dados, inteligência artificial e simulação aplicados à saúde."
+  eyebrow="PAGE 001 / PROJECTS"
+  heading="Projetos"
+  headline="Seis projetos documentados em saúde, pesquisa e sistemas complexos."
+  meta={['06 PROJETOS DOCUMENTADOS']}
+>
+  <section class="section surface-deep" aria-label="Índice de projetos">
+    <div class="container section-content">
+      <ol role="list" class="projects-list">
+        {
+          cards.map((p) => (
+            <li class="project-row reveal">
+              <a class="row-link" href={`/projetos/${p.slug}`}>
+                <span class="data row-num">{p.num}</span>
+
+                <span class="row-media">
+                  {p.thumb ? (
+                    <picture>
+                      <source media="(max-width: 767px)" srcset={p.thumb.mobile} />
+                      <img
+                        src={p.thumb.desktop}
+                        alt={p.thumb.alt}
+                        width="1600"
+                        height="1000"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </picture>
+                  ) : (
+                    <span class="row-flow" aria-hidden="true">
+                      {p.flow?.map((stage, i) => (
+                        <>
+                          <span class="data flow-stage">{stage}</span>
+                          {i < (p.flow?.length ?? 0) - 1 && (
+                            <span class="data flow-arrow">→</span>
+                          )}
+                        </>
+                      ))}
+                    </span>
+                  )}
+                </span>
+
+                <span class="row-copy">
+                  <span class="row-title">{p.title}</span>
+                  <span class="row-headline">{p.headline}</span>
+                  <span class="data row-meta">{p.metadata.join(' / ')}</span>
+                  {!p.thumb && (
+                    <span class="data row-nodoc">{mediaNotDocumented}</span>
+                  )}
+                </span>
+
+                <span class="data row-plus" aria-hidden="true">+</span>
+              </a>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .projects-list {
+    display: grid;
+  }
+
+  .project-row {
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .project-row:last-child {
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .row-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: clamp(1rem, 3vw, 2.5rem);
+    align-items: center;
+    padding-block: clamp(1.5rem, 3.5vw, 2.5rem);
+    text-decoration: none;
+  }
+
+  .row-num {
+    opacity: 0.5;
+    transition: color var(--motion-fast) var(--ease-feedback);
+  }
+
+  .row-media {
+    display: none;
+  }
+
+  .row-media img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    transition: transform var(--motion-base) var(--ease-editorial);
+  }
+
+  .row-flow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.8em;
+  }
+
+  .flow-arrow {
+    color: var(--color-measurement);
+  }
+
+  .row-copy {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  .row-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1.1rem + 1.2vw, 2.125rem);
+    font-weight: 500;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.15;
+  }
+
+  .row-headline {
+    opacity: 0.78;
+    max-width: 46ch;
+  }
+
+  .row-meta {
+    opacity: 0.55;
+  }
+
+  .row-nodoc {
+    color: var(--color-measurement);
+    opacity: 0.8;
+  }
+
+  .row-plus {
+    font-size: 1.25rem;
+    opacity: 0.4;
+    transition: color var(--motion-fast) var(--ease-feedback), opacity var(--motion-fast) var(--ease-feedback);
+  }
+
+  /* Um único acento ativo por linha */
+  @media (hover: hover) {
+    .row-link:hover .row-plus,
+    .row-link:focus-visible .row-plus {
+      color: var(--color-activity);
+      opacity: 1;
+    }
+
+    .row-link:hover .row-media img {
+      transform: scale(1.03);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .row-link {
+      grid-template-columns: auto minmax(0, 4fr) minmax(0, 6fr) auto;
+    }
+
+    .row-media {
+      display: block;
+      overflow: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .row-media img {
+      transition: none;
+    }
+  }
+</style>
