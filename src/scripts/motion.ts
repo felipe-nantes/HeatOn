@@ -449,9 +449,9 @@ function setupHeroScroll(): void {
   if (window.matchMedia('(max-width: 767px)').matches) return;
 
   const media = heroSection.querySelector<HTMLElement>('.hero-media');
-  // O transform vai nas imagens do símbolo, nunca no contêiner: ali criaria
-  // contexto de empilhamento e isolaria o difference do vídeo.
-  const symbol = [...heroSection.querySelectorAll<HTMLElement>('.hero-symbol img')];
+  // O símbolo agora recorta o fundo por máscara + backdrop-filter, sem
+  // mix-blend-mode: o transform pode ir no próprio elemento.
+  const symbol = [...heroSection.querySelectorAll<HTMLElement>('.hero-symbol')];
   const copy = heroSection.querySelector<HTMLElement>('.hero-microcopy');
   if (!media && !symbol.length && !copy) return;
 

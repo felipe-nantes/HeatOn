@@ -85,26 +85,10 @@ const clipsJson = JSON.stringify(hero.video.clips);
     </h1>
   </div>
 
-  <!-- Símbolo em duas camadas: a branca inverte o vídeo por difference;
-       a laranja entra por cima em opacidade baixa, dando o calor sutil. -->
-  <div class="hero-symbol" aria-hidden="true">
-    <img
-      class="sym-invert"
-      src="/assets/brand/symbol-white.svg"
-      alt=""
-      width="667"
-      height="363"
-      decoding="async"
-    />
-    <img
-      class="sym-tint"
-      src="/assets/brand/symbol-orange.svg"
-      alt=""
-      width="667"
-      height="363"
-      decoding="async"
-    />
-  </div>
+  <!-- Símbolo como janela: a silhueta recorta o vídeo e o backdrop-filter
+       remapeia a luminosidade real da imagem para tons de laranja.
+       Sem preenchimento, sem borda e sem opacidade. -->
+  <div class="hero-symbol" aria-hidden="true"></div>
 </section>
 
 <style>
@@ -353,10 +337,10 @@ const clipsJson = JSON.stringify(hero.video.clips);
   }
 
   /* ---------- Símbolo da marca sobre o vídeo ---------- */
-  /* Nem z-index nem transform aqui: qualquer um dos dois cria contexto de
-     empilhamento e o difference passaria a mesclar com o vazio do próprio
-     contêiner em vez do vídeo. Centralização por margem negativa, e a ordem
-     no DOM já coloca o símbolo por cima. */
+  /* A máscara recorta a silhueta e o backdrop-filter recolore o que está
+     atrás: sepia normaliza a cena numa faixa quente, saturate intensifica
+     e hue-rotate leva o resultado ao ângulo do Heat Orange. A luminância
+     do vídeo é preservada, então a onda acompanha cada corte da sequência. */
   .hero-symbol {
     --sym-w: clamp(190px, 31vw, 600px);
     position: absolute;
@@ -365,36 +349,26 @@ const clipsJson = JSON.stringify(hero.video.clips);
        deslocado pelo padding assimétrico do hero. */
     top: calc(50% + (var(--hero-pt) - var(--hero-pb)) / 2);
     width: var(--sym-w);
+    aspect-ratio: 667 / 363;
     margin-left: calc(var(--sym-w) / -2);
     margin-top: calc(var(--sym-w) * -0.2721); /* metade da altura (363/667) */
     pointer-events: none;
-    line-height: 0;
-  }
 
-  .hero-symbol img {
-    --sym-op: 1;
-    width: 100%;
-    height: auto;
+    -webkit-mask: url('/assets/brand/symbol-white.svg') center / contain no-repeat;
+    mask: url('/assets/brand/symbol-white.svg') center / contain no-repeat;
+
+    -webkit-backdrop-filter: sepia(1) saturate(3.4) hue-rotate(-14deg) brightness(1.14) contrast(1.06);
+    backdrop-filter: sepia(1) saturate(3.4) hue-rotate(-14deg) brightness(1.14) contrast(1.06);
+
     animation: symbol-in 800ms var(--ease-editorial) 380ms both;
-    /* O parallax escreve transform aqui (na própria imagem, nunca no
-       contêiner: no contêiner viraria contexto de empilhamento e mataria
-       a mesclagem com o vídeo). */
     will-change: transform;
   }
 
-  /* Camada 1 — branco puro em difference: inverte as cores do vídeo */
-  .hero-symbol .sym-invert {
-    mix-blend-mode: difference;
-  }
-
-  /* Camada 2 — Heat Orange por cima. Multiply, e não screen: a inversão
-     resulta em tons claros, e screen só clareia — não teria como colorir.
-     Multiply puxa verde e azul para baixo e deixa o laranja aparecer. */
-  .hero-symbol .sym-tint {
-    --sym-op: 0.55;
-    position: absolute;
-    inset: 0;
-    mix-blend-mode: multiply;
+  /* Sem backdrop-filter (navegador antigo), a silhueta vira laranja chapado */
+  @supports not (backdrop-filter: sepia(1)) {
+    .hero-symbol {
+      background: var(--color-activity);
+    }
   }
 
   @keyframes symbol-in {
@@ -402,7 +376,7 @@ const clipsJson = JSON.stringify(hero.video.clips);
       opacity: 0;
     }
     to {
-      opacity: var(--sym-op);
+      opacity: 1;
     }
   }
 
@@ -443,14 +417,14 @@ const clipsJson = JSON.stringify(hero.video.clips);
 
   @media (prefers-reduced-motion: reduce) {
     .hero-microcopy,
-    .hero-symbol img,
+    .hero-symbol,
     .hero-marks,
     .hero-grain {
       animation: none;
     }
 
-    .hero-symbol img {
-      opacity: var(--sym-op);
+    .hero-symbol {
+      opacity: 1;
     }
   }
 </style>
