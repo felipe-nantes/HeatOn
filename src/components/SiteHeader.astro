@@ -1,11 +1,5 @@
 ---
 import { nav } from '../content/site';
-
-// Nav em pares empilhados (01/02, 03/04, 05) com separadores verticais.
-const pairs: (typeof nav.items)[number][][] = [];
-for (let i = 0; i < nav.items.length; i += 2) {
-  pairs.push(nav.items.slice(i, i + 2));
-}
 ---
 
 <header id="site-header" class="site-header">
@@ -28,22 +22,18 @@ for (let i = 0; i < nav.items.length; i += 2) {
     </a>
 
     <nav class="header-nav" aria-label="Navegação principal">
-      <div class="nav-cols">
+      <ol role="list" class="nav-row">
         {
-          pairs.map((pair) => (
-            <ol role="list" class="nav-col">
-              {pair.map((item) => (
-                <li>
-                  <a href={item.href}>
-                    <span class="nav-num">{item.num}</span>
-                    <span class="nav-label">{item.label}</span>
-                  </a>
-                </li>
-              ))}
-            </ol>
+          nav.items.map((item) => (
+            <li>
+              <a href={item.href}>
+                <span class="nav-num">{item.num}</span>
+                <span class="nav-label">{item.label}</span>
+              </a>
+            </li>
           ))
         }
-      </div>
+      </ol>
     </nav>
 
     <p class="header-meta data">
@@ -117,20 +107,26 @@ for (let i = 0; i < nav.items.length; i += 2) {
     display: none;
   }
 
-  .nav-cols {
+  /* Linha única: com 5 itens, empilhar em pares deixaria o último órfão. */
+  .nav-row {
     display: flex;
+    align-items: center;
   }
 
-  .nav-col {
-    display: grid;
-    gap: 0.35rem;
-    padding-inline: clamp(1.25rem, 2vw, 2.25rem);
+  .nav-row li {
+    padding-inline: clamp(0.7rem, 1.3vw, 1.4rem);
+  }
+
+  .nav-row li + li {
     border-left: 1px solid rgba(255, 244, 230, 0.18);
   }
 
-  .nav-col:first-child {
-    border-left: 0;
+  .nav-row li:first-child {
     padding-left: 0;
+  }
+
+  .nav-row li:last-child {
+    padding-right: 0;
   }
 
   .header-nav a {
@@ -208,7 +204,9 @@ for (let i = 0; i < nav.items.length; i += 2) {
     }
   }
 
-  @media (min-width: 1200px) {
+  /* Abaixo disso a linha única não caberia junto de logo, PAGE/SECTION
+     e INDEX; o header então volta ao formato compacto com o INDEX. */
+  @media (min-width: 1280px) {
     .header-nav {
       display: block;
     }
