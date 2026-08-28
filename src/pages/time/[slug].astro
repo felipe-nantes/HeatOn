@@ -1,7 +1,8 @@
 ---
 import Page from '../../layouts/Page.astro';
-import { team } from '../../content/site';
+import { team, affiliation } from '../../content/site';
 import { projectPages } from '../../content/pages';
+import { sectors } from '../../content/sectors';
 
 export function getStaticPaths() {
   return team.members.map((member, i) => ({
@@ -18,6 +19,13 @@ const { member, next } = Astro.props;
 const worked = member.projects
   .map((slug) => projectPages.find((p) => p.slug === slug))
   .filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+// Setores derivados: quais disciplinas os projetos desta pessoa atravessam.
+// É inferência a partir da área declarada de cada projeto, não uma
+// especialidade autodeclarada.
+const memberSectors = sectors.filter((sector) =>
+  sector.projects.some((slug) => member.projects.includes(slug))
+);
 
 // Quem divide a mesma função — usado para situar a ênfase de cada um.
 const peers = team.members.filter(
@@ -61,6 +69,10 @@ const peers = team.members.filter(
             <dd>{member.institution}</dd>
           </div>
           <div class="row">
+            <dt class="data">GRUPO</dt>
+            <dd>{affiliation.acronym}</dd>
+          </div>
+          <div class="row">
             <dt class="data">PROJETOS</dt>
             <dd>{String(worked.length).padStart(2, '0')} / {String(projectPages.length).padStart(2, '0')}</dd>
           </div>
@@ -77,6 +89,35 @@ const peers = team.members.filter(
         }
 
         <p class="body-copy team-context reveal reveal--body">{team.body}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section surface-deep" aria-label={`Atuação de ${member.shortName}`}>
+    <div class="container section-content">
+      <div class="context-grid">
+        <div class="context-block reveal reveal--body">
+          <p class="data dark-label">GRUPO DE ESTUDOS</p>
+          <p class="group-name">{affiliation.acronym}</p>
+          <p class="group-full">{affiliation.name}</p>
+          <p class="body-copy group-note">{affiliation.note}</p>
+        </div>
+
+        <div class="context-block reveal reveal--body">
+          <p class="data dark-label">SETORES ATRAVESSADOS</p>
+          <ul role="list" class="sector-tags">
+            {memberSectors.map((sector) => (
+              <li>
+                <a class="sector-tag" href={`/setores/${sector.slug}`}>
+                  {sector.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+          <p class="data derived-note">
+            Derivado da área declarada dos projetos em que atuou.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -177,6 +218,74 @@ const peers = team.members.filter(
   .dark-label {
     color: var(--color-measurement);
     margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .context-grid {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    padding-bottom: clamp(2rem, 5vw, 3.5rem);
+    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+  }
+
+  .group-name {
+    font-family: var(--font-display);
+    font-size: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+    font-weight: 300;
+    letter-spacing: var(--tracking-display);
+    line-height: 1;
+    color: var(--color-activity);
+  }
+
+  .group-full {
+    margin-top: 0.6rem;
+    font-family: var(--font-display);
+    font-size: clamp(1.0625rem, 0.96rem + 0.5vw, 1.375rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .group-note {
+    margin-top: 1rem;
+    opacity: 0.7;
+    max-width: 40ch;
+  }
+
+  .sector-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+
+  .sector-tag {
+    display: inline-block;
+    padding: 0.55em 1.1em;
+    border: 1px solid rgba(255, 244, 230, 0.24);
+    border-radius: 999px;
+    font-family: var(--font-data);
+    font-size: 0.6875rem;
+    letter-spacing: var(--tracking-data);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: border-color var(--motion-fast) var(--ease-feedback), color var(--motion-fast) var(--ease-feedback);
+  }
+
+  .sector-tag:hover,
+  .sector-tag:focus-visible {
+    color: var(--color-activity);
+    border-color: var(--color-activity);
+  }
+
+  .derived-note {
+    margin-top: 1.1rem;
+    opacity: 0.45;
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+
+  @media (min-width: 1024px) {
+    .context-grid {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    }
   }
 
   .proj-list {

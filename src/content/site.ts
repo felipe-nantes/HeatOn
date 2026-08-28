@@ -46,8 +46,8 @@ export const hero = {
   display: 'Scientific Intelligence in Motion',
   support:
     'Software, dados e sistemas inteligentes para saúde, ciência e operações complexas.',
-  ctaPrimary: { label: 'Explorar projetos', href: '#projetos' },
-  ctaSecondary: { label: 'Iniciar um projeto', href: '#contato' },
+  ctaPrimary: { label: 'Explorar projetos', href: '/projetos' },
+  ctaSecondary: { label: 'Iniciar um projeto', href: '/contato' },
   video: {
     /**
      * Sequência rápida (07_HERO_RAPID_SEQUENCE_SPEC): clipes de 3s derivados
@@ -80,7 +80,7 @@ export const manifesto = {
   headline: 'Problemas complexos são o nosso território.',
   body: 'A Heat On transforma desafios técnicos em sistemas claros, mensuráveis e utilizáveis. Construímos da coleta de dados à interface; da automação ao modelo inteligente; da imagem médica à representação tridimensional.',
   principle: 'Medição antes da interpretação.',
-  cta: { label: 'Conhecer a Heat On', href: '#metodo' },
+  cta: { label: 'Conhecer a Heat On', href: '/empresa' },
 } as const;
 
 /** Mosaico editorial + território (SECTION 02 / FIELD). */
@@ -353,6 +353,7 @@ export const projectsIndex: ProjectIndexItem[] = [
   {
     num: '03',
     id: 'idx-samu',
+    href: '/projetos/samu-marialva',
     title: 'SAMU Marialva',
     body: 'Dashboard operacional para tornar dados de atendimento e funcionamento do serviço mais acessíveis à gestão.',
     metadata: ['EMERGENCY SERVICES', 'OPERATIONS', 'BI'],
@@ -376,6 +377,7 @@ export const projectsIndex: ProjectIndexItem[] = [
   {
     num: '05',
     id: 'idx-gsus',
+    href: '/projetos/auditoria-gsus',
     title: 'Automação de auditoria médica no GSUS',
     body: 'Mapeamento e automação de tarefas repetitivas, conferência e processamento de dados em fluxos de auditoria.',
     metadata: ['PROCESS AUTOMATION', 'HEALTHCARE OPERATIONS'],
@@ -385,6 +387,7 @@ export const projectsIndex: ProjectIndexItem[] = [
   {
     num: '06',
     id: 'idx-dados',
+    href: '/projetos/engenharia-dados',
     title: 'Engenharia de dados em massa',
     body: 'Extração, limpeza, padronização, integração e processamento em lote para análise, dashboards e sistemas.',
     metadata: ['ETL', 'DATA ENGINEERING', 'AUTOMATED PIPELINES'],
@@ -455,6 +458,14 @@ export const principles = {
     { num: '04', name: 'Precisão' },
     { num: '05', name: 'Exploração' },
   ],
+} as const;
+
+/** Grupo de estudos ao qual os três integrantes pertencem.
+ *  Sigla e nome conforme informado pela empresa. */
+export const affiliation = {
+  acronym: 'GETS',
+  name: 'Grupo de Estudos em Tecnologias e Saúde',
+  note: 'Os três integrantes da Heat On fazem parte do grupo.',
 } as const;
 
 export interface TeamMember {

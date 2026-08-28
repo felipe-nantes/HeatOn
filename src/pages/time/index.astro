@@ -1,6 +1,6 @@
 ---
 import Page from '../../layouts/Page.astro';
-import { team } from '../../content/site';
+import { team, affiliation } from '../../content/site';
 ---
 
 <Page
@@ -14,6 +14,10 @@ import { team } from '../../content/site';
   <section class="section surface-cream" aria-label="Integrantes">
     <div class="container section-content">
       <p class="body-copy team-lede reveal reveal--body">{team.body}</p>
+
+      <p class="data group-line reveal">
+        GRUPO / {affiliation.acronym} — {affiliation.name}
+      </p>
 
       <ol role="list" class="team-grid">
         {
@@ -48,6 +52,11 @@ import { team } from '../../content/site';
 
 <style>
   .team-lede {
+    margin-bottom: 1rem;
+  }
+
+  .group-line {
+    color: var(--color-activity);
     margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
   }
 

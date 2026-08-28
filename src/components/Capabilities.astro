@@ -38,10 +38,31 @@ import { capabilities } from '../content/site';
         <figcaption class="data icons-caption">ICONOGRAPHY SET / 12 CORE SYMBOLS</figcaption>
       </figure>
     </div>
+
+    <div class="cta-row">
+      <a class="pill section-cta" href="/setores">
+        Explorar os setores
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+      <a class="pill section-cta" href="/capacidades">
+        Todas as capacidades
+        <span class="pill-plus" aria-hidden="true">+</span>
+      </a>
+    </div>
   </div>
 </section>
 
 <style>
+  .section-cta {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
   .capabilities-grid {
     display: grid;
     gap: clamp(2.5rem, 6vw, 5rem);
