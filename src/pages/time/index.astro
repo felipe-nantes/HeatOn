@@ -15,8 +15,11 @@ import { team, affiliation } from '../../content/site';
     <div class="container section-content">
       <p class="body-copy team-lede reveal reveal--body">{team.body}</p>
 
-      <p class="data group-line reveal">
-        GRUPO / {affiliation.acronym} — {affiliation.name}
+      <p class="group-line reveal">
+        <span class="data">GRUPO DE PESQUISA /</span>
+        <a class="group-link" href={affiliation.url} target="_blank" rel="noopener">
+          {affiliation.acronym} — {affiliation.name}, {affiliation.institution}
+        </a>
       </p>
 
       <ol role="list" class="team-grid">
@@ -56,8 +59,21 @@ import { team, affiliation } from '../../content/site';
   }
 
   .group-line {
-    color: var(--color-activity);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6em;
     margin-bottom: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .group-line .data {
+    opacity: 0.5;
+  }
+
+  .group-link {
+    color: var(--color-activity);
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
   }
 
   .team-grid {

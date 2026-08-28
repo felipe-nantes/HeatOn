@@ -97,10 +97,21 @@ const peers = team.members.filter(
     <div class="container section-content">
       <div class="context-grid">
         <div class="context-block reveal reveal--body">
-          <p class="data dark-label">GRUPO DE ESTUDOS</p>
+          <p class="data dark-label">GRUPO DE PESQUISA</p>
           <p class="group-name">{affiliation.acronym}</p>
           <p class="group-full">{affiliation.name}</p>
-          <p class="body-copy group-note">{affiliation.note}</p>
+          <p class="data group-meta">
+            {affiliation.institution} / DESDE {affiliation.since}
+          </p>
+          <p class="body-copy group-note">{affiliation.scope}</p>
+
+          <ul role="list" class="group-areas">
+            {affiliation.areas.map((area) => <li>{area}</li>)}
+          </ul>
+
+          <a class="seq-full-link group-link" href={affiliation.url} target="_blank" rel="noopener">
+            SITE DO GRUPO +
+          </a>
         </div>
 
         <div class="context-block reveal reveal--body">
@@ -244,10 +255,31 @@ const peers = team.members.filter(
     letter-spacing: var(--tracking-heading);
   }
 
+  .group-meta {
+    margin-top: 0.7rem;
+    color: var(--color-measurement);
+    opacity: 0.8;
+  }
+
   .group-note {
     margin-top: 1rem;
     opacity: 0.7;
-    max-width: 40ch;
+    max-width: 44ch;
+  }
+
+  .group-areas {
+    display: grid;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    font-size: 0.9375rem;
+    opacity: 0.72;
+  }
+
+  .group-link {
+    display: inline-block;
+    margin-top: 1.25rem;
   }
 
   .sector-tags {

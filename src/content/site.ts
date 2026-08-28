@@ -460,12 +460,26 @@ export const principles = {
   ],
 } as const;
 
-/** Grupo de estudos ao qual os três integrantes pertencem.
- *  Sigla e nome conforme informado pela empresa. */
+/** GETS — grupo de pesquisa da UEM, conforme getsgeotecnologia.com.br.
+ *  Nome, instituição, ano e linhas de atuação verificados no site do grupo.
+ *  A relação nominal de cada integrante está no campo `gets` de TeamMember. */
 export const affiliation = {
   acronym: 'GETS',
-  name: 'Grupo de Estudos em Tecnologias e Saúde',
-  note: 'Os três integrantes da Heat On fazem parte do grupo.',
+  name: 'Grupo de Estudos em Geotecnologias',
+  institution: 'Universidade Estadual de Maringá',
+  since: '2017',
+  url: 'https://getsgeotecnologia.com.br',
+  scope:
+    'Grupo de pesquisa da UEM que trabalha na interface entre análise espacial, inteligência artificial e saúde digital, com foco em problemas do SUS.',
+  areas: [
+    'Epidemiologia espacial e análise territorial',
+    'Inteligência artificial e ciência de dados em saúde',
+    'Saúde digital e inovação tecnológica',
+    'Sistemas de urgência, emergência e acesso ao cuidado',
+  ],
+  /** Proximidade temática entre as linhas do grupo e o portfólio da Heat On. */
+  proximity:
+    'As quatro linhas do grupo tocam diretamente o portfólio da Heat On: análise territorial nas fraturas de fêmur, ciência de dados no OREN, e urgência e emergência no SAMU e no simulador de eFAST.',
 } as const;
 
 export interface TeamMember {
@@ -480,6 +494,8 @@ export interface TeamMember {
   /** Ênfase dentro da função, quando duas pessoas dividem a mesma. */
   focus: string;
   institution: string;
+  /** Consta na relação pública de pesquisadores do GETS. */
+  gets: boolean;
   /** Slugs dos projetos em que a pessoa atuou. */
   projects: string[];
   photo: string;
@@ -502,6 +518,7 @@ export const team = {
       discipline: 'SOFTWARE ENGINEERING',
       focus: 'Ênfase em desenvolvimento.',
       institution: 'Unicesumar',
+      gets: true,
       projects: ['oren', 'auditoria-gsus'],
       photo: '/assets/team/felipe.webp',
       alt: 'Retrato de Felipe Morais Nantes, sócio e engenheiro de software da Heat On.',
@@ -515,6 +532,7 @@ export const team = {
       discipline: 'SOFTWARE ENGINEERING',
       focus: 'Ênfase em revisão e estruturação.',
       institution: 'UEM',
+      gets: true,
       projects: [
         'oren',
         'fraturas-femur',
@@ -535,6 +553,7 @@ export const team = {
       discipline: 'BIOTECHNOLOGY',
       focus: 'Linha de pesquisa em saúde.',
       institution: 'UEM',
+      gets: true,
       projects: [
         'oren',
         'fraturas-femur',
