@@ -524,10 +524,10 @@ export const team = {
       institution: 'Unicesumar',
       gets: true,
       essay: {
-        label: 'O PAPEL DA ENGENHARIA NO TIME',
+        label: 'DO PROBLEMA AO SISTEMA RODANDO',
         paragraphs: [
-          'A ênfase do Felipe é construir. Pegar o problema já delimitado e transformá-lo em software rodando: a interface que alguém vai usar, a integração que ninguém vai ver.',
-          'Dos seis projetos do portfólio, ele atuou em dois: o OREN e a automação de auditoria do GSUS. Nos dois, a entrega final é um sistema em uso.',
+          'Felipe constrói. Num time de três, isso significa pegar o problema depois que ele foi entendido e não largar até existir um sistema rodando.',
+          'Os dois projetos em que atuou pedem construções opostas. O OREN é pesquisa: modelos de IA e reconstrução 3D, com uma interface para explorar o resultado. A automação do GSUS é bastidor, feita para ninguém notar que ela existe. O trabalho é fazer os dois chegarem ao mesmo lugar: em uso, na mão de alguém.',
         ],
       },
       projects: ['oren', 'auditoria-gsus'],
@@ -545,10 +545,10 @@ export const team = {
       institution: 'UEM',
       gets: true,
       essay: {
-        label: 'O PAPEL DA ENGENHARIA NO TIME',
+        label: 'QUEM OLHA O CONJUNTO',
         paragraphs: [
-          'A ênfase do Matheus é o que acontece depois que o código existe: revisar o que foi feito e garantir que as partes continuem encaixando. Num time de três, alguém precisa ser essa pessoa.',
-          'Ele passou pelos seis projetos. Entre um dashboard de saúde pública e um simulador em Unreal Engine existe pouca coisa em comum, e é por isso que a estruturação importa: sem ela, cada projeto vira uma ilha.',
+          'Matheus cuida do que acontece depois que o código existe: revisar o que foi feito e decidir o que está pronto para sair. O que não está, volta.',
+          'Ele passou pelos seis projetos, e essa é a parte que importa. Entre um dashboard de saúde pública e um simulador em Unreal Engine existe pouca coisa em comum; sem alguém olhando o conjunto, cada projeto viraria uma ilha. O trabalho dele é impedir que isso aconteça.',
         ],
       },
       projects: [
@@ -574,10 +574,11 @@ export const team = {
       gets: true,
       getsListing: { role: 'Pesquisador · Graduação', unit: 'DIN-UEM' },
       essay: {
-        label: 'O PAPEL DA BIOTECNOLOGIA NO TIME',
+        label: 'ENTRE A BIOLOGIA E O CÓDIGO',
         paragraphs: [
-          'Software para saúde erra mais quando ninguém no time sabe ler o problema clínico. Esse é o papel da biotecnologia aqui: entender o que um exame carrega e o que um indicador de saúde mede de verdade, antes de qualquer decisão de código.',
-          'João passou pelos seis projetos do portfólio com essa leitura. No OREN, ela importa na interpretação dos exames que o pipeline processa; no eFAST, em manter a simulação fiel ao procedimento real. A pesquisa dele é em saúde, e dá para notar.',
+          'João é biotecnologista e programa. As duas coisas, no mesmo dia. É raro encontrar alguém assim, e é exatamente essa a função dele aqui: circular entre o mundo clínico e o mundo técnico sem precisar de tradutor.',
+          'Isso muda o desenho dos sistemas. Quando o pipeline do OREN processa um exame, alguém precisa saber o que aquelas fatias significam para um médico e o que significam para o modelo. Quando o eFAST simula um procedimento, alguém precisa garantir que a sequência faz sentido clínico antes de fazer sentido em código. João faz as duas perguntas.',
+          'No GETS, o grupo de pesquisa da UEM, ele está listado pelo departamento de informática. Um biotecnologista registrado entre programadores: o detalhe resume bem o papel.',
         ],
       },
       projects: [

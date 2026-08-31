@@ -48,14 +48,20 @@ const peers = team.members.filter(
   <section class="section surface-cream" aria-label={`Perfil de ${member.shortName}`}>
     <div class="container section-content profile">
       <figure class="profile-figure reveal">
-        <img
-          src={member.photo}
-          alt={member.alt}
-          width="640"
-          height="800"
-          loading="lazy"
-          decoding="async"
-        />
+        <span class="ph-frame">
+          <img
+            src={member.photo}
+            alt={member.alt}
+            width="640"
+            height="800"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="ph-corner ph-tl" aria-hidden="true"></span>
+          <span class="ph-corner ph-tr" aria-hidden="true"></span>
+          <span class="ph-corner ph-bl" aria-hidden="true"></span>
+          <span class="ph-corner ph-br" aria-hidden="true"></span>
+        </span>
         <figcaption class="data profile-readout" aria-hidden="true">
           <span>MEMBER / {member.num}·{String(team.members.length).padStart(2, '0')}</span>
           <span>PROJECTS / {String(worked.length).padStart(2, '0')}</span>
@@ -101,8 +107,10 @@ const peers = team.members.filter(
     </div>
   </section>
 
-  <section class="section surface-deep" aria-label={`O papel de ${member.shortName} no time`}>
+  <section class="section surface-deep essay-scene" aria-label={`O papel de ${member.shortName} no time`}>
+    <span class="essay-ghost" aria-hidden="true">{member.num}</span>
     <div class="container section-content essay-section">
+      <span class="essay-rule" aria-hidden="true"></span>
       <p class="data essay-label reveal reveal--label">{member.essay.label}</p>
 
       <div class="essay-body">
@@ -216,12 +224,32 @@ const peers = team.members.filter(
     background: rgba(14, 14, 16, 0.06);
   }
 
+  .ph-frame {
+    position: relative;
+    display: block;
+  }
+
   .profile-figure img {
     width: 100%;
     height: auto;
     aspect-ratio: 4 / 5;
     object-fit: cover;
   }
+
+  /* Marcas de registro nos cantos do retrato. Difference garante leitura
+     sobre qualquer fotografia, clara ou escura. */
+  .ph-corner {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    mix-blend-mode: difference;
+    pointer-events: none;
+  }
+
+  .ph-tl { top: 10px; left: 10px; border-top: 1.5px solid #fff; border-left: 1.5px solid #fff; }
+  .ph-tr { top: 10px; right: 10px; border-top: 1.5px solid #fff; border-right: 1.5px solid #fff; }
+  .ph-bl { bottom: 10px; left: 10px; border-bottom: 1.5px solid #fff; border-left: 1.5px solid #fff; }
+  .ph-br { bottom: 10px; right: 10px; border-bottom: 1.5px solid #fff; border-right: 1.5px solid #fff; }
 
   .profile-rows {
     display: grid;
@@ -267,8 +295,37 @@ const peers = team.members.filter(
   }
 
   /* ---------- Seção "O papel no time" (superfície deep) ---------- */
+  .essay-scene {
+    overflow: hidden;
+  }
+
+  /* Número do integrante como marca d'água, na gramática numerada do site */
+  .essay-ghost {
+    position: absolute;
+    top: 50%;
+    right: calc(var(--page-pad) * -0.4);
+    transform: translateY(-50%);
+    font-family: var(--font-display);
+    font-weight: 200;
+    font-size: clamp(12rem, 34vw, 30rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-display);
+    color: var(--color-information);
+    opacity: 0.05;
+    pointer-events: none;
+    user-select: none;
+  }
+
   .essay-section {
     max-width: 68ch;
+  }
+
+  .essay-rule {
+    display: block;
+    width: 56px;
+    height: 2px;
+    background: var(--gradient-thermal);
+    margin-bottom: 1.1rem;
   }
 
   .essay-label {
