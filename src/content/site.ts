@@ -500,6 +500,8 @@ export interface TeamMember {
   getsListing?: { role: string; unit: string };
   /** O papel da disciplina no time — texto de função, não biografia. */
   essay: { label: string; paragraphs: string[] };
+  /** Perfis públicos, quando a pessoa forneceu. */
+  links?: { label: string; handle: string; url: string }[];
   /** Slugs dos projetos em que a pessoa atuou. */
   projects: string[];
   photo: string;
@@ -530,6 +532,18 @@ export const team = {
           'Os dois projetos em que atuou pedem construções opostas. O OREN é pesquisa: modelos de IA e reconstrução 3D, com uma interface para explorar o resultado. A automação do GSUS é bastidor, feita para ninguém notar que ela existe. O trabalho é fazer os dois chegarem ao mesmo lugar: em uso, na mão de alguém.',
         ],
       },
+      links: [
+        {
+          label: 'LINKEDIN',
+          handle: 'felipe-nantes',
+          url: 'https://www.linkedin.com/in/felipe-nantes-23719b349/',
+        },
+        {
+          label: 'INSTAGRAM',
+          handle: '@nantesss',
+          url: 'https://instagram.com/nantesss',
+        },
+      ],
       projects: ['oren', 'auditoria-gsus'],
       photo: '/assets/team/felipe.webp',
       alt: 'Retrato de Felipe Morais Nantes, engenheiro de software da Heat On.',
@@ -581,6 +595,18 @@ export const team = {
           'No GETS, o grupo de pesquisa da UEM, ele aparece listado pelo departamento de informática. Um biotecnologista registrado entre programadores: o detalhe resume bem o papel.',
         ],
       },
+      links: [
+        {
+          label: 'LINKEDIN',
+          handle: 'joão-marcelo-granzotto-vicente',
+          url: 'https://www.linkedin.com/in/jo%C3%A3o-marcelo-granzotto-vicente-40957a343',
+        },
+        {
+          label: 'INSTAGRAM',
+          handle: '@vcnt.jm',
+          url: 'https://instagram.com/vcnt.jm',
+        },
+      ],
       projects: [
         'oren',
         'fraturas-femur',
