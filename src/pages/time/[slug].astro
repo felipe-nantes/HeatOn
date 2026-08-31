@@ -60,7 +60,7 @@ const peers = team.members.filter(
           <span>MEMBER / {member.num}·{String(team.members.length).padStart(2, '0')}</span>
           <span>PROJECTS / {String(worked.length).padStart(2, '0')}</span>
           <span>SECTORS / {String(memberSectors.length).padStart(2, '0')}</span>
-          <span class="readout-on">STATUS / SÓCIO</span>
+          <span class="readout-on">STATUS / ATIVO</span>
         </figcaption>
       </figure>
 
@@ -97,34 +97,38 @@ const peers = team.members.filter(
             <dd>{String(worked.length).padStart(2, '0')} / {String(projectPages.length).padStart(2, '0')}</dd>
           </div>
         </dl>
-
-        {
-          peers.length > 0 && (
-            <p class="body-copy peer-note reveal reveal--body">
-              {member.shortName} divide a mesma função com{' '}
-              {peers.map((p) => p.shortName).join(' e ')}; o que muda entre eles é a
-              ênfase do dia a dia.
-            </p>
-          )
-        }
-
-        <p class="body-copy team-context reveal reveal--body">{team.body}</p>
-
-        <div class="essay reveal reveal--body">
-          <p class="data essay-label">{member.essay.label}</p>
-          {member.essay.paragraphs.map((paragraph) => (
-            <p class="body-copy essay-text">{paragraph}</p>
-          ))}
-        </div>
       </div>
     </div>
   </section>
 
-  <section class="section surface-deep" aria-label={`Atuação de ${member.shortName}`}>
+  <section class="section surface-deep" aria-label={`O papel de ${member.shortName} no time`}>
+    <div class="container section-content essay-section">
+      <p class="data essay-label reveal reveal--label">{member.essay.label}</p>
+
+      <div class="essay-body">
+        {member.essay.paragraphs.map((paragraph, i) => (
+          <p class:list={['body-copy', i === 0 ? 'essay-lede' : 'essay-text', 'reveal', 'reveal--body']}>
+            {paragraph}
+          </p>
+        ))}
+      </div>
+
+      {
+        peers.length > 0 && (
+          <p class="body-copy peer-note reveal reveal--body">
+            {member.shortName} divide a mesma função com{' '}
+            {peers.map((p) => p.shortName).join(' e ')} — o que muda é a ênfase do dia a dia.
+          </p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section surface-cream" aria-label={`Atuação de ${member.shortName}`}>
     <div class="container section-content">
       <div class="context-grid">
         <div class="context-block reveal reveal--body">
-          <p class="data dark-label">GRUPO DE PESQUISA</p>
+          <p class="data light-label">GRUPO DE PESQUISA</p>
           <p class="group-name">{affiliation.acronym}</p>
           <p class="group-full">{affiliation.name}</p>
           <p class="data group-meta">
@@ -142,7 +146,7 @@ const peers = team.members.filter(
         </div>
 
         <div class="context-block reveal reveal--body">
-          <p class="data dark-label">SETORES ATRAVESSADOS</p>
+          <p class="data light-label">SETORES ATRAVESSADOS</p>
           <ul role="list" class="sector-tags">
             {memberSectors.map((sector) => (
               <li>
@@ -262,30 +266,48 @@ const peers = team.members.filter(
     opacity: 1;
   }
 
-  .essay {
-    margin-top: clamp(2rem, 4.5vw, 3rem);
-    padding-top: clamp(1.5rem, 3vw, 2rem);
-    border-top: 1px solid rgba(14, 14, 16, 0.16);
-    display: grid;
-    gap: 1rem;
+  /* ---------- Seção "O papel no time" (superfície deep) ---------- */
+  .essay-section {
+    max-width: 68ch;
   }
 
   .essay-label {
     color: var(--color-activity);
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .essay-body {
+    display: grid;
+    gap: 1.1rem;
+  }
+
+  .essay-lede {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 1.1rem + 1.2vw, 1.875rem);
+    font-weight: 400;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.35;
+    max-width: none;
   }
 
   .essay-text {
-    max-width: 58ch;
+    max-width: none;
+    opacity: 0.86;
   }
 
   .peer-note {
-    margin-top: clamp(1.5rem, 3.5vw, 2.25rem);
-    opacity: 0.75;
+    margin-top: clamp(1.75rem, 4vw, 2.5rem);
+    padding-top: clamp(1.25rem, 3vw, 1.75rem);
+    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    opacity: 0.65;
+    max-width: none;
   }
 
-  .team-context {
-    margin-top: 1rem;
-    opacity: 0.75;
+  /* ---------- Rótulos por superfície ---------- */
+  .light-label {
+    color: var(--color-structure);
+    opacity: 0.62;
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
   }
 
   .dark-label {
@@ -297,7 +319,7 @@ const peers = team.members.filter(
     display: grid;
     gap: clamp(2rem, 5vw, 4rem);
     padding-bottom: clamp(2rem, 5vw, 3.5rem);
-    border-bottom: 1px solid rgba(255, 244, 230, 0.14);
+    border-bottom: 1px solid rgba(14, 14, 16, 0.14);
   }
 
   .group-name {
@@ -319,8 +341,7 @@ const peers = team.members.filter(
 
   .group-meta {
     margin-top: 0.7rem;
-    color: var(--color-measurement);
-    opacity: 0.8;
+    opacity: 0.6;
   }
 
   .group-note {
@@ -334,7 +355,7 @@ const peers = team.members.filter(
     gap: 0.4rem;
     margin-top: 1.25rem;
     padding-top: 1.1rem;
-    border-top: 1px solid rgba(255, 244, 230, 0.14);
+    border-top: 1px solid rgba(14, 14, 16, 0.14);
     font-size: 0.9375rem;
     opacity: 0.72;
   }
@@ -353,7 +374,7 @@ const peers = team.members.filter(
   .sector-tag {
     display: inline-block;
     padding: 0.55em 1.1em;
-    border: 1px solid rgba(255, 244, 230, 0.24);
+    border: 1px solid rgba(14, 14, 16, 0.24);
     border-radius: 999px;
     font-family: var(--font-data);
     font-size: 0.6875rem;

@@ -1,7 +1,7 @@
 /**
  * Heat On — conteúdo canônico do site (handoff v2.0, real-first).
  * Fontes: 03_CONTENT_MODEL_PTBR.md, 06_REAL_MEDIA_INVENTORY.md, portfolio_saude.md.
- * Copy inicial para prototipação; revisar com os sócios antes da publicação.
+ * Copy inicial para prototipação; revisar com a empresa antes da publicação.
  * A tagline "Scientific Intelligence in Motion" nunca é traduzida.
  */
 
@@ -507,18 +507,18 @@ export interface TeamMember {
 }
 
 /** Time (SECTION 10). Nomes, funções, instituições e autoria por projeto
- *  informados pela empresa. Cargos formais não existem: os três são sócios. */
+ *  informados pela empresa. Não há cargos formais; ninguém leva título. */
 export const team = {
   label: 'SECTION 10 / TEAM',
   headline: 'Engenharia e ciência na mesma mesa.',
-  body: 'Três sócios: duas frentes de engenharia de software e uma de biotecnologia, trabalhando lado a lado no mesmo problema.',
+  body: 'Dois engenheiros de software e um biotecnologista, os três em cima do mesmo problema.',
   members: [
     {
       num: '01',
       id: 'felipe',
       name: 'Felipe Morais Nantes',
       shortName: 'Felipe',
-      role: 'Sócio · Engenharia de software',
+      role: 'Engenharia de software',
       discipline: 'SOFTWARE ENGINEERING',
       focus: 'Ênfase em desenvolvimento.',
       institution: 'Unicesumar',
@@ -526,20 +526,20 @@ export const team = {
       essay: {
         label: 'O PAPEL DA ENGENHARIA NO TIME',
         paragraphs: [
-          'Com ênfase em desenvolvimento, a função de Felipe é transformar o problema já delimitado em software que funciona: interface, integração e comportamento. É a etapa em que a decisão de projeto vira código em execução.',
-          'No portfólio, essa frente aparece nos dois projetos em que atuou — o pipeline do OREN e a automação de auditoria no GSUS, ambos casos em que o produto final é um sistema operando, não um estudo.',
+          'A ênfase do Felipe é construir. Pegar o problema já delimitado e transformá-lo em software rodando: a interface que alguém vai usar, a integração que ninguém vai ver.',
+          'Dos seis projetos do portfólio, ele atuou em dois: o OREN e a automação de auditoria do GSUS. Nos dois, a entrega final é um sistema em uso.',
         ],
       },
       projects: ['oren', 'auditoria-gsus'],
       photo: '/assets/team/felipe.webp',
-      alt: 'Retrato de Felipe Morais Nantes, sócio e engenheiro de software da Heat On.',
+      alt: 'Retrato de Felipe Morais Nantes, engenheiro de software da Heat On.',
     },
     {
       num: '02',
       id: 'matheus',
       name: 'Matheus de Lara Campos',
       shortName: 'Matheus',
-      role: 'Sócio · Engenharia de software',
+      role: 'Engenharia de software',
       discipline: 'SOFTWARE ENGINEERING',
       focus: 'Ênfase em revisão e estruturação.',
       institution: 'UEM',
@@ -547,8 +547,8 @@ export const team = {
       essay: {
         label: 'O PAPEL DA ENGENHARIA NO TIME',
         paragraphs: [
-          'Com ênfase em revisão e estruturação, a função de Matheus é garantir que o que foi construído se sustente: organização das bases, consistência entre as partes e revisão do que sai antes de virar entrega.',
-          'É a frente que atravessa todos os seis projetos documentados — em um portfólio que vai de ETL a realidade virtual, a estruturação é o que mantém as peças compatíveis entre si.',
+          'A ênfase do Matheus é o que acontece depois que o código existe: revisar o que foi feito e garantir que as partes continuem encaixando. Num time de três, alguém precisa ser essa pessoa.',
+          'Ele passou pelos seis projetos. Entre um dashboard de saúde pública e um simulador em Unreal Engine existe pouca coisa em comum, e é por isso que a estruturação importa: sem ela, cada projeto vira uma ilha.',
         ],
       },
       projects: [
@@ -560,14 +560,14 @@ export const team = {
         'engenharia-dados',
       ],
       photo: '/assets/team/matheus.webp',
-      alt: 'Retrato de Matheus de Lara Campos, sócio e engenheiro de software da Heat On.',
+      alt: 'Retrato de Matheus de Lara Campos, engenheiro de software da Heat On.',
     },
     {
       num: '03',
       id: 'joao-marcelo',
       name: 'João Marcelo Granzotto Vicente',
       shortName: 'João Marcelo',
-      role: 'Sócio · Biotecnologia',
+      role: 'Biotecnologia',
       discipline: 'BIOTECHNOLOGY',
       focus: 'Linha de pesquisa em saúde.',
       institution: 'UEM',
@@ -576,8 +576,8 @@ export const team = {
       essay: {
         label: 'O PAPEL DA BIOTECNOLOGIA NO TIME',
         paragraphs: [
-          'Num time de engenharia, a biotecnologia é a ponte entre o problema clínico e o sistema que o resolve. É a frente que entende o que um exame representa, por que um protocolo existe e o que um indicador de saúde de fato mede — antes de qualquer linha de código.',
-          'No portfólio, essa leitura acompanha os seis projetos documentados: os exames que alimentam o OREN, a lógica clínica do simulador de eFAST, os indicadores de saúde pública dos dashboards. A linha de pesquisa em saúde é o fio condutor.',
+          'Software para saúde erra mais quando ninguém no time sabe ler o problema clínico. Esse é o papel da biotecnologia aqui: entender o que um exame carrega e o que um indicador de saúde mede de verdade, antes de qualquer decisão de código.',
+          'João passou pelos seis projetos do portfólio com essa leitura. No OREN, ela importa na interpretação dos exames que o pipeline processa; no eFAST, em manter a simulação fiel ao procedimento real. A pesquisa dele é em saúde, e dá para notar.',
         ],
       },
       projects: [
@@ -589,7 +589,7 @@ export const team = {
         'engenharia-dados',
       ],
       photo: '/assets/team/joao-marcelo.webp',
-      alt: 'Retrato de João Marcelo Granzotto Vicente, sócio e biotecnologista da Heat On.',
+      alt: 'Retrato de João Marcelo Granzotto Vicente, biotecnologista da Heat On.',
     },
   ] as TeamMember[],
 } as const;
