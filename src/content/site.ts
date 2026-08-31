@@ -576,9 +576,9 @@ export const team = {
       essay: {
         label: 'ENTRE A BIOLOGIA E O CÓDIGO',
         paragraphs: [
-          'João é biotecnologista e programa. As duas coisas, no mesmo dia. É raro encontrar alguém assim, e é exatamente essa a função dele aqui: circular entre o mundo clínico e o mundo técnico sem precisar de tradutor.',
-          'Isso muda o desenho dos sistemas. Quando o pipeline do OREN processa um exame, alguém precisa saber o que aquelas fatias significam para um médico e o que significam para o modelo. Quando o eFAST simula um procedimento, alguém precisa garantir que a sequência faz sentido clínico antes de fazer sentido em código. João faz as duas perguntas.',
-          'No GETS, o grupo de pesquisa da UEM, ele está listado pelo departamento de informática. Um biotecnologista registrado entre programadores: o detalhe resume bem o papel.',
+          'João circula pelos dois lados: entende o problema biológico e trabalha na tecnologia que responde a ele. As duas coisas, no mesmo projeto.',
+          'Isso muda o desenho dos sistemas. Quando o pipeline do OREN processa um exame, alguém precisa saber o que aquelas fatias significam para um médico e o que significam para o modelo. Quando o eFAST simula um procedimento, a sequência tem que fazer sentido clínico antes de fazer sentido em código. João faz as duas perguntas.',
+          'No GETS, o grupo de pesquisa da UEM, ele aparece listado pelo departamento de informática. Um biotecnologista registrado entre programadores: o detalhe resume bem o papel.',
         ],
       },
       projects: [

@@ -349,7 +349,13 @@ const peers = team.members.filter(
 
   .essay-text {
     max-width: none;
-    opacity: 0.86;
+  }
+
+  /* Texto de leitura nunca depende de JS para existir: a revelação aqui
+     desloca, mas não esconde. Antes, `.essay-text` sobrescrevia a opacidade
+     de `.reveal` e o primeiro parágrafo ficava invisível sozinho. */
+  .essay-body .reveal {
+    opacity: 1;
   }
 
   .peer-note {
