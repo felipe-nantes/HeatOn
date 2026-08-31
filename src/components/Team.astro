@@ -12,16 +12,18 @@ import { team } from '../content/site';
       {
         team.members.map((m) => (
           <li class="member reveal reveal--body">
-            <figure class="member-figure">
-              <img
-                src={m.photo}
-                alt={m.alt}
-                width="640"
-                height="800"
-                loading="lazy"
-                decoding="async"
-              />
-            </figure>
+            <a class="member-photo-link" href={`/time/${m.id}`} aria-label={`Perfil de ${m.shortName}`}>
+              <figure class="member-figure">
+                <img
+                  src={m.photo}
+                  alt={m.alt}
+                  width="640"
+                  height="800"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            </a>
             <p class="data member-num">{m.num}</p>
             <h3 class="member-name">{m.shortName}</h3>
             <p class="member-role">{m.role}</p>
@@ -80,8 +82,13 @@ import { team } from '../content/site';
       transform var(--motion-base) var(--ease-editorial);
   }
 
+  .member-photo-link {
+    display: block;
+  }
+
   @media (hover: hover) {
-    .member:hover .member-figure img {
+    .member:hover .member-figure img,
+    .member-photo-link:focus-visible .member-figure img {
       filter: grayscale(0) contrast(1);
       transform: scale(1.02);
     }

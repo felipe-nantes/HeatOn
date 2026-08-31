@@ -27,6 +27,10 @@ const memberSectors = sectors.filter((sector) =>
   sector.projects.some((slug) => member.projects.includes(slug))
 );
 
+// Colegas por projeto: quem mais atuou em cada um (derivado dos dados).
+const colleaguesOf = (slug: string) =>
+  team.members.filter((m) => m.id !== member.id && m.projects.includes(slug));
+
 // Quem divide a mesma função — usado para situar a ênfase de cada um.
 const peers = team.members.filter(
   (m) => m.id !== member.id && m.discipline === member.discipline
@@ -52,6 +56,12 @@ const peers = team.members.filter(
           loading="lazy"
           decoding="async"
         />
+        <figcaption class="data profile-readout" aria-hidden="true">
+          <span>MEMBER / {member.num}·{String(team.members.length).padStart(2, '0')}</span>
+          <span>PROJECTS / {String(worked.length).padStart(2, '0')}</span>
+          <span>SECTORS / {String(memberSectors.length).padStart(2, '0')}</span>
+          <span class="readout-on">STATUS / SÓCIO</span>
+        </figcaption>
       </figure>
 
       <div class="profile-body">
@@ -72,6 +82,16 @@ const peers = team.members.filter(
             <dt class="data">GRUPO</dt>
             <dd>{affiliation.acronym}</dd>
           </div>
+          {
+            member.getsListing && (
+              <div class="row">
+                <dt class="data">NO GETS</dt>
+                <dd>
+                  {member.getsListing.role} — {member.getsListing.unit}
+                </dd>
+              </div>
+            )
+          }
           <div class="row">
             <dt class="data">PROJETOS</dt>
             <dd>{String(worked.length).padStart(2, '0')} / {String(projectPages.length).padStart(2, '0')}</dd>
@@ -89,6 +109,13 @@ const peers = team.members.filter(
         }
 
         <p class="body-copy team-context reveal reveal--body">{team.body}</p>
+
+        <div class="essay reveal reveal--body">
+          <p class="data essay-label">{member.essay.label}</p>
+          {member.essay.paragraphs.map((paragraph) => (
+            <p class="body-copy essay-text">{paragraph}</p>
+          ))}
+        </div>
       </div>
     </div>
   </section>
@@ -145,6 +172,11 @@ const peers = team.members.filter(
                 <span class="proj-copy">
                   <span class="proj-title">{p.title}</span>
                   <span class="data proj-area">{p.area}</span>
+                  {colleaguesOf(p.slug).length > 0 && (
+                    <span class="data proj-with">
+                      COM {colleaguesOf(p.slug).map((c) => c.shortName).join(' · ')}
+                    </span>
+                  )}
                 </span>
                 <span class="data proj-plus" aria-hidden="true">+</span>
               </a>
@@ -214,6 +246,36 @@ const peers = team.members.filter(
     font-size: clamp(1.0625rem, 0.96rem + 0.5vw, 1.375rem);
     font-weight: 500;
     letter-spacing: var(--tracking-heading);
+  }
+
+  .profile-readout {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(14, 14, 16, 0.16);
+    opacity: 0.65;
+  }
+
+  .readout-on {
+    color: var(--color-activity);
+    opacity: 1;
+  }
+
+  .essay {
+    margin-top: clamp(2rem, 4.5vw, 3rem);
+    padding-top: clamp(1.5rem, 3vw, 2rem);
+    border-top: 1px solid rgba(14, 14, 16, 0.16);
+    display: grid;
+    gap: 1rem;
+  }
+
+  .essay-label {
+    color: var(--color-activity);
+  }
+
+  .essay-text {
+    max-width: 58ch;
   }
 
   .peer-note {
@@ -359,6 +421,11 @@ const peers = team.members.filter(
 
   .proj-area {
     opacity: 0.5;
+  }
+
+  .proj-with {
+    color: var(--color-measurement);
+    opacity: 0.75;
   }
 
   .proj-plus {

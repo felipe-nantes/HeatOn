@@ -496,6 +496,10 @@ export interface TeamMember {
   institution: string;
   /** Consta na relação pública de pesquisadores do GETS. */
   gets: boolean;
+  /** Como aparece na listagem pública do grupo, quando aparece. */
+  getsListing?: { role: string; unit: string };
+  /** O papel da disciplina no time — texto de função, não biografia. */
+  essay: { label: string; paragraphs: string[] };
   /** Slugs dos projetos em que a pessoa atuou. */
   projects: string[];
   photo: string;
@@ -519,6 +523,13 @@ export const team = {
       focus: 'Ênfase em desenvolvimento.',
       institution: 'Unicesumar',
       gets: true,
+      essay: {
+        label: 'O PAPEL DA ENGENHARIA NO TIME',
+        paragraphs: [
+          'Com ênfase em desenvolvimento, a função de Felipe é transformar o problema já delimitado em software que funciona: interface, integração e comportamento. É a etapa em que a decisão de projeto vira código em execução.',
+          'No portfólio, essa frente aparece nos dois projetos em que atuou — o pipeline do OREN e a automação de auditoria no GSUS, ambos casos em que o produto final é um sistema operando, não um estudo.',
+        ],
+      },
       projects: ['oren', 'auditoria-gsus'],
       photo: '/assets/team/felipe.webp',
       alt: 'Retrato de Felipe Morais Nantes, sócio e engenheiro de software da Heat On.',
@@ -533,6 +544,13 @@ export const team = {
       focus: 'Ênfase em revisão e estruturação.',
       institution: 'UEM',
       gets: true,
+      essay: {
+        label: 'O PAPEL DA ENGENHARIA NO TIME',
+        paragraphs: [
+          'Com ênfase em revisão e estruturação, a função de Matheus é garantir que o que foi construído se sustente: organização das bases, consistência entre as partes e revisão do que sai antes de virar entrega.',
+          'É a frente que atravessa todos os seis projetos documentados — em um portfólio que vai de ETL a realidade virtual, a estruturação é o que mantém as peças compatíveis entre si.',
+        ],
+      },
       projects: [
         'oren',
         'fraturas-femur',
@@ -554,6 +572,14 @@ export const team = {
       focus: 'Linha de pesquisa em saúde.',
       institution: 'UEM',
       gets: true,
+      getsListing: { role: 'Pesquisador · Graduação', unit: 'DIN-UEM' },
+      essay: {
+        label: 'O PAPEL DA BIOTECNOLOGIA NO TIME',
+        paragraphs: [
+          'Num time de engenharia, a biotecnologia é a ponte entre o problema clínico e o sistema que o resolve. É a frente que entende o que um exame representa, por que um protocolo existe e o que um indicador de saúde de fato mede — antes de qualquer linha de código.',
+          'No portfólio, essa leitura acompanha os seis projetos documentados: os exames que alimentam o OREN, a lógica clínica do simulador de eFAST, os indicadores de saúde pública dos dashboards. A linha de pesquisa em saúde é o fio condutor.',
+        ],
+      },
       projects: [
         'oren',
         'fraturas-femur',
