@@ -529,7 +529,7 @@ export const team = {
         label: 'DO PROBLEMA AO SISTEMA RODANDO',
         paragraphs: [
           'Felipe constrói. Num time de três, isso significa pegar o problema depois que ele foi entendido e não largar até existir um sistema rodando.',
-          'Os dois projetos em que atuou pedem construções opostas. O OREN é pesquisa: modelos de IA e reconstrução 3D, com uma interface para explorar o resultado. A automação do GSUS é bastidor, feita para ninguém notar que ela existe. O trabalho é fazer os dois chegarem ao mesmo lugar: em uso, na mão de alguém.',
+          'Ele passou pelos seis projetos, e dois deles mostram os extremos do trabalho. O OREN é pesquisa: modelos de IA e reconstrução 3D, com uma interface para explorar o resultado. A automação do GSUS é bastidor, feita para ninguém notar que ela existe. Entre um e outro ficam os dashboards de saúde pública, os pipelines de dados e o simulador em realidade virtual. O trabalho é fazer todos chegarem ao mesmo lugar: em uso, na mão de alguém.',
         ],
       },
       links: [
@@ -544,7 +544,14 @@ export const team = {
           url: 'https://instagram.com/nantesss',
         },
       ],
-      projects: ['oren', 'auditoria-gsus'],
+      projects: [
+        'oren',
+        'fraturas-femur',
+        'samu-marialva',
+        'efast-vr',
+        'auditoria-gsus',
+        'engenharia-dados',
+      ],
       photo: '/assets/team/felipe.webp',
       alt: 'Retrato de Felipe Morais Nantes, engenheiro de software da Heat On.',
     },
